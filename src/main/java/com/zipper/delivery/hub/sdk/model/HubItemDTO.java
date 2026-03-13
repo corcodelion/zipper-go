@@ -13,53 +13,67 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * An item included in the delivery
  */
-@JsonPropertyOrder({
-  HubItemDTO.JSON_PROPERTY_SKU,
-  HubItemDTO.JSON_PROPERTY_NAME,
-  HubItemDTO.JSON_PROPERTY_QUANTITY,
-  HubItemDTO.JSON_PROPERTY_DESCRIPTION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubItemDTO {
-  public static final String JSON_PROPERTY_SKU = "sku";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SKU = "sku";
+  @SerializedName(SERIALIZED_NAME_SKU)
+  @javax.annotation.Nullable
   private String sku;
 
-  public static final String JSON_PROPERTY_NAME = "name";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  @javax.annotation.Nonnull
   private String name;
 
-  public static final String JSON_PROPERTY_QUANTITY = "quantity";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_QUANTITY = "quantity";
+  @SerializedName(SERIALIZED_NAME_QUANTITY)
+  @javax.annotation.Nonnull
   private Integer quantity;
 
-  public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  @javax.annotation.Nullable
   private String description;
 
-  public HubItemDTO() { 
+  public HubItemDTO() {
   }
 
-  public HubItemDTO sku(@jakarta.annotation.Nullable String sku) {
+  public HubItemDTO sku(@javax.annotation.Nullable String sku) {
     this.sku = sku;
     return this;
   }
@@ -68,22 +82,17 @@ public class HubItemDTO {
    * Optional SKU or identifier for the item
    * @return sku
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SKU)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getSku() {
     return sku;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SKU)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSku(@jakarta.annotation.Nullable String sku) {
+  public void setSku(@javax.annotation.Nullable String sku) {
     this.sku = sku;
   }
 
 
-  public HubItemDTO name(@jakarta.annotation.Nonnull String name) {
+  public HubItemDTO name(@javax.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
@@ -92,22 +101,17 @@ public class HubItemDTO {
    * Item name
    * @return name
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getName() {
     return name;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setName(@jakarta.annotation.Nonnull String name) {
+  public void setName(@javax.annotation.Nonnull String name) {
     this.name = name;
   }
 
 
-  public HubItemDTO quantity(@jakarta.annotation.Nonnull Integer quantity) {
+  public HubItemDTO quantity(@javax.annotation.Nonnull Integer quantity) {
     this.quantity = quantity;
     return this;
   }
@@ -116,22 +120,17 @@ public class HubItemDTO {
    * Quantity of this item
    * @return quantity
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_QUANTITY)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public Integer getQuantity() {
     return quantity;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_QUANTITY)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setQuantity(@jakarta.annotation.Nonnull Integer quantity) {
+  public void setQuantity(@javax.annotation.Nonnull Integer quantity) {
     this.quantity = quantity;
   }
 
 
-  public HubItemDTO description(@jakarta.annotation.Nullable String description) {
+  public HubItemDTO description(@javax.annotation.Nullable String description) {
     this.description = description;
     return this;
   }
@@ -140,24 +139,17 @@ public class HubItemDTO {
    * Optional item description
    * @return description
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getDescription() {
     return description;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDescription(@jakarta.annotation.Nullable String description) {
+  public void setDescription(@javax.annotation.Nullable String description) {
     this.description = description;
   }
 
 
-  /**
-   * Return true if this HubItemDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -201,59 +193,110 @@ public class HubItemDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("sku");
+    openapiFields.add("name");
+    openapiFields.add("quantity");
+    openapiFields.add("description");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("name");
+    openapiRequiredFields.add("quantity");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubItemDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubItemDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubItemDTO is not found in the empty JSON string", HubItemDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubItemDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubItemDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : HubItemDTO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("sku") != null && !jsonObj.get("sku").isJsonNull()) && !jsonObj.get("sku").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `sku` to be a primitive type in the JSON string but got `%s`", jsonObj.get("sku").toString()));
+      }
+      if (!jsonObj.get("name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+      }
+      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubItemDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubItemDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubItemDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubItemDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubItemDTO>() {
+           @Override
+           public void write(JsonWriter out, HubItemDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubItemDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubItemDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubItemDTO
+   * @throws IOException if the JSON string is invalid with respect to HubItemDTO
+   */
+  public static HubItemDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubItemDTO.class);
+  }
 
-    // add `sku` to the URL query string
-    if (getSku() != null) {
-      joiner.add(String.format("%ssku%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSku()))));
-    }
-
-    // add `name` to the URL query string
-    if (getName() != null) {
-      joiner.add(String.format("%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
-    }
-
-    // add `quantity` to the URL query string
-    if (getQuantity() != null) {
-      joiner.add(String.format("%squantity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getQuantity()))));
-    }
-
-    // add `description` to the URL query string
-    if (getDescription() != null) {
-      joiner.add(String.format("%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubItemDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

@@ -13,56 +13,70 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.CallbackConfigDTO;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Request to update an existing webhook subscription. All fields are optional; only provided fields will be updated.
  */
-@JsonPropertyOrder({
-  UpdateWebhookRequest.JSON_PROPERTY_CALLBACK_URL,
-  UpdateWebhookRequest.JSON_PROPERTY_ENABLED,
-  UpdateWebhookRequest.JSON_PROPERTY_EVENT_TYPES,
-  UpdateWebhookRequest.JSON_PROPERTY_CALLBACK_CONFIG
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class UpdateWebhookRequest {
-  public static final String JSON_PROPERTY_CALLBACK_URL = "callbackUrl";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CALLBACK_URL = "callbackUrl";
+  @SerializedName(SERIALIZED_NAME_CALLBACK_URL)
+  @javax.annotation.Nullable
   private String callbackUrl;
 
-  public static final String JSON_PROPERTY_ENABLED = "enabled";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ENABLED = "enabled";
+  @SerializedName(SERIALIZED_NAME_ENABLED)
+  @javax.annotation.Nullable
   private Boolean enabled;
 
-  public static final String JSON_PROPERTY_EVENT_TYPES = "eventTypes";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EVENT_TYPES = "eventTypes";
+  @SerializedName(SERIALIZED_NAME_EVENT_TYPES)
+  @javax.annotation.Nullable
   private List<String> eventTypes = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_CALLBACK_CONFIG = "callbackConfig";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CALLBACK_CONFIG = "callbackConfig";
+  @SerializedName(SERIALIZED_NAME_CALLBACK_CONFIG)
+  @javax.annotation.Nullable
   private CallbackConfigDTO callbackConfig;
 
-  public UpdateWebhookRequest() { 
+  public UpdateWebhookRequest() {
   }
 
-  public UpdateWebhookRequest callbackUrl(@jakarta.annotation.Nullable String callbackUrl) {
+  public UpdateWebhookRequest callbackUrl(@javax.annotation.Nullable String callbackUrl) {
     this.callbackUrl = callbackUrl;
     return this;
   }
@@ -71,22 +85,17 @@ public class UpdateWebhookRequest {
    * HTTPS URL that will receive webhook events
    * @return callbackUrl
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CALLBACK_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getCallbackUrl() {
     return callbackUrl;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CALLBACK_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCallbackUrl(@jakarta.annotation.Nullable String callbackUrl) {
+  public void setCallbackUrl(@javax.annotation.Nullable String callbackUrl) {
     this.callbackUrl = callbackUrl;
   }
 
 
-  public UpdateWebhookRequest enabled(@jakarta.annotation.Nullable Boolean enabled) {
+  public UpdateWebhookRequest enabled(@javax.annotation.Nullable Boolean enabled) {
     this.enabled = enabled;
     return this;
   }
@@ -95,22 +104,17 @@ public class UpdateWebhookRequest {
    * Whether the webhook is active
    * @return enabled
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ENABLED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Boolean getEnabled() {
     return enabled;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ENABLED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEnabled(@jakarta.annotation.Nullable Boolean enabled) {
+  public void setEnabled(@javax.annotation.Nullable Boolean enabled) {
     this.enabled = enabled;
   }
 
 
-  public UpdateWebhookRequest eventTypes(@jakarta.annotation.Nullable List<String> eventTypes) {
+  public UpdateWebhookRequest eventTypes(@javax.annotation.Nullable List<String> eventTypes) {
     this.eventTypes = eventTypes;
     return this;
   }
@@ -127,22 +131,17 @@ public class UpdateWebhookRequest {
    * Event types to subscribe to
    * @return eventTypes
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public List<String> getEventTypes() {
     return eventTypes;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EVENT_TYPES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEventTypes(@jakarta.annotation.Nullable List<String> eventTypes) {
+  public void setEventTypes(@javax.annotation.Nullable List<String> eventTypes) {
     this.eventTypes = eventTypes;
   }
 
 
-  public UpdateWebhookRequest callbackConfig(@jakarta.annotation.Nullable CallbackConfigDTO callbackConfig) {
+  public UpdateWebhookRequest callbackConfig(@javax.annotation.Nullable CallbackConfigDTO callbackConfig) {
     this.callbackConfig = callbackConfig;
     return this;
   }
@@ -151,24 +150,17 @@ public class UpdateWebhookRequest {
    * Optional callback configuration (retry policy)
    * @return callbackConfig
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CALLBACK_CONFIG)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public CallbackConfigDTO getCallbackConfig() {
     return callbackConfig;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CALLBACK_CONFIG)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCallbackConfig(@jakarta.annotation.Nullable CallbackConfigDTO callbackConfig) {
+  public void setCallbackConfig(@javax.annotation.Nullable CallbackConfigDTO callbackConfig) {
     this.callbackConfig = callbackConfig;
   }
 
 
-  /**
-   * Return true if this UpdateWebhookRequest object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -212,63 +204,103 @@ public class UpdateWebhookRequest {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("callbackUrl");
+    openapiFields.add("enabled");
+    openapiFields.add("eventTypes");
+    openapiFields.add("callbackConfig");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to UpdateWebhookRequest
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
-    }
-
-    StringJoiner joiner = new StringJoiner("&");
-
-    // add `callbackUrl` to the URL query string
-    if (getCallbackUrl() != null) {
-      joiner.add(String.format("%scallbackUrl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCallbackUrl()))));
-    }
-
-    // add `enabled` to the URL query string
-    if (getEnabled() != null) {
-      joiner.add(String.format("%senabled%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnabled()))));
-    }
-
-    // add `eventTypes` to the URL query string
-    if (getEventTypes() != null) {
-      for (int i = 0; i < getEventTypes().size(); i++) {
-        joiner.add(String.format("%seventTypes%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix),
-            ApiClient.urlEncode(ApiClient.valueToString(getEventTypes().get(i)))));
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!UpdateWebhookRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in UpdateWebhookRequest is not found in the empty JSON string", UpdateWebhookRequest.openapiRequiredFields.toString()));
+        }
       }
-    }
 
-    // add `callbackConfig` to the URL query string
-    if (getCallbackConfig() != null) {
-      joiner.add(getCallbackConfig().toUrlQueryString(prefix + "callbackConfig" + suffix));
-    }
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!UpdateWebhookRequest.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UpdateWebhookRequest` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("callbackUrl") != null && !jsonObj.get("callbackUrl").isJsonNull()) && !jsonObj.get("callbackUrl").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `callbackUrl` to be a primitive type in the JSON string but got `%s`", jsonObj.get("callbackUrl").toString()));
+      }
+      // ensure the optional json data is an array if present
+      if (jsonObj.get("eventTypes") != null && !jsonObj.get("eventTypes").isJsonNull() && !jsonObj.get("eventTypes").isJsonArray()) {
+        throw new IllegalArgumentException(String.format("Expected the field `eventTypes` to be an array in the JSON string but got `%s`", jsonObj.get("eventTypes").toString()));
+      }
+      // validate the optional field `callbackConfig`
+      if (jsonObj.get("callbackConfig") != null && !jsonObj.get("callbackConfig").isJsonNull()) {
+        CallbackConfigDTO.validateJsonElement(jsonObj.get("callbackConfig"));
+      }
+  }
 
-    return joiner.toString();
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!UpdateWebhookRequest.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'UpdateWebhookRequest' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<UpdateWebhookRequest> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(UpdateWebhookRequest.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<UpdateWebhookRequest>() {
+           @Override
+           public void write(JsonWriter out, UpdateWebhookRequest value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public UpdateWebhookRequest read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
+    }
+  }
+
+  /**
+   * Create an instance of UpdateWebhookRequest given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of UpdateWebhookRequest
+   * @throws IOException if the JSON string is invalid with respect to UpdateWebhookRequest
+   */
+  public static UpdateWebhookRequest fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, UpdateWebhookRequest.class);
+  }
+
+  /**
+   * Convert an instance of UpdateWebhookRequest to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

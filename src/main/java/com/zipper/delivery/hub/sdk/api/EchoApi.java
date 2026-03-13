@@ -10,170 +10,199 @@
  * Do not edit the class manually.
  */
 
+
 package com.zipper.delivery.hub.sdk.api;
 
+import com.zipper.delivery.hub.sdk.ApiCallback;
 import com.zipper.delivery.hub.sdk.ApiClient;
 import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.ApiResponse;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.Pair;
+import com.zipper.delivery.hub.sdk.ProgressRequestBody;
+import com.zipper.delivery.hub.sdk.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
 
 import com.zipper.delivery.hub.sdk.model.EchoResponse;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.http.HttpRequest;
-import java.nio.channels.Channels;
-import java.nio.channels.Pipe;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class EchoApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
 
-  public EchoApi() {
-    this(Configuration.getDefaultApiClient());
-  }
-
-  public EchoApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
-  }
-
-  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
-    String body = response.body() == null ? null : new String(response.body().readAllBytes());
-    String message = formatExceptionMessage(operationId, response.statusCode(), body);
-    return new ApiException(response.statusCode(), message, response.headers(), body);
-  }
-
-  private String formatExceptionMessage(String operationId, int statusCode, String body) {
-    if (body == null || body.isEmpty()) {
-      body = "[no body]";
+    public EchoApi() {
+        this(Configuration.getDefaultApiClient());
     }
-    return operationId + " call failed with: " + statusCode + " - " + body;
-  }
 
-  /**
-   * Echo a message back
-   * Returns the provided message along with the API version. Useful for connectivity checks.
-   * @param message Message to echo back (optional, default to hello)
-   * @return EchoResponse
-   * @throws ApiException if fails to make API call
-   */
-  public EchoResponse echoV1(@jakarta.annotation.Nullable String message) throws ApiException {
-    ApiResponse<EchoResponse> localVarResponse = echoV1WithHttpInfo(message);
-    return localVarResponse.getData();
-  }
+    public EchoApi(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
 
-  /**
-   * Echo a message back
-   * Returns the provided message along with the API version. Useful for connectivity checks.
-   * @param message Message to echo back (optional, default to hello)
-   * @return ApiResponse&lt;EchoResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<EchoResponse> echoV1WithHttpInfo(@jakarta.annotation.Nullable String message) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = echoV1RequestBuilder(message);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("echoV1", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<EchoResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for echoV1
+     * @param message Message to echo back (optional, default to hello)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call echoV1Call(@javax.annotation.Nullable String message, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        Object localVarPostBody = null;
 
-        return new ApiResponse<EchoResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<EchoResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
+        // create path and map variables
+        String localVarPath = "/api/v1/echo";
 
-  private HttpRequest.Builder echoV1RequestBuilder(@jakarta.annotation.Nullable String message) throws ApiException {
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+        if (message != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("message", message));
+        }
 
-    String localVarPath = "/api/v1/echo";
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
 
-    List<Pair> localVarQueryParams = new ArrayList<>();
-    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
-    localVarQueryParameterBaseName = "message";
-    localVarQueryParams.addAll(ApiClient.parameterToPairs("message", message));
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
 
-    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
-      StringJoiner queryJoiner = new StringJoiner("&");
-      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
-      if (localVarQueryStringJoiner.length() != 0) {
-        queryJoiner.add(localVarQueryStringJoiner.toString());
-      }
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
-    } else {
-      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
-    localVarRequestBuilder.header("Accept", "*/*");
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call echoV1ValidateBeforeCall(@javax.annotation.Nullable String message, final ApiCallback _callback) throws ApiException {
+        return echoV1Call(message, _callback);
 
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
 
+    /**
+     * Echo a message back
+     * Returns the provided message along with the API version. Useful for connectivity checks.
+     * @param message Message to echo back (optional, default to hello)
+     * @return EchoResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public EchoResponse echoV1(@javax.annotation.Nullable String message) throws ApiException {
+        ApiResponse<EchoResponse> localVarResp = echoV1WithHttpInfo(message);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Echo a message back
+     * Returns the provided message along with the API version. Useful for connectivity checks.
+     * @param message Message to echo back (optional, default to hello)
+     * @return ApiResponse&lt;EchoResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<EchoResponse> echoV1WithHttpInfo(@javax.annotation.Nullable String message) throws ApiException {
+        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, null);
+        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Echo a message back (asynchronously)
+     * Returns the provided message along with the API version. Useful for connectivity checks.
+     * @param message Message to echo back (optional, default to hello)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call echoV1Async(@javax.annotation.Nullable String message, final ApiCallback<EchoResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, _callback);
+        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

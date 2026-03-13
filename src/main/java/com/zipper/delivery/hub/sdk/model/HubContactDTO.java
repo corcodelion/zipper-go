@@ -13,59 +13,73 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.LocationDTO;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Contact and location details for a pickup or dropoff point
  */
-@JsonPropertyOrder({
-  HubContactDTO.JSON_PROPERTY_NAME,
-  HubContactDTO.JSON_PROPERTY_PHONE,
-  HubContactDTO.JSON_PROPERTY_EMAIL,
-  HubContactDTO.JSON_PROPERTY_NOTES,
-  HubContactDTO.JSON_PROPERTY_LOCATION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubContactDTO {
-  public static final String JSON_PROPERTY_NAME = "name";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  @javax.annotation.Nonnull
   private String name;
 
-  public static final String JSON_PROPERTY_PHONE = "phone";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_PHONE = "phone";
+  @SerializedName(SERIALIZED_NAME_PHONE)
+  @javax.annotation.Nonnull
   private String phone;
 
-  public static final String JSON_PROPERTY_EMAIL = "email";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EMAIL = "email";
+  @SerializedName(SERIALIZED_NAME_EMAIL)
+  @javax.annotation.Nullable
   private String email;
 
-  public static final String JSON_PROPERTY_NOTES = "notes";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_NOTES = "notes";
+  @SerializedName(SERIALIZED_NAME_NOTES)
+  @javax.annotation.Nullable
   private String notes;
 
-  public static final String JSON_PROPERTY_LOCATION = "location";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_LOCATION = "location";
+  @SerializedName(SERIALIZED_NAME_LOCATION)
+  @javax.annotation.Nonnull
   private LocationDTO location;
 
-  public HubContactDTO() { 
+  public HubContactDTO() {
   }
 
-  public HubContactDTO name(@jakarta.annotation.Nonnull String name) {
+  public HubContactDTO name(@javax.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
@@ -74,22 +88,17 @@ public class HubContactDTO {
    * Contact person name
    * @return name
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getName() {
     return name;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setName(@jakarta.annotation.Nonnull String name) {
+  public void setName(@javax.annotation.Nonnull String name) {
     this.name = name;
   }
 
 
-  public HubContactDTO phone(@jakarta.annotation.Nonnull String phone) {
+  public HubContactDTO phone(@javax.annotation.Nonnull String phone) {
     this.phone = phone;
     return this;
   }
@@ -98,22 +107,17 @@ public class HubContactDTO {
    * Contact phone number
    * @return phone
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PHONE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getPhone() {
     return phone;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PHONE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPhone(@jakarta.annotation.Nonnull String phone) {
+  public void setPhone(@javax.annotation.Nonnull String phone) {
     this.phone = phone;
   }
 
 
-  public HubContactDTO email(@jakarta.annotation.Nullable String email) {
+  public HubContactDTO email(@javax.annotation.Nullable String email) {
     this.email = email;
     return this;
   }
@@ -122,22 +126,17 @@ public class HubContactDTO {
    * Contact email address
    * @return email
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EMAIL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getEmail() {
     return email;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EMAIL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEmail(@jakarta.annotation.Nullable String email) {
+  public void setEmail(@javax.annotation.Nullable String email) {
     this.email = email;
   }
 
 
-  public HubContactDTO notes(@jakarta.annotation.Nullable String notes) {
+  public HubContactDTO notes(@javax.annotation.Nullable String notes) {
     this.notes = notes;
     return this;
   }
@@ -146,22 +145,17 @@ public class HubContactDTO {
    * Notes or instructions for the driver
    * @return notes
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_NOTES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getNotes() {
     return notes;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_NOTES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setNotes(@jakarta.annotation.Nullable String notes) {
+  public void setNotes(@javax.annotation.Nullable String notes) {
     this.notes = notes;
   }
 
 
-  public HubContactDTO location(@jakarta.annotation.Nonnull LocationDTO location) {
+  public HubContactDTO location(@javax.annotation.Nonnull LocationDTO location) {
     this.location = location;
     return this;
   }
@@ -170,24 +164,17 @@ public class HubContactDTO {
    * Geographic location with address details
    * @return location
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public LocationDTO getLocation() {
     return location;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLocation(@jakarta.annotation.Nonnull LocationDTO location) {
+  public void setLocation(@javax.annotation.Nonnull LocationDTO location) {
     this.location = location;
   }
 
 
-  /**
-   * Return true if this HubContactDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -233,64 +220,117 @@ public class HubContactDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("name");
+    openapiFields.add("phone");
+    openapiFields.add("email");
+    openapiFields.add("notes");
+    openapiFields.add("location");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("name");
+    openapiRequiredFields.add("phone");
+    openapiRequiredFields.add("location");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubContactDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubContactDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubContactDTO is not found in the empty JSON string", HubContactDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubContactDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubContactDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : HubContactDTO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (!jsonObj.get("name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+      }
+      if (!jsonObj.get("phone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
+      }
+      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
+      }
+      if ((jsonObj.get("notes") != null && !jsonObj.get("notes").isJsonNull()) && !jsonObj.get("notes").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `notes` to be a primitive type in the JSON string but got `%s`", jsonObj.get("notes").toString()));
+      }
+      // validate the required field `location`
+      LocationDTO.validateJsonElement(jsonObj.get("location"));
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubContactDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubContactDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubContactDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubContactDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubContactDTO>() {
+           @Override
+           public void write(JsonWriter out, HubContactDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubContactDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubContactDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubContactDTO
+   * @throws IOException if the JSON string is invalid with respect to HubContactDTO
+   */
+  public static HubContactDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubContactDTO.class);
+  }
 
-    // add `name` to the URL query string
-    if (getName() != null) {
-      joiner.add(String.format("%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
-    }
-
-    // add `phone` to the URL query string
-    if (getPhone() != null) {
-      joiner.add(String.format("%sphone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPhone()))));
-    }
-
-    // add `email` to the URL query string
-    if (getEmail() != null) {
-      joiner.add(String.format("%semail%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmail()))));
-    }
-
-    // add `notes` to the URL query string
-    if (getNotes() != null) {
-      joiner.add(String.format("%snotes%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getNotes()))));
-    }
-
-    // add `location` to the URL query string
-    if (getLocation() != null) {
-      joiner.add(getLocation().toUrlQueryString(prefix + "location" + suffix));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubContactDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

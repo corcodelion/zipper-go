@@ -13,59 +13,73 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Individual filter criteria for a specific field
  */
-@JsonPropertyOrder({
-  Filter.JSON_PROPERTY_NAME,
-  Filter.JSON_PROPERTY_VALUE,
-  Filter.JSON_PROPERTY_LOGIC
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class Filter {
-  public static final String JSON_PROPERTY_NAME = "name";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  @javax.annotation.Nonnull
   private String name;
 
-  public static final String JSON_PROPERTY_VALUE = "value";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_VALUE = "value";
+  @SerializedName(SERIALIZED_NAME_VALUE)
+  @javax.annotation.Nullable
   private Object value = null;
 
   /**
    * Filter logic operator to apply
    */
+  @JsonAdapter(LogicEnum.Adapter.class)
   public enum LogicEnum {
-    IN(String.valueOf("IN")),
+    IN("IN"),
     
-    NOT_IN(String.valueOf("NOT_IN")),
+    NOT_IN("NOT_IN"),
     
-    EQ(String.valueOf("EQ")),
+    EQ("EQ"),
     
-    LTE(String.valueOf("LTE")),
+    LTE("LTE"),
     
-    GTE(String.valueOf("GTE")),
+    GTE("GTE"),
     
-    IS_NULL(String.valueOf("IS_NULL")),
+    IS_NULL("IS_NULL"),
     
-    IS_NOT_NULL(String.valueOf("IS_NOT_NULL")),
+    IS_NOT_NULL("IS_NOT_NULL"),
     
-    LIKE(String.valueOf("LIKE"));
+    LIKE("LIKE");
 
     private String value;
 
@@ -73,7 +87,6 @@ public class Filter {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -83,7 +96,6 @@ public class Filter {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static LogicEnum fromValue(String value) {
       for (LogicEnum b : LogicEnum.values()) {
         if (b.value.equals(value)) {
@@ -92,16 +104,35 @@ public class Filter {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<LogicEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final LogicEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public LogicEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return LogicEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      LogicEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_LOGIC = "logic";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_LOGIC = "logic";
+  @SerializedName(SERIALIZED_NAME_LOGIC)
+  @javax.annotation.Nonnull
   private LogicEnum logic;
 
-  public Filter() { 
+  public Filter() {
   }
 
-  public Filter name(@jakarta.annotation.Nonnull String name) {
+  public Filter name(@javax.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
@@ -110,22 +141,17 @@ public class Filter {
    * Field name to filter on
    * @return name
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getName() {
     return name;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setName(@jakarta.annotation.Nonnull String name) {
+  public void setName(@javax.annotation.Nonnull String name) {
     this.name = name;
   }
 
 
-  public Filter value(@jakarta.annotation.Nullable Object value) {
+  public Filter value(@javax.annotation.Nullable Object value) {
     this.value = value;
     return this;
   }
@@ -134,22 +160,17 @@ public class Filter {
    * Get value
    * @return value
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VALUE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nullable
   public Object getValue() {
     return value;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_VALUE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setValue(@jakarta.annotation.Nullable Object value) {
+  public void setValue(@javax.annotation.Nullable Object value) {
     this.value = value;
   }
 
 
-  public Filter logic(@jakarta.annotation.Nonnull LogicEnum logic) {
+  public Filter logic(@javax.annotation.Nonnull LogicEnum logic) {
     this.logic = logic;
     return this;
   }
@@ -158,24 +179,17 @@ public class Filter {
    * Filter logic operator to apply
    * @return logic
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LOGIC)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public LogicEnum getLogic() {
     return logic;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LOGIC)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLogic(@jakarta.annotation.Nonnull LogicEnum logic) {
+  public void setLogic(@javax.annotation.Nonnull LogicEnum logic) {
     this.logic = logic;
   }
 
 
-  /**
-   * Return true if this Filter object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -217,54 +231,109 @@ public class Filter {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("name");
+    openapiFields.add("value");
+    openapiFields.add("logic");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("name");
+    openapiRequiredFields.add("value");
+    openapiRequiredFields.add("logic");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to Filter
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!Filter.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in Filter is not found in the empty JSON string", Filter.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!Filter.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `Filter` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : Filter.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (!jsonObj.get("name").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+      }
+      if (!jsonObj.get("logic").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `logic` to be a primitive type in the JSON string but got `%s`", jsonObj.get("logic").toString()));
+      }
+      // validate the required field `logic`
+      LogicEnum.validateJsonElement(jsonObj.get("logic"));
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!Filter.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'Filter' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<Filter> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(Filter.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<Filter>() {
+           @Override
+           public void write(JsonWriter out, Filter value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public Filter read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of Filter given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of Filter
+   * @throws IOException if the JSON string is invalid with respect to Filter
+   */
+  public static Filter fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, Filter.class);
+  }
 
-    // add `name` to the URL query string
-    if (getName() != null) {
-      joiner.add(String.format("%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
-    }
-
-    // add `value` to the URL query string
-    if (getValue() != null) {
-      joiner.add(String.format("%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
-    }
-
-    // add `logic` to the URL query string
-    if (getLogic() != null) {
-      joiner.add(String.format("%slogic%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLogic()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of Filter to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

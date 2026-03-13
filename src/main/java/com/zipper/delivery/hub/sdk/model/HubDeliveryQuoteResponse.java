@@ -13,50 +13,56 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Delivery price quote from a carrier provider
  */
-@JsonPropertyOrder({
-  HubDeliveryQuoteResponse.JSON_PROPERTY_DELIVERY_TYPE,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_PROVIDER,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_PRICE,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_CURRENCY,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_ESTIMATED_ARRIVAL_SECONDS,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_QUOTE_ID,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_DISTANCE_METERS,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_DURATION_SECONDS,
-  HubDeliveryQuoteResponse.JSON_PROPERTY_EXPIRES_AT
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubDeliveryQuoteResponse {
   /**
    * Type of delivery
    */
+  @JsonAdapter(DeliveryTypeEnum.Adapter.class)
   public enum DeliveryTypeEnum {
-    STORE_IMMEDIATE(String.valueOf("STORE_IMMEDIATE")),
+    STORE_IMMEDIATE("STORE_IMMEDIATE"),
     
-    FOOD_IMMEDIATE(String.valueOf("FOOD_IMMEDIATE")),
+    FOOD_IMMEDIATE("FOOD_IMMEDIATE"),
     
-    STORE_NEXT_DAY(String.valueOf("STORE_NEXT_DAY"));
+    STORE_NEXT_DAY("STORE_NEXT_DAY");
 
     private String value;
 
@@ -64,7 +70,6 @@ public class HubDeliveryQuoteResponse {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -74,7 +79,6 @@ public class HubDeliveryQuoteResponse {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static DeliveryTypeEnum fromValue(String value) {
       for (DeliveryTypeEnum b : DeliveryTypeEnum.values()) {
         if (b.value.equals(value)) {
@@ -83,21 +87,41 @@ public class HubDeliveryQuoteResponse {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<DeliveryTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DeliveryTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public DeliveryTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return DeliveryTypeEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      DeliveryTypeEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_DELIVERY_TYPE = "deliveryType";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_TYPE = "deliveryType";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_TYPE)
+  @javax.annotation.Nullable
   private DeliveryTypeEnum deliveryType;
 
   /**
    * Carrier provider name
    */
+  @JsonAdapter(ProviderEnum.Adapter.class)
   public enum ProviderEnum {
-    ZIPPERG(String.valueOf("ZIPPERG")),
+    ZIPPERG("ZIPPERG"),
     
-    ZIPPERW(String.valueOf("ZIPPERW")),
+    ZIPPERW("ZIPPERW"),
     
-    ZIPPERK(String.valueOf("ZIPPERK"));
+    ZIPPERK("ZIPPERK");
 
     private String value;
 
@@ -105,7 +129,6 @@ public class HubDeliveryQuoteResponse {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -115,7 +138,6 @@ public class HubDeliveryQuoteResponse {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static ProviderEnum fromValue(String value) {
       for (ProviderEnum b : ProviderEnum.values()) {
         if (b.value.equals(value)) {
@@ -124,44 +146,70 @@ public class HubDeliveryQuoteResponse {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<ProviderEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final ProviderEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public ProviderEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return ProviderEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      ProviderEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_PROVIDER = "provider";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROVIDER = "provider";
+  @SerializedName(SERIALIZED_NAME_PROVIDER)
+  @javax.annotation.Nullable
   private ProviderEnum provider;
 
-  public static final String JSON_PROPERTY_PRICE = "price";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PRICE = "price";
+  @SerializedName(SERIALIZED_NAME_PRICE)
+  @javax.annotation.Nullable
   private BigDecimal price;
 
-  public static final String JSON_PROPERTY_CURRENCY = "currency";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CURRENCY = "currency";
+  @SerializedName(SERIALIZED_NAME_CURRENCY)
+  @javax.annotation.Nullable
   private String currency;
 
-  public static final String JSON_PROPERTY_ESTIMATED_ARRIVAL_SECONDS = "estimatedArrivalSeconds";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ESTIMATED_ARRIVAL_SECONDS = "estimatedArrivalSeconds";
+  @SerializedName(SERIALIZED_NAME_ESTIMATED_ARRIVAL_SECONDS)
+  @javax.annotation.Nullable
   private Integer estimatedArrivalSeconds;
 
-  public static final String JSON_PROPERTY_QUOTE_ID = "quoteId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_QUOTE_ID = "quoteId";
+  @SerializedName(SERIALIZED_NAME_QUOTE_ID)
+  @javax.annotation.Nullable
   private UUID quoteId;
 
-  public static final String JSON_PROPERTY_DISTANCE_METERS = "distanceMeters";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DISTANCE_METERS = "distanceMeters";
+  @SerializedName(SERIALIZED_NAME_DISTANCE_METERS)
+  @javax.annotation.Nullable
   private Long distanceMeters;
 
-  public static final String JSON_PROPERTY_DURATION_SECONDS = "durationSeconds";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DURATION_SECONDS = "durationSeconds";
+  @SerializedName(SERIALIZED_NAME_DURATION_SECONDS)
+  @javax.annotation.Nullable
   private Long durationSeconds;
 
-  public static final String JSON_PROPERTY_EXPIRES_AT = "expiresAt";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXPIRES_AT = "expiresAt";
+  @SerializedName(SERIALIZED_NAME_EXPIRES_AT)
+  @javax.annotation.Nullable
   private OffsetDateTime expiresAt;
 
-  public HubDeliveryQuoteResponse() { 
+  public HubDeliveryQuoteResponse() {
   }
 
-  public HubDeliveryQuoteResponse deliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public HubDeliveryQuoteResponse deliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
     return this;
   }
@@ -170,22 +218,17 @@ public class HubDeliveryQuoteResponse {
    * Type of delivery
    * @return deliveryType
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public DeliveryTypeEnum getDeliveryType() {
     return deliveryType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public void setDeliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
   }
 
 
-  public HubDeliveryQuoteResponse provider(@jakarta.annotation.Nullable ProviderEnum provider) {
+  public HubDeliveryQuoteResponse provider(@javax.annotation.Nullable ProviderEnum provider) {
     this.provider = provider;
     return this;
   }
@@ -194,22 +237,17 @@ public class HubDeliveryQuoteResponse {
    * Carrier provider name
    * @return provider
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROVIDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public ProviderEnum getProvider() {
     return provider;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROVIDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProvider(@jakarta.annotation.Nullable ProviderEnum provider) {
+  public void setProvider(@javax.annotation.Nullable ProviderEnum provider) {
     this.provider = provider;
   }
 
 
-  public HubDeliveryQuoteResponse price(@jakarta.annotation.Nullable BigDecimal price) {
+  public HubDeliveryQuoteResponse price(@javax.annotation.Nullable BigDecimal price) {
     this.price = price;
     return this;
   }
@@ -218,22 +256,17 @@ public class HubDeliveryQuoteResponse {
    * Quoted delivery price
    * @return price
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PRICE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public BigDecimal getPrice() {
     return price;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PRICE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPrice(@jakarta.annotation.Nullable BigDecimal price) {
+  public void setPrice(@javax.annotation.Nullable BigDecimal price) {
     this.price = price;
   }
 
 
-  public HubDeliveryQuoteResponse currency(@jakarta.annotation.Nullable String currency) {
+  public HubDeliveryQuoteResponse currency(@javax.annotation.Nullable String currency) {
     this.currency = currency;
     return this;
   }
@@ -242,22 +275,17 @@ public class HubDeliveryQuoteResponse {
    * Price currency code
    * @return currency
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CURRENCY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getCurrency() {
     return currency;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CURRENCY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCurrency(@jakarta.annotation.Nullable String currency) {
+  public void setCurrency(@javax.annotation.Nullable String currency) {
     this.currency = currency;
   }
 
 
-  public HubDeliveryQuoteResponse estimatedArrivalSeconds(@jakarta.annotation.Nullable Integer estimatedArrivalSeconds) {
+  public HubDeliveryQuoteResponse estimatedArrivalSeconds(@javax.annotation.Nullable Integer estimatedArrivalSeconds) {
     this.estimatedArrivalSeconds = estimatedArrivalSeconds;
     return this;
   }
@@ -266,22 +294,17 @@ public class HubDeliveryQuoteResponse {
    * Estimated time of arrival in seconds
    * @return estimatedArrivalSeconds
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ESTIMATED_ARRIVAL_SECONDS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getEstimatedArrivalSeconds() {
     return estimatedArrivalSeconds;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ESTIMATED_ARRIVAL_SECONDS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEstimatedArrivalSeconds(@jakarta.annotation.Nullable Integer estimatedArrivalSeconds) {
+  public void setEstimatedArrivalSeconds(@javax.annotation.Nullable Integer estimatedArrivalSeconds) {
     this.estimatedArrivalSeconds = estimatedArrivalSeconds;
   }
 
 
-  public HubDeliveryQuoteResponse quoteId(@jakarta.annotation.Nullable UUID quoteId) {
+  public HubDeliveryQuoteResponse quoteId(@javax.annotation.Nullable UUID quoteId) {
     this.quoteId = quoteId;
     return this;
   }
@@ -290,22 +313,17 @@ public class HubDeliveryQuoteResponse {
    * Internal quote identifier for use when creating a delivery
    * @return quoteId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_QUOTE_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public UUID getQuoteId() {
     return quoteId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_QUOTE_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setQuoteId(@jakarta.annotation.Nullable UUID quoteId) {
+  public void setQuoteId(@javax.annotation.Nullable UUID quoteId) {
     this.quoteId = quoteId;
   }
 
 
-  public HubDeliveryQuoteResponse distanceMeters(@jakarta.annotation.Nullable Long distanceMeters) {
+  public HubDeliveryQuoteResponse distanceMeters(@javax.annotation.Nullable Long distanceMeters) {
     this.distanceMeters = distanceMeters;
     return this;
   }
@@ -314,22 +332,17 @@ public class HubDeliveryQuoteResponse {
    * Distance between pickup and dropoff in meters
    * @return distanceMeters
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DISTANCE_METERS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Long getDistanceMeters() {
     return distanceMeters;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DISTANCE_METERS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDistanceMeters(@jakarta.annotation.Nullable Long distanceMeters) {
+  public void setDistanceMeters(@javax.annotation.Nullable Long distanceMeters) {
     this.distanceMeters = distanceMeters;
   }
 
 
-  public HubDeliveryQuoteResponse durationSeconds(@jakarta.annotation.Nullable Long durationSeconds) {
+  public HubDeliveryQuoteResponse durationSeconds(@javax.annotation.Nullable Long durationSeconds) {
     this.durationSeconds = durationSeconds;
     return this;
   }
@@ -338,22 +351,17 @@ public class HubDeliveryQuoteResponse {
    * Estimated travel duration in seconds
    * @return durationSeconds
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DURATION_SECONDS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Long getDurationSeconds() {
     return durationSeconds;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DURATION_SECONDS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDurationSeconds(@jakarta.annotation.Nullable Long durationSeconds) {
+  public void setDurationSeconds(@javax.annotation.Nullable Long durationSeconds) {
     this.durationSeconds = durationSeconds;
   }
 
 
-  public HubDeliveryQuoteResponse expiresAt(@jakarta.annotation.Nullable OffsetDateTime expiresAt) {
+  public HubDeliveryQuoteResponse expiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
     this.expiresAt = expiresAt;
     return this;
   }
@@ -362,24 +370,17 @@ public class HubDeliveryQuoteResponse {
    * Quote expiration time — create delivery before this time
    * @return expiresAt
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getExpiresAt() {
     return expiresAt;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXPIRES_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExpiresAt(@jakarta.annotation.Nullable OffsetDateTime expiresAt) {
+  public void setExpiresAt(@javax.annotation.Nullable OffsetDateTime expiresAt) {
     this.expiresAt = expiresAt;
   }
 
 
-  /**
-   * Return true if this HubDeliveryQuoteResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -433,84 +434,117 @@ public class HubDeliveryQuoteResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("deliveryType");
+    openapiFields.add("provider");
+    openapiFields.add("price");
+    openapiFields.add("currency");
+    openapiFields.add("estimatedArrivalSeconds");
+    openapiFields.add("quoteId");
+    openapiFields.add("distanceMeters");
+    openapiFields.add("durationSeconds");
+    openapiFields.add("expiresAt");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubDeliveryQuoteResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubDeliveryQuoteResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubDeliveryQuoteResponse is not found in the empty JSON string", HubDeliveryQuoteResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubDeliveryQuoteResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubDeliveryQuoteResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) && !jsonObj.get("deliveryType").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryType").toString()));
+      }
+      // validate the optional field `deliveryType`
+      if (jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) {
+        DeliveryTypeEnum.validateJsonElement(jsonObj.get("deliveryType"));
+      }
+      if ((jsonObj.get("provider") != null && !jsonObj.get("provider").isJsonNull()) && !jsonObj.get("provider").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `provider` to be a primitive type in the JSON string but got `%s`", jsonObj.get("provider").toString()));
+      }
+      // validate the optional field `provider`
+      if (jsonObj.get("provider") != null && !jsonObj.get("provider").isJsonNull()) {
+        ProviderEnum.validateJsonElement(jsonObj.get("provider"));
+      }
+      if ((jsonObj.get("currency") != null && !jsonObj.get("currency").isJsonNull()) && !jsonObj.get("currency").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `currency` to be a primitive type in the JSON string but got `%s`", jsonObj.get("currency").toString()));
+      }
+      if ((jsonObj.get("quoteId") != null && !jsonObj.get("quoteId").isJsonNull()) && !jsonObj.get("quoteId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `quoteId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("quoteId").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubDeliveryQuoteResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubDeliveryQuoteResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubDeliveryQuoteResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubDeliveryQuoteResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubDeliveryQuoteResponse>() {
+           @Override
+           public void write(JsonWriter out, HubDeliveryQuoteResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubDeliveryQuoteResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubDeliveryQuoteResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubDeliveryQuoteResponse
+   * @throws IOException if the JSON string is invalid with respect to HubDeliveryQuoteResponse
+   */
+  public static HubDeliveryQuoteResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubDeliveryQuoteResponse.class);
+  }
 
-    // add `deliveryType` to the URL query string
-    if (getDeliveryType() != null) {
-      joiner.add(String.format("%sdeliveryType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryType()))));
-    }
-
-    // add `provider` to the URL query string
-    if (getProvider() != null) {
-      joiner.add(String.format("%sprovider%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProvider()))));
-    }
-
-    // add `price` to the URL query string
-    if (getPrice() != null) {
-      joiner.add(String.format("%sprice%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPrice()))));
-    }
-
-    // add `currency` to the URL query string
-    if (getCurrency() != null) {
-      joiner.add(String.format("%scurrency%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCurrency()))));
-    }
-
-    // add `estimatedArrivalSeconds` to the URL query string
-    if (getEstimatedArrivalSeconds() != null) {
-      joiner.add(String.format("%sestimatedArrivalSeconds%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEstimatedArrivalSeconds()))));
-    }
-
-    // add `quoteId` to the URL query string
-    if (getQuoteId() != null) {
-      joiner.add(String.format("%squoteId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getQuoteId()))));
-    }
-
-    // add `distanceMeters` to the URL query string
-    if (getDistanceMeters() != null) {
-      joiner.add(String.format("%sdistanceMeters%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDistanceMeters()))));
-    }
-
-    // add `durationSeconds` to the URL query string
-    if (getDurationSeconds() != null) {
-      joiner.add(String.format("%sdurationSeconds%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDurationSeconds()))));
-    }
-
-    // add `expiresAt` to the URL query string
-    if (getExpiresAt() != null) {
-      joiner.add(String.format("%sexpiresAt%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpiresAt()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubDeliveryQuoteResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * OAuth2 error response per RFC 6749
  */
-@JsonPropertyOrder({
-  OAuth2ErrorResponse.JSON_PROPERTY_ERROR,
-  OAuth2ErrorResponse.JSON_PROPERTY_ERROR_DESCRIPTION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class OAuth2ErrorResponse {
-  public static final String JSON_PROPERTY_ERROR = "error";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ERROR = "error";
+  @SerializedName(SERIALIZED_NAME_ERROR)
+  @javax.annotation.Nullable
   private String error;
 
-  public static final String JSON_PROPERTY_ERROR_DESCRIPTION = "error_description";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ERROR_DESCRIPTION = "error_description";
+  @SerializedName(SERIALIZED_NAME_ERROR_DESCRIPTION)
+  @javax.annotation.Nullable
   private String errorDescription;
 
-  public OAuth2ErrorResponse() { 
+  public OAuth2ErrorResponse() {
   }
 
-  public OAuth2ErrorResponse error(@jakarta.annotation.Nullable String error) {
+  public OAuth2ErrorResponse error(@javax.annotation.Nullable String error) {
     this.error = error;
     return this;
   }
@@ -58,22 +72,17 @@ public class OAuth2ErrorResponse {
    * Error code
    * @return error
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERROR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getError() {
     return error;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ERROR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setError(@jakarta.annotation.Nullable String error) {
+  public void setError(@javax.annotation.Nullable String error) {
     this.error = error;
   }
 
 
-  public OAuth2ErrorResponse errorDescription(@jakarta.annotation.Nullable String errorDescription) {
+  public OAuth2ErrorResponse errorDescription(@javax.annotation.Nullable String errorDescription) {
     this.errorDescription = errorDescription;
     return this;
   }
@@ -82,24 +91,17 @@ public class OAuth2ErrorResponse {
    * Human-readable error description
    * @return errorDescription
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ERROR_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getErrorDescription() {
     return errorDescription;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ERROR_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setErrorDescription(@jakarta.annotation.Nullable String errorDescription) {
+  public void setErrorDescription(@javax.annotation.Nullable String errorDescription) {
     this.errorDescription = errorDescription;
   }
 
 
-  /**
-   * Return true if this OAuth2ErrorResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,96 @@ public class OAuth2ErrorResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("error");
+    openapiFields.add("error_description");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to OAuth2ErrorResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!OAuth2ErrorResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in OAuth2ErrorResponse is not found in the empty JSON string", OAuth2ErrorResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!OAuth2ErrorResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `OAuth2ErrorResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("error") != null && !jsonObj.get("error").isJsonNull()) && !jsonObj.get("error").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `error` to be a primitive type in the JSON string but got `%s`", jsonObj.get("error").toString()));
+      }
+      if ((jsonObj.get("error_description") != null && !jsonObj.get("error_description").isJsonNull()) && !jsonObj.get("error_description").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `error_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("error_description").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!OAuth2ErrorResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'OAuth2ErrorResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<OAuth2ErrorResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(OAuth2ErrorResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<OAuth2ErrorResponse>() {
+           @Override
+           public void write(JsonWriter out, OAuth2ErrorResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public OAuth2ErrorResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of OAuth2ErrorResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of OAuth2ErrorResponse
+   * @throws IOException if the JSON string is invalid with respect to OAuth2ErrorResponse
+   */
+  public static OAuth2ErrorResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, OAuth2ErrorResponse.class);
+  }
 
-    // add `error` to the URL query string
-    if (getError() != null) {
-      joiner.add(String.format("%serror%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getError()))));
-    }
-
-    // add `error_description` to the URL query string
-    if (getErrorDescription() != null) {
-      joiner.add(String.format("%serror_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getErrorDescription()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of OAuth2ErrorResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

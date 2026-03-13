@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Pagination parameters for controlling result set size and page selection
  */
-@JsonPropertyOrder({
-  Pagination.JSON_PROPERTY_ITEMS_PER_PAGE,
-  Pagination.JSON_PROPERTY_PAGE_NUMBER
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class Pagination {
-  public static final String JSON_PROPERTY_ITEMS_PER_PAGE = "itemsPerPage";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ITEMS_PER_PAGE = "itemsPerPage";
+  @SerializedName(SERIALIZED_NAME_ITEMS_PER_PAGE)
+  @javax.annotation.Nullable
   private Integer itemsPerPage = 50;
 
-  public static final String JSON_PROPERTY_PAGE_NUMBER = "pageNumber";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PAGE_NUMBER = "pageNumber";
+  @SerializedName(SERIALIZED_NAME_PAGE_NUMBER)
+  @javax.annotation.Nullable
   private Integer pageNumber = 1;
 
-  public Pagination() { 
+  public Pagination() {
   }
 
-  public Pagination itemsPerPage(@jakarta.annotation.Nullable Integer itemsPerPage) {
+  public Pagination itemsPerPage(@javax.annotation.Nullable Integer itemsPerPage) {
     this.itemsPerPage = itemsPerPage;
     return this;
   }
@@ -60,22 +74,17 @@ public class Pagination {
    * maximum: 1000
    * @return itemsPerPage
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ITEMS_PER_PAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getItemsPerPage() {
     return itemsPerPage;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ITEMS_PER_PAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setItemsPerPage(@jakarta.annotation.Nullable Integer itemsPerPage) {
+  public void setItemsPerPage(@javax.annotation.Nullable Integer itemsPerPage) {
     this.itemsPerPage = itemsPerPage;
   }
 
 
-  public Pagination pageNumber(@jakarta.annotation.Nullable Integer pageNumber) {
+  public Pagination pageNumber(@javax.annotation.Nullable Integer pageNumber) {
     this.pageNumber = pageNumber;
     return this;
   }
@@ -85,24 +94,17 @@ public class Pagination {
    * minimum: 1
    * @return pageNumber
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PAGE_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getPageNumber() {
     return pageNumber;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PAGE_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPageNumber(@jakarta.annotation.Nullable Integer pageNumber) {
+  public void setPageNumber(@javax.annotation.Nullable Integer pageNumber) {
     this.pageNumber = pageNumber;
   }
 
 
-  /**
-   * Return true if this Pagination object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -142,49 +144,90 @@ public class Pagination {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("itemsPerPage");
+    openapiFields.add("pageNumber");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to Pagination
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!Pagination.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in Pagination is not found in the empty JSON string", Pagination.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!Pagination.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `Pagination` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!Pagination.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'Pagination' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<Pagination> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(Pagination.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<Pagination>() {
+           @Override
+           public void write(JsonWriter out, Pagination value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public Pagination read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of Pagination given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of Pagination
+   * @throws IOException if the JSON string is invalid with respect to Pagination
+   */
+  public static Pagination fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, Pagination.class);
+  }
 
-    // add `itemsPerPage` to the URL query string
-    if (getItemsPerPage() != null) {
-      joiner.add(String.format("%sitemsPerPage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getItemsPerPage()))));
-    }
-
-    // add `pageNumber` to the URL query string
-    if (getPageNumber() != null) {
-      joiner.add(String.format("%spageNumber%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPageNumber()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of Pagination to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

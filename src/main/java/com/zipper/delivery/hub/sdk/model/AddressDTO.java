@@ -13,74 +13,88 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.AddressPlaceDTO;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Structured address information
  */
-@JsonPropertyOrder({
-  AddressDTO.JSON_PROPERTY_FULL_ADDRESS,
-  AddressDTO.JSON_PROPERTY_CITY,
-  AddressDTO.JSON_PROPERTY_HOUSE,
-  AddressDTO.JSON_PROPERTY_STATE,
-  AddressDTO.JSON_PROPERTY_STREET,
-  AddressDTO.JSON_PROPERTY_COUNTRY,
-  AddressDTO.JSON_PROPERTY_POSTCODE,
-  AddressDTO.JSON_PROPERTY_ADDRESS_PLACE
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class AddressDTO {
-  public static final String JSON_PROPERTY_FULL_ADDRESS = "fullAddress";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_FULL_ADDRESS = "fullAddress";
+  @SerializedName(SERIALIZED_NAME_FULL_ADDRESS)
+  @javax.annotation.Nonnull
   private String fullAddress;
 
-  public static final String JSON_PROPERTY_CITY = "city";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CITY = "city";
+  @SerializedName(SERIALIZED_NAME_CITY)
+  @javax.annotation.Nullable
   private String city;
 
-  public static final String JSON_PROPERTY_HOUSE = "house";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_HOUSE = "house";
+  @SerializedName(SERIALIZED_NAME_HOUSE)
+  @javax.annotation.Nullable
   private String house;
 
-  public static final String JSON_PROPERTY_STATE = "state";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STATE = "state";
+  @SerializedName(SERIALIZED_NAME_STATE)
+  @javax.annotation.Nullable
   private String state;
 
-  public static final String JSON_PROPERTY_STREET = "street";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STREET = "street";
+  @SerializedName(SERIALIZED_NAME_STREET)
+  @javax.annotation.Nullable
   private String street;
 
-  public static final String JSON_PROPERTY_COUNTRY = "country";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_COUNTRY = "country";
+  @SerializedName(SERIALIZED_NAME_COUNTRY)
+  @javax.annotation.Nullable
   private String country;
 
-  public static final String JSON_PROPERTY_POSTCODE = "postcode";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_POSTCODE = "postcode";
+  @SerializedName(SERIALIZED_NAME_POSTCODE)
+  @javax.annotation.Nullable
   private String postcode;
 
-  public static final String JSON_PROPERTY_ADDRESS_PLACE = "addressPlace";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ADDRESS_PLACE = "addressPlace";
+  @SerializedName(SERIALIZED_NAME_ADDRESS_PLACE)
+  @javax.annotation.Nullable
   private AddressPlaceDTO addressPlace;
 
-  public AddressDTO() { 
+  public AddressDTO() {
   }
 
-  public AddressDTO fullAddress(@jakarta.annotation.Nonnull String fullAddress) {
+  public AddressDTO fullAddress(@javax.annotation.Nonnull String fullAddress) {
     this.fullAddress = fullAddress;
     return this;
   }
@@ -89,22 +103,17 @@ public class AddressDTO {
    * Full formatted address string
    * @return fullAddress
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FULL_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getFullAddress() {
     return fullAddress;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_FULL_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFullAddress(@jakarta.annotation.Nonnull String fullAddress) {
+  public void setFullAddress(@javax.annotation.Nonnull String fullAddress) {
     this.fullAddress = fullAddress;
   }
 
 
-  public AddressDTO city(@jakarta.annotation.Nullable String city) {
+  public AddressDTO city(@javax.annotation.Nullable String city) {
     this.city = city;
     return this;
   }
@@ -113,22 +122,17 @@ public class AddressDTO {
    * City name
    * @return city
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getCity() {
     return city;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCity(@jakarta.annotation.Nullable String city) {
+  public void setCity(@javax.annotation.Nullable String city) {
     this.city = city;
   }
 
 
-  public AddressDTO house(@jakarta.annotation.Nullable String house) {
+  public AddressDTO house(@javax.annotation.Nullable String house) {
     this.house = house;
     return this;
   }
@@ -137,22 +141,17 @@ public class AddressDTO {
    * House/building number
    * @return house
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HOUSE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getHouse() {
     return house;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_HOUSE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHouse(@jakarta.annotation.Nullable String house) {
+  public void setHouse(@javax.annotation.Nullable String house) {
     this.house = house;
   }
 
 
-  public AddressDTO state(@jakarta.annotation.Nullable String state) {
+  public AddressDTO state(@javax.annotation.Nullable String state) {
     this.state = state;
     return this;
   }
@@ -161,22 +160,17 @@ public class AddressDTO {
    * State or region
    * @return state
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getState() {
     return state;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setState(@jakarta.annotation.Nullable String state) {
+  public void setState(@javax.annotation.Nullable String state) {
     this.state = state;
   }
 
 
-  public AddressDTO street(@jakarta.annotation.Nullable String street) {
+  public AddressDTO street(@javax.annotation.Nullable String street) {
     this.street = street;
     return this;
   }
@@ -185,22 +179,17 @@ public class AddressDTO {
    * Street name
    * @return street
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STREET)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getStreet() {
     return street;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STREET)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStreet(@jakarta.annotation.Nullable String street) {
+  public void setStreet(@javax.annotation.Nullable String street) {
     this.street = street;
   }
 
 
-  public AddressDTO country(@jakarta.annotation.Nullable String country) {
+  public AddressDTO country(@javax.annotation.Nullable String country) {
     this.country = country;
     return this;
   }
@@ -209,22 +198,17 @@ public class AddressDTO {
    * Country code (ISO 3166-1 alpha-2)
    * @return country
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_COUNTRY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getCountry() {
     return country;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_COUNTRY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCountry(@jakarta.annotation.Nullable String country) {
+  public void setCountry(@javax.annotation.Nullable String country) {
     this.country = country;
   }
 
 
-  public AddressDTO postcode(@jakarta.annotation.Nullable String postcode) {
+  public AddressDTO postcode(@javax.annotation.Nullable String postcode) {
     this.postcode = postcode;
     return this;
   }
@@ -233,22 +217,17 @@ public class AddressDTO {
    * Postal code
    * @return postcode
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_POSTCODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getPostcode() {
     return postcode;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_POSTCODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPostcode(@jakarta.annotation.Nullable String postcode) {
+  public void setPostcode(@javax.annotation.Nullable String postcode) {
     this.postcode = postcode;
   }
 
 
-  public AddressDTO addressPlace(@jakarta.annotation.Nullable AddressPlaceDTO addressPlace) {
+  public AddressDTO addressPlace(@javax.annotation.Nullable AddressPlaceDTO addressPlace) {
     this.addressPlace = addressPlace;
     return this;
   }
@@ -257,24 +236,17 @@ public class AddressDTO {
    * Third-party address place reference
    * @return addressPlace
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ADDRESS_PLACE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public AddressPlaceDTO getAddressPlace() {
     return addressPlace;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ADDRESS_PLACE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAddressPlace(@jakarta.annotation.Nullable AddressPlaceDTO addressPlace) {
+  public void setAddressPlace(@javax.annotation.Nullable AddressPlaceDTO addressPlace) {
     this.addressPlace = addressPlace;
   }
 
 
-  /**
-   * Return true if this AddressDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -326,79 +298,129 @@ public class AddressDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("fullAddress");
+    openapiFields.add("city");
+    openapiFields.add("house");
+    openapiFields.add("state");
+    openapiFields.add("street");
+    openapiFields.add("country");
+    openapiFields.add("postcode");
+    openapiFields.add("addressPlace");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("fullAddress");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to AddressDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!AddressDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AddressDTO is not found in the empty JSON string", AddressDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!AddressDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AddressDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : AddressDTO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (!jsonObj.get("fullAddress").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `fullAddress` to be a primitive type in the JSON string but got `%s`", jsonObj.get("fullAddress").toString()));
+      }
+      if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
+      }
+      if ((jsonObj.get("house") != null && !jsonObj.get("house").isJsonNull()) && !jsonObj.get("house").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `house` to be a primitive type in the JSON string but got `%s`", jsonObj.get("house").toString()));
+      }
+      if ((jsonObj.get("state") != null && !jsonObj.get("state").isJsonNull()) && !jsonObj.get("state").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `state` to be a primitive type in the JSON string but got `%s`", jsonObj.get("state").toString()));
+      }
+      if ((jsonObj.get("street") != null && !jsonObj.get("street").isJsonNull()) && !jsonObj.get("street").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `street` to be a primitive type in the JSON string but got `%s`", jsonObj.get("street").toString()));
+      }
+      if ((jsonObj.get("country") != null && !jsonObj.get("country").isJsonNull()) && !jsonObj.get("country").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `country` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country").toString()));
+      }
+      if ((jsonObj.get("postcode") != null && !jsonObj.get("postcode").isJsonNull()) && !jsonObj.get("postcode").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `postcode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("postcode").toString()));
+      }
+      // validate the optional field `addressPlace`
+      if (jsonObj.get("addressPlace") != null && !jsonObj.get("addressPlace").isJsonNull()) {
+        AddressPlaceDTO.validateJsonElement(jsonObj.get("addressPlace"));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!AddressDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'AddressDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<AddressDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(AddressDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<AddressDTO>() {
+           @Override
+           public void write(JsonWriter out, AddressDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public AddressDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of AddressDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of AddressDTO
+   * @throws IOException if the JSON string is invalid with respect to AddressDTO
+   */
+  public static AddressDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, AddressDTO.class);
+  }
 
-    // add `fullAddress` to the URL query string
-    if (getFullAddress() != null) {
-      joiner.add(String.format("%sfullAddress%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFullAddress()))));
-    }
-
-    // add `city` to the URL query string
-    if (getCity() != null) {
-      joiner.add(String.format("%scity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCity()))));
-    }
-
-    // add `house` to the URL query string
-    if (getHouse() != null) {
-      joiner.add(String.format("%shouse%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHouse()))));
-    }
-
-    // add `state` to the URL query string
-    if (getState() != null) {
-      joiner.add(String.format("%sstate%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getState()))));
-    }
-
-    // add `street` to the URL query string
-    if (getStreet() != null) {
-      joiner.add(String.format("%sstreet%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStreet()))));
-    }
-
-    // add `country` to the URL query string
-    if (getCountry() != null) {
-      joiner.add(String.format("%scountry%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCountry()))));
-    }
-
-    // add `postcode` to the URL query string
-    if (getPostcode() != null) {
-      joiner.add(String.format("%spostcode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPostcode()))));
-    }
-
-    // add `addressPlace` to the URL query string
-    if (getAddressPlace() != null) {
-      joiner.add(getAddressPlace().toUrlQueryString(prefix + "addressPlace" + suffix));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of AddressDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

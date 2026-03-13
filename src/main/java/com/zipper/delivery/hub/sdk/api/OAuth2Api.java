@@ -10,198 +10,236 @@
  * Do not edit the class manually.
  */
 
+
 package com.zipper.delivery.hub.sdk.api;
 
+import com.zipper.delivery.hub.sdk.ApiCallback;
 import com.zipper.delivery.hub.sdk.ApiClient;
 import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.ApiResponse;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.Pair;
+import com.zipper.delivery.hub.sdk.ProgressRequestBody;
+import com.zipper.delivery.hub.sdk.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
 
 import com.zipper.delivery.hub.sdk.model.OAuth2ErrorResponse;
 import com.zipper.delivery.hub.sdk.model.OAuth2TokenResponse;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.http.HttpRequest;
-import java.nio.channels.Channels;
-import java.nio.channels.Pipe;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class OAuth2Api {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
 
-  public OAuth2Api() {
-    this(Configuration.getDefaultApiClient());
-  }
-
-  public OAuth2Api(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
-  }
-
-  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
-    String body = response.body() == null ? null : new String(response.body().readAllBytes());
-    String message = formatExceptionMessage(operationId, response.statusCode(), body);
-    return new ApiException(response.statusCode(), message, response.headers(), body);
-  }
-
-  private String formatExceptionMessage(String operationId, int statusCode, String body) {
-    if (body == null || body.isEmpty()) {
-      body = "[no body]";
+    public OAuth2Api() {
+        this(Configuration.getDefaultApiClient());
     }
-    return operationId + " call failed with: " + statusCode + " - " + body;
-  }
 
-  /**
-   * Exchange client credentials for an access token
-   * Issues a JWT access token in exchange for valid API client credentials using the client_credentials grant type.
-   * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
-   * @param clientId API client identifier (required)
-   * @param clientSecret API client secret key (required)
-   * @return OAuth2TokenResponse
-   * @throws ApiException if fails to make API call
-   */
-  public OAuth2TokenResponse token(@jakarta.annotation.Nonnull String grantType, @jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String clientSecret) throws ApiException {
-    ApiResponse<OAuth2TokenResponse> localVarResponse = tokenWithHttpInfo(grantType, clientId, clientSecret);
-    return localVarResponse.getData();
-  }
+    public OAuth2Api(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
 
-  /**
-   * Exchange client credentials for an access token
-   * Issues a JWT access token in exchange for valid API client credentials using the client_credentials grant type.
-   * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
-   * @param clientId API client identifier (required)
-   * @param clientSecret API client secret key (required)
-   * @return ApiResponse&lt;OAuth2TokenResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<OAuth2TokenResponse> tokenWithHttpInfo(@jakarta.annotation.Nonnull String grantType, @jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String clientSecret) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = tokenRequestBuilder(grantType, clientId, clientSecret);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("token", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<OAuth2TokenResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for token
+     * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
+     * @param clientId API client identifier (required)
+     * @param clientSecret API client secret key (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Access token issued successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Unsupported grant type </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Invalid client credentials or inactive account </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call tokenCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        Object localVarPostBody = null;
 
-        return new ApiResponse<OAuth2TokenResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<OAuth2TokenResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
+        // create path and map variables
+        String localVarPath = "/api/auth/oauth/token";
 
-  private HttpRequest.Builder tokenRequestBuilder(@jakarta.annotation.Nonnull String grantType, @jakarta.annotation.Nonnull String clientId, @jakarta.annotation.Nonnull String clientSecret) throws ApiException {
-    // verify the required parameter 'grantType' is set
-    if (grantType == null) {
-      throw new ApiException(400, "Missing the required parameter 'grantType' when calling token");
-    }
-    // verify the required parameter 'clientId' is set
-    if (clientId == null) {
-      throw new ApiException(400, "Missing the required parameter 'clientId' when calling token");
-    }
-    // verify the required parameter 'clientSecret' is set
-    if (clientSecret == null) {
-      throw new ApiException(400, "Missing the required parameter 'clientSecret' when calling token");
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (grantType != null) {
+            localVarFormParams.put("grant_type", grantType);
+        }
+
+        if (clientId != null) {
+            localVarFormParams.put("client_id", clientId);
+        }
+
+        if (clientSecret != null) {
+            localVarFormParams.put("client_secret", clientSecret);
+        }
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/x-www-form-urlencoded"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call tokenValidateBeforeCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'grantType' is set
+        if (grantType == null) {
+            throw new ApiException("Missing the required parameter 'grantType' when calling token(Async)");
+        }
 
-    String localVarPath = "/api/auth/oauth/token";
+        // verify the required parameter 'clientId' is set
+        if (clientId == null) {
+            throw new ApiException("Missing the required parameter 'clientId' when calling token(Async)");
+        }
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+        // verify the required parameter 'clientSecret' is set
+        if (clientSecret == null) {
+            throw new ApiException("Missing the required parameter 'clientSecret' when calling token(Async)");
+        }
 
-    localVarRequestBuilder.header("Accept", "*/*");
+        return tokenCall(grantType, clientId, clientSecret, _callback);
 
-    List<NameValuePair> formValues = new ArrayList<>();
-    if (grantType != null) {
-        formValues.add(new BasicNameValuePair("grant_type", grantType.toString()));
     }
-    if (clientId != null) {
-        formValues.add(new BasicNameValuePair("client_id", clientId.toString()));
-    }
-    if (clientSecret != null) {
-        formValues.add(new BasicNameValuePair("client_secret", clientSecret.toString()));
-    }
-    HttpEntity entity = new UrlEncodedFormEntity(formValues, java.nio.charset.StandardCharsets.UTF_8);
-    ByteArrayOutputStream formOutputStream = new ByteArrayOutputStream();
-    try {
-        entity.writeTo(formOutputStream);
-    } catch (IOException e) {
-        throw new RuntimeException(e);
-    }
-    localVarRequestBuilder
-        .header("Content-Type", entity.getContentType().getValue())
-        .method("POST", HttpRequest.BodyPublishers
-            .ofInputStream(() -> new ByteArrayInputStream(formOutputStream.toByteArray())));
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
 
+    /**
+     * Exchange client credentials for an access token
+     * Issues a JWT access token in exchange for valid API client credentials using the client_credentials grant type.
+     * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
+     * @param clientId API client identifier (required)
+     * @param clientSecret API client secret key (required)
+     * @return OAuth2TokenResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Access token issued successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Unsupported grant type </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Invalid client credentials or inactive account </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public OAuth2TokenResponse token(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret) throws ApiException {
+        ApiResponse<OAuth2TokenResponse> localVarResp = tokenWithHttpInfo(grantType, clientId, clientSecret);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Exchange client credentials for an access token
+     * Issues a JWT access token in exchange for valid API client credentials using the client_credentials grant type.
+     * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
+     * @param clientId API client identifier (required)
+     * @param clientSecret API client secret key (required)
+     * @return ApiResponse&lt;OAuth2TokenResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Access token issued successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Unsupported grant type </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Invalid client credentials or inactive account </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<OAuth2TokenResponse> tokenWithHttpInfo(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret) throws ApiException {
+        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, null);
+        Type localVarReturnType = new TypeToken<OAuth2TokenResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Exchange client credentials for an access token (asynchronously)
+     * Issues a JWT access token in exchange for valid API client credentials using the client_credentials grant type.
+     * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
+     * @param clientId API client identifier (required)
+     * @param clientSecret API client secret key (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Access token issued successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Unsupported grant type </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Invalid client credentials or inactive account </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call tokenAsync(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback<OAuth2TokenResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, _callback);
+        Type localVarReturnType = new TypeToken<OAuth2TokenResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

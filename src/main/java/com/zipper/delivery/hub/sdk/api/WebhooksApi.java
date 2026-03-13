@@ -10,500 +10,757 @@
  * Do not edit the class manually.
  */
 
+
 package com.zipper.delivery.hub.sdk.api;
 
+import com.zipper.delivery.hub.sdk.ApiCallback;
 import com.zipper.delivery.hub.sdk.ApiClient;
 import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.ApiResponse;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.Pair;
+import com.zipper.delivery.hub.sdk.ProgressRequestBody;
+import com.zipper.delivery.hub.sdk.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
 
 import com.zipper.delivery.hub.sdk.model.CreateWebhookRequest;
 import com.zipper.delivery.hub.sdk.model.TestWebhookRequest;
 import com.zipper.delivery.hub.sdk.model.UpdateWebhookRequest;
 import com.zipper.delivery.hub.sdk.model.WebhookDTO;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.http.HttpRequest;
-import java.nio.channels.Channels;
-import java.nio.channels.Pipe;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class WebhooksApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
 
-  public WebhooksApi() {
-    this(Configuration.getDefaultApiClient());
-  }
-
-  public WebhooksApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
-  }
-
-  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
-    String body = response.body() == null ? null : new String(response.body().readAllBytes());
-    String message = formatExceptionMessage(operationId, response.statusCode(), body);
-    return new ApiException(response.statusCode(), message, response.headers(), body);
-  }
-
-  private String formatExceptionMessage(String operationId, int statusCode, String body) {
-    if (body == null || body.isEmpty()) {
-      body = "[no body]";
+    public WebhooksApi() {
+        this(Configuration.getDefaultApiClient());
     }
-    return operationId + " call failed with: " + statusCode + " - " + body;
-  }
 
-  /**
-   * Create a webhook
-   * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
-   * @param createWebhookRequest  (required)
-   * @return WebhookDTO
-   * @throws ApiException if fails to make API call
-   */
-  public WebhookDTO createWebhook(@jakarta.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-    ApiResponse<WebhookDTO> localVarResponse = createWebhookWithHttpInfo(createWebhookRequest);
-    return localVarResponse.getData();
-  }
+    public WebhooksApi(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
 
-  /**
-   * Create a webhook
-   * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
-   * @param createWebhookRequest  (required)
-   * @return ApiResponse&lt;WebhookDTO&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<WebhookDTO> createWebhookWithHttpInfo(@jakarta.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createWebhookRequestBuilder(createWebhookRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("createWebhook", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<WebhookDTO>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for createWebhook
+     * @param createWebhookRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Webhook created </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call createWebhookCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        Object localVarPostBody = createWebhookRequest;
 
-        return new ApiResponse<WebhookDTO>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<WebhookDTO>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
+        // create path and map variables
+        String localVarPath = "/api/v1/webhooks";
 
-  private HttpRequest.Builder createWebhookRequestBuilder(@jakarta.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-    // verify the required parameter 'createWebhookRequest' is set
-    if (createWebhookRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'createWebhookRequest' when calling createWebhook");
-    }
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/webhooks";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(createWebhookRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Delete a specific webhook
-   * Removes a specific webhook subscription by ID for the current API client.
-   * @param id Webhook ID (required)
-   * @throws ApiException if fails to make API call
-   */
-  public void deleteWebhookById(@jakarta.annotation.Nonnull Long id) throws ApiException {
-    deleteWebhookByIdWithHttpInfo(id);
-  }
-
-  /**
-   * Delete a specific webhook
-   * Removes a specific webhook subscription by ID for the current API client.
-   * @param id Webhook ID (required)
-   * @return ApiResponse&lt;Void&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<Void> deleteWebhookByIdWithHttpInfo(@jakarta.annotation.Nonnull Long id) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = deleteWebhookByIdRequestBuilder(id);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("deleteWebhookById", localVarResponse);
-        }
-        return new ApiResponse<>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            null
-        );
-      } finally {
-        // Drain the InputStream
-        while (localVarResponse.body().read() != -1) {
-          // Ignore
-        }
-        localVarResponse.body().close();
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder deleteWebhookByIdRequestBuilder(@jakarta.annotation.Nonnull Long id) throws ApiException {
-    // verify the required parameter 'id' is set
-    if (id == null) {
-      throw new ApiException(400, "Missing the required parameter 'id' when calling deleteWebhookById");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/webhooks/{id}"
-        .replace("{id}", ApiClient.urlEncode(id.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "application/json");
-
-    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * List all webhooks
-   * Returns all webhook subscriptions for the current API client.
-   * @return List&lt;WebhookDTO&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public List<WebhookDTO> listWebhooks() throws ApiException {
-    ApiResponse<List<WebhookDTO>> localVarResponse = listWebhooksWithHttpInfo();
-    return localVarResponse.getData();
-  }
-
-  /**
-   * List all webhooks
-   * Returns all webhook subscriptions for the current API client.
-   * @return ApiResponse&lt;List&lt;WebhookDTO&gt;&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<List<WebhookDTO>> listWebhooksWithHttpInfo() throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = listWebhooksRequestBuilder();
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("listWebhooks", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<List<WebhookDTO>>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<List<WebhookDTO>>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<WebhookDTO>>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder listWebhooksRequestBuilder() throws ApiException {
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/webhooks";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Send a test webhook event
-   * Publishes a test event to all registered webhooks for the current API client.
-   * @param testWebhookRequest  (optional)
-   * @throws ApiException if fails to make API call
-   */
-  public void testWebhook(@jakarta.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
-    testWebhookWithHttpInfo(testWebhookRequest);
-  }
-
-  /**
-   * Send a test webhook event
-   * Publishes a test event to all registered webhooks for the current API client.
-   * @param testWebhookRequest  (optional)
-   * @return ApiResponse&lt;Void&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<Void> testWebhookWithHttpInfo(@jakarta.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = testWebhookRequestBuilder(testWebhookRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("testWebhook", localVarResponse);
-        }
-        return new ApiResponse<>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            null
-        );
-      } finally {
-        // Drain the InputStream
-        while (localVarResponse.body().read() != -1) {
-          // Ignore
-        }
-        localVarResponse.body().close();
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder testWebhookRequestBuilder(@jakarta.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/webhooks/test";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "application/json");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(testWebhookRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Update a webhook
-   * Updates an existing webhook subscription by ID for the current API client.
-   * @param id Webhook ID (required)
-   * @param updateWebhookRequest  (required)
-   * @return WebhookDTO
-   * @throws ApiException if fails to make API call
-   */
-  public WebhookDTO updateWebhook(@jakarta.annotation.Nonnull Long id, @jakarta.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-    ApiResponse<WebhookDTO> localVarResponse = updateWebhookWithHttpInfo(id, updateWebhookRequest);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Update a webhook
-   * Updates an existing webhook subscription by ID for the current API client.
-   * @param id Webhook ID (required)
-   * @param updateWebhookRequest  (required)
-   * @return ApiResponse&lt;WebhookDTO&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<WebhookDTO> updateWebhookWithHttpInfo(@jakarta.annotation.Nonnull Long id, @jakarta.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = updateWebhookRequestBuilder(id, updateWebhookRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("updateWebhook", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<WebhookDTO>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<WebhookDTO>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<WebhookDTO>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder updateWebhookRequestBuilder(@jakarta.annotation.Nonnull Long id, @jakarta.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-    // verify the required parameter 'id' is set
-    if (id == null) {
-      throw new ApiException(400, "Missing the required parameter 'id' when calling updateWebhook");
-    }
-    // verify the required parameter 'updateWebhookRequest' is set
-    if (updateWebhookRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'updateWebhookRequest' when calling updateWebhook");
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call createWebhookValidateBeforeCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'createWebhookRequest' is set
+        if (createWebhookRequest == null) {
+            throw new ApiException("Missing the required parameter 'createWebhookRequest' when calling createWebhook(Async)");
+        }
 
-    String localVarPath = "/api/v1/webhooks/{id}"
-        .replace("{id}", ApiClient.urlEncode(id.toString()));
+        return createWebhookCall(createWebhookRequest, _callback);
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(updateWebhookRequest);
-      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
     }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
 
+    /**
+     * Create a webhook
+     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * @param createWebhookRequest  (required)
+     * @return WebhookDTO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Webhook created </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public WebhookDTO createWebhook(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
+        ApiResponse<WebhookDTO> localVarResp = createWebhookWithHttpInfo(createWebhookRequest);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Create a webhook
+     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * @param createWebhookRequest  (required)
+     * @return ApiResponse&lt;WebhookDTO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Webhook created </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<WebhookDTO> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
+        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, null);
+        Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Create a webhook (asynchronously)
+     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * @param createWebhookRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Webhook created </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call createWebhookAsync(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback<WebhookDTO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, _callback);
+        Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for deleteWebhookById
+     * @param id Webhook ID (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 204 </td><td> Webhook deleted </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call deleteWebhookByIdCall(@javax.annotation.Nonnull Long id, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/webhooks/{id}"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call deleteWebhookByIdValidateBeforeCall(@javax.annotation.Nonnull Long id, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling deleteWebhookById(Async)");
+        }
+
+        return deleteWebhookByIdCall(id, _callback);
+
+    }
+
+    /**
+     * Delete a specific webhook
+     * Removes a specific webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 204 </td><td> Webhook deleted </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public void deleteWebhookById(@javax.annotation.Nonnull Long id) throws ApiException {
+        deleteWebhookByIdWithHttpInfo(id);
+    }
+
+    /**
+     * Delete a specific webhook
+     * Removes a specific webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 204 </td><td> Webhook deleted </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Void> deleteWebhookByIdWithHttpInfo(@javax.annotation.Nonnull Long id) throws ApiException {
+        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    /**
+     * Delete a specific webhook (asynchronously)
+     * Removes a specific webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 204 </td><td> Webhook deleted </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call deleteWebhookByIdAsync(@javax.annotation.Nonnull Long id, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for listWebhooks
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> List of webhooks </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call listWebhooksCall(final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/webhooks";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call listWebhooksValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return listWebhooksCall(_callback);
+
+    }
+
+    /**
+     * List all webhooks
+     * Returns all webhook subscriptions for the current API client.
+     * @return List&lt;WebhookDTO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> List of webhooks </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public List<WebhookDTO> listWebhooks() throws ApiException {
+        ApiResponse<List<WebhookDTO>> localVarResp = listWebhooksWithHttpInfo();
+        return localVarResp.getData();
+    }
+
+    /**
+     * List all webhooks
+     * Returns all webhook subscriptions for the current API client.
+     * @return ApiResponse&lt;List&lt;WebhookDTO&gt;&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> List of webhooks </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<List<WebhookDTO>> listWebhooksWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(null);
+        Type localVarReturnType = new TypeToken<List<WebhookDTO>>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * List all webhooks (asynchronously)
+     * Returns all webhook subscriptions for the current API client.
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> List of webhooks </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call listWebhooksAsync(final ApiCallback<List<WebhookDTO>> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(_callback);
+        Type localVarReturnType = new TypeToken<List<WebhookDTO>>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for testWebhook
+     * @param testWebhookRequest  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call testWebhookCall(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = testWebhookRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/webhooks/test";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call testWebhookValidateBeforeCall(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
+        return testWebhookCall(testWebhookRequest, _callback);
+
+    }
+
+    /**
+     * Send a test webhook event
+     * Publishes a test event to all registered webhooks for the current API client.
+     * @param testWebhookRequest  (optional)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public void testWebhook(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
+        testWebhookWithHttpInfo(testWebhookRequest);
+    }
+
+    /**
+     * Send a test webhook event
+     * Publishes a test event to all registered webhooks for the current API client.
+     * @param testWebhookRequest  (optional)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Void> testWebhookWithHttpInfo(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
+        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(testWebhookRequest, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    /**
+     * Send a test webhook event (asynchronously)
+     * Publishes a test event to all registered webhooks for the current API client.
+     * @param testWebhookRequest  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call testWebhookAsync(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(testWebhookRequest, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for updateWebhook
+     * @param id Webhook ID (required)
+     * @param updateWebhookRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Webhook updated </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call updateWebhookCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = updateWebhookRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/webhooks/{id}"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call updateWebhookValidateBeforeCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling updateWebhook(Async)");
+        }
+
+        // verify the required parameter 'updateWebhookRequest' is set
+        if (updateWebhookRequest == null) {
+            throw new ApiException("Missing the required parameter 'updateWebhookRequest' when calling updateWebhook(Async)");
+        }
+
+        return updateWebhookCall(id, updateWebhookRequest, _callback);
+
+    }
+
+    /**
+     * Update a webhook
+     * Updates an existing webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @param updateWebhookRequest  (required)
+     * @return WebhookDTO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Webhook updated </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public WebhookDTO updateWebhook(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
+        ApiResponse<WebhookDTO> localVarResp = updateWebhookWithHttpInfo(id, updateWebhookRequest);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Update a webhook
+     * Updates an existing webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @param updateWebhookRequest  (required)
+     * @return ApiResponse&lt;WebhookDTO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Webhook updated </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<WebhookDTO> updateWebhookWithHttpInfo(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
+        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, null);
+        Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Update a webhook (asynchronously)
+     * Updates an existing webhook subscription by ID for the current API client.
+     * @param id Webhook ID (required)
+     * @param updateWebhookRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Webhook updated </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Webhook not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Webhook with this callback URL already exists </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call updateWebhookAsync(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback<WebhookDTO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, _callback);
+        Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

@@ -13,49 +13,63 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.AddressDTO;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Geographic location with structured address
  */
-@JsonPropertyOrder({
-  LocationDTO.JSON_PROPERTY_LAT,
-  LocationDTO.JSON_PROPERTY_LNG,
-  LocationDTO.JSON_PROPERTY_ADDRESS
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class LocationDTO {
-  public static final String JSON_PROPERTY_LAT = "lat";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_LAT = "lat";
+  @SerializedName(SERIALIZED_NAME_LAT)
+  @javax.annotation.Nonnull
   private Double lat;
 
-  public static final String JSON_PROPERTY_LNG = "lng";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_LNG = "lng";
+  @SerializedName(SERIALIZED_NAME_LNG)
+  @javax.annotation.Nonnull
   private Double lng;
 
-  public static final String JSON_PROPERTY_ADDRESS = "address";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_ADDRESS = "address";
+  @SerializedName(SERIALIZED_NAME_ADDRESS)
+  @javax.annotation.Nonnull
   private AddressDTO address;
 
-  public LocationDTO() { 
+  public LocationDTO() {
   }
 
-  public LocationDTO lat(@jakarta.annotation.Nonnull Double lat) {
+  public LocationDTO lat(@javax.annotation.Nonnull Double lat) {
     this.lat = lat;
     return this;
   }
@@ -64,22 +78,17 @@ public class LocationDTO {
    * Latitude coordinate
    * @return lat
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LAT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public Double getLat() {
     return lat;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LAT)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLat(@jakarta.annotation.Nonnull Double lat) {
+  public void setLat(@javax.annotation.Nonnull Double lat) {
     this.lat = lat;
   }
 
 
-  public LocationDTO lng(@jakarta.annotation.Nonnull Double lng) {
+  public LocationDTO lng(@javax.annotation.Nonnull Double lng) {
     this.lng = lng;
     return this;
   }
@@ -88,22 +97,17 @@ public class LocationDTO {
    * Longitude coordinate
    * @return lng
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_LNG)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public Double getLng() {
     return lng;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LNG)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setLng(@jakarta.annotation.Nonnull Double lng) {
+  public void setLng(@javax.annotation.Nonnull Double lng) {
     this.lng = lng;
   }
 
 
-  public LocationDTO address(@jakarta.annotation.Nonnull AddressDTO address) {
+  public LocationDTO address(@javax.annotation.Nonnull AddressDTO address) {
     this.address = address;
     return this;
   }
@@ -112,24 +116,17 @@ public class LocationDTO {
    * Structured address details
    * @return address
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public AddressDTO getAddress() {
     return address;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setAddress(@jakarta.annotation.Nonnull AddressDTO address) {
+  public void setAddress(@javax.annotation.Nonnull AddressDTO address) {
     this.address = address;
   }
 
 
-  /**
-   * Return true if this LocationDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -171,54 +168,103 @@ public class LocationDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("lat");
+    openapiFields.add("lng");
+    openapiFields.add("address");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("lat");
+    openapiRequiredFields.add("lng");
+    openapiRequiredFields.add("address");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to LocationDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!LocationDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in LocationDTO is not found in the empty JSON string", LocationDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!LocationDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LocationDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : LocationDTO.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      // validate the required field `address`
+      AddressDTO.validateJsonElement(jsonObj.get("address"));
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!LocationDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'LocationDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<LocationDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(LocationDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<LocationDTO>() {
+           @Override
+           public void write(JsonWriter out, LocationDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public LocationDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of LocationDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of LocationDTO
+   * @throws IOException if the JSON string is invalid with respect to LocationDTO
+   */
+  public static LocationDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, LocationDTO.class);
+  }
 
-    // add `lat` to the URL query string
-    if (getLat() != null) {
-      joiner.add(String.format("%slat%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLat()))));
-    }
-
-    // add `lng` to the URL query string
-    if (getLng() != null) {
-      joiner.add(String.format("%slng%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLng()))));
-    }
-
-    // add `address` to the URL query string
-    if (getAddress() != null) {
-      joiner.add(getAddress().toUrlQueryString(prefix + "address" + suffix));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of LocationDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

@@ -13,60 +13,74 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.Filter;
 import com.zipper.delivery.hub.sdk.model.Pagination;
 import com.zipper.delivery.hub.sdk.model.SortField;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Advanced search request for deliveries with filtering, sorting, and pagination capabilities. **Query Fields** (full-text search): &#x60;providerTrackingId&#x60;, &#x60;externalOrderId&#x60; **Available Filter/Sort Fields:** - &#x60;status&#x60; (HubDeliveryStatus, sortable) - CREATED, ASSIGNED, PICKED_UP, IN_TRANSIT, DELIVERED, CANCELLED, FAILED - &#x60;deliveryType&#x60; (DeliveryType, sortable) - &#x60;providerType&#x60; (DeliveryProviderType, sortable) - &#x60;createdDate&#x60; (Instant, sortable) - &#x60;userId&#x60; (Long, sortable) - Auto-filtered for non-admin users 
  */
-@JsonPropertyOrder({
-  SearchDeliveriesRequest.JSON_PROPERTY_QUERY,
-  SearchDeliveriesRequest.JSON_PROPERTY_FILTERS,
-  SearchDeliveriesRequest.JSON_PROPERTY_SORT,
-  SearchDeliveriesRequest.JSON_PROPERTY_PAGINATION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class SearchDeliveriesRequest {
-  public static final String JSON_PROPERTY_QUERY = "query";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_QUERY = "query";
+  @SerializedName(SERIALIZED_NAME_QUERY)
+  @javax.annotation.Nullable
   private String query;
 
-  public static final String JSON_PROPERTY_FILTERS = "filters";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_FILTERS = "filters";
+  @SerializedName(SERIALIZED_NAME_FILTERS)
+  @javax.annotation.Nullable
   private Map<String, List<Filter>> filters = new HashMap<>();
 
-  public static final String JSON_PROPERTY_SORT = "sort";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SORT = "sort";
+  @SerializedName(SERIALIZED_NAME_SORT)
+  @javax.annotation.Nullable
   private List<SortField> sort = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_PAGINATION = "pagination";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PAGINATION = "pagination";
+  @SerializedName(SERIALIZED_NAME_PAGINATION)
+  @javax.annotation.Nullable
   private Pagination pagination;
 
-  public SearchDeliveriesRequest() { 
+  public SearchDeliveriesRequest() {
   }
 
-  public SearchDeliveriesRequest query(@jakarta.annotation.Nullable String query) {
+  public SearchDeliveriesRequest query(@javax.annotation.Nullable String query) {
     this.query = query;
     return this;
   }
@@ -75,22 +89,17 @@ public class SearchDeliveriesRequest {
    * Full-text search query string. Matches against predefined query fields using case-insensitive LIKE.
    * @return query
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_QUERY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getQuery() {
     return query;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_QUERY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setQuery(@jakarta.annotation.Nullable String query) {
+  public void setQuery(@javax.annotation.Nullable String query) {
     this.query = query;
   }
 
 
-  public SearchDeliveriesRequest filters(@jakarta.annotation.Nullable Map<String, List<Filter>> filters) {
+  public SearchDeliveriesRequest filters(@javax.annotation.Nullable Map<String, List<Filter>> filters) {
     this.filters = filters;
     return this;
   }
@@ -107,22 +116,17 @@ public class SearchDeliveriesRequest {
    * Filter groups with AND/OR logic. Each group contains a list of filter criteria that are combined using the specified operator.
    * @return filters
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FILTERS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Map<String, List<Filter>> getFilters() {
     return filters;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_FILTERS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFilters(@jakarta.annotation.Nullable Map<String, List<Filter>> filters) {
+  public void setFilters(@javax.annotation.Nullable Map<String, List<Filter>> filters) {
     this.filters = filters;
   }
 
 
-  public SearchDeliveriesRequest sort(@jakarta.annotation.Nullable List<SortField> sort) {
+  public SearchDeliveriesRequest sort(@javax.annotation.Nullable List<SortField> sort) {
     this.sort = sort;
     return this;
   }
@@ -139,22 +143,17 @@ public class SearchDeliveriesRequest {
    * Sort criteria applied in order. Only sortable fields are accepted.
    * @return sort
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SORT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public List<SortField> getSort() {
     return sort;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SORT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSort(@jakarta.annotation.Nullable List<SortField> sort) {
+  public void setSort(@javax.annotation.Nullable List<SortField> sort) {
     this.sort = sort;
   }
 
 
-  public SearchDeliveriesRequest pagination(@jakarta.annotation.Nullable Pagination pagination) {
+  public SearchDeliveriesRequest pagination(@javax.annotation.Nullable Pagination pagination) {
     this.pagination = pagination;
     return this;
   }
@@ -163,24 +162,17 @@ public class SearchDeliveriesRequest {
    * Pagination parameters. Page numbers are 1-based.
    * @return pagination
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PAGINATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Pagination getPagination() {
     return pagination;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PAGINATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPagination(@jakarta.annotation.Nullable Pagination pagination) {
+  public void setPagination(@javax.annotation.Nullable Pagination pagination) {
     this.pagination = pagination;
   }
 
 
-  /**
-   * Return true if this SearchDeliveriesRequest object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -224,68 +216,113 @@ public class SearchDeliveriesRequest {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("query");
+    openapiFields.add("filters");
+    openapiFields.add("sort");
+    openapiFields.add("pagination");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to SearchDeliveriesRequest
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
-    }
-
-    StringJoiner joiner = new StringJoiner("&");
-
-    // add `query` to the URL query string
-    if (getQuery() != null) {
-      joiner.add(String.format("%squery%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getQuery()))));
-    }
-
-    // add `filters` to the URL query string
-    if (getFilters() != null) {
-      for (String _key : getFilters().keySet()) {
-        joiner.add(String.format("%sfilters%s%s=%s", prefix, suffix,
-            "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, _key, containerSuffix),
-            getFilters().get(_key), ApiClient.urlEncode(ApiClient.valueToString(getFilters().get(_key)))));
-      }
-    }
-
-    // add `sort` to the URL query string
-    if (getSort() != null) {
-      for (int i = 0; i < getSort().size(); i++) {
-        if (getSort().get(i) != null) {
-          joiner.add(getSort().get(i).toUrlQueryString(String.format("%ssort%s%s", prefix, suffix,
-          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!SearchDeliveriesRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in SearchDeliveriesRequest is not found in the empty JSON string", SearchDeliveriesRequest.openapiRequiredFields.toString()));
         }
       }
-    }
 
-    // add `pagination` to the URL query string
-    if (getPagination() != null) {
-      joiner.add(getPagination().toUrlQueryString(prefix + "pagination" + suffix));
-    }
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!SearchDeliveriesRequest.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SearchDeliveriesRequest` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("query") != null && !jsonObj.get("query").isJsonNull()) && !jsonObj.get("query").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `query` to be a primitive type in the JSON string but got `%s`", jsonObj.get("query").toString()));
+      }
+      if (jsonObj.get("sort") != null && !jsonObj.get("sort").isJsonNull()) {
+        JsonArray jsonArraysort = jsonObj.getAsJsonArray("sort");
+        if (jsonArraysort != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("sort").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `sort` to be an array in the JSON string but got `%s`", jsonObj.get("sort").toString()));
+          }
 
-    return joiner.toString();
+          // validate the optional field `sort` (array)
+          for (int i = 0; i < jsonArraysort.size(); i++) {
+            SortField.validateJsonElement(jsonArraysort.get(i));
+          };
+        }
+      }
+      // validate the optional field `pagination`
+      if (jsonObj.get("pagination") != null && !jsonObj.get("pagination").isJsonNull()) {
+        Pagination.validateJsonElement(jsonObj.get("pagination"));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!SearchDeliveriesRequest.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'SearchDeliveriesRequest' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<SearchDeliveriesRequest> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(SearchDeliveriesRequest.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<SearchDeliveriesRequest>() {
+           @Override
+           public void write(JsonWriter out, SearchDeliveriesRequest value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public SearchDeliveriesRequest read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
+    }
+  }
+
+  /**
+   * Create an instance of SearchDeliveriesRequest given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of SearchDeliveriesRequest
+   * @throws IOException if the JSON string is invalid with respect to SearchDeliveriesRequest
+   */
+  public static SearchDeliveriesRequest fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, SearchDeliveriesRequest.class);
+  }
+
+  /**
+   * Convert an instance of SearchDeliveriesRequest to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Third-party address place reference (e.g. Google Places)
  */
-@JsonPropertyOrder({
-  AddressPlaceDTO.JSON_PROPERTY_PROVIDER,
-  AddressPlaceDTO.JSON_PROPERTY_ID
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class AddressPlaceDTO {
-  public static final String JSON_PROPERTY_PROVIDER = "provider";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROVIDER = "provider";
+  @SerializedName(SERIALIZED_NAME_PROVIDER)
+  @javax.annotation.Nullable
   private String provider;
 
-  public static final String JSON_PROPERTY_ID = "id";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ID = "id";
+  @SerializedName(SERIALIZED_NAME_ID)
+  @javax.annotation.Nullable
   private String id;
 
-  public AddressPlaceDTO() { 
+  public AddressPlaceDTO() {
   }
 
-  public AddressPlaceDTO provider(@jakarta.annotation.Nullable String provider) {
+  public AddressPlaceDTO provider(@javax.annotation.Nullable String provider) {
     this.provider = provider;
     return this;
   }
@@ -58,22 +72,17 @@ public class AddressPlaceDTO {
    * Address place provider name
    * @return provider
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROVIDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getProvider() {
     return provider;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROVIDER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProvider(@jakarta.annotation.Nullable String provider) {
+  public void setProvider(@javax.annotation.Nullable String provider) {
     this.provider = provider;
   }
 
 
-  public AddressPlaceDTO id(@jakarta.annotation.Nullable String id) {
+  public AddressPlaceDTO id(@javax.annotation.Nullable String id) {
     this.id = id;
     return this;
   }
@@ -82,24 +91,17 @@ public class AddressPlaceDTO {
    * Provider-specific place ID
    * @return id
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getId() {
     return id;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setId(@jakarta.annotation.Nullable String id) {
+  public void setId(@javax.annotation.Nullable String id) {
     this.id = id;
   }
 
 
-  /**
-   * Return true if this AddressPlaceDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,96 @@ public class AddressPlaceDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("provider");
+    openapiFields.add("id");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to AddressPlaceDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!AddressPlaceDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AddressPlaceDTO is not found in the empty JSON string", AddressPlaceDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!AddressPlaceDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AddressPlaceDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("provider") != null && !jsonObj.get("provider").isJsonNull()) && !jsonObj.get("provider").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `provider` to be a primitive type in the JSON string but got `%s`", jsonObj.get("provider").toString()));
+      }
+      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!AddressPlaceDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'AddressPlaceDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<AddressPlaceDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(AddressPlaceDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<AddressPlaceDTO>() {
+           @Override
+           public void write(JsonWriter out, AddressPlaceDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public AddressPlaceDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of AddressPlaceDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of AddressPlaceDTO
+   * @throws IOException if the JSON string is invalid with respect to AddressPlaceDTO
+   */
+  public static AddressPlaceDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, AddressPlaceDTO.class);
+  }
 
-    // add `provider` to the URL query string
-    if (getProvider() != null) {
-      joiner.add(String.format("%sprovider%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProvider()))));
-    }
-
-    // add `id` to the URL query string
-    if (getId() != null) {
-      joiner.add(String.format("%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of AddressPlaceDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

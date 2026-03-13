@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Echo response containing the echoed message and API version
  */
-@JsonPropertyOrder({
-  EchoResponse.JSON_PROPERTY_MESSAGE,
-  EchoResponse.JSON_PROPERTY_VERSION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class EchoResponse {
-  public static final String JSON_PROPERTY_MESSAGE = "message";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_MESSAGE = "message";
+  @SerializedName(SERIALIZED_NAME_MESSAGE)
+  @javax.annotation.Nullable
   private String message;
 
-  public static final String JSON_PROPERTY_VERSION = "version";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_VERSION = "version";
+  @SerializedName(SERIALIZED_NAME_VERSION)
+  @javax.annotation.Nullable
   private String version;
 
-  public EchoResponse() { 
+  public EchoResponse() {
   }
 
-  public EchoResponse message(@jakarta.annotation.Nullable String message) {
+  public EchoResponse message(@javax.annotation.Nullable String message) {
     this.message = message;
     return this;
   }
@@ -58,22 +72,17 @@ public class EchoResponse {
    * The echoed message
    * @return message
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getMessage() {
     return message;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_MESSAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMessage(@jakarta.annotation.Nullable String message) {
+  public void setMessage(@javax.annotation.Nullable String message) {
     this.message = message;
   }
 
 
-  public EchoResponse version(@jakarta.annotation.Nullable String version) {
+  public EchoResponse version(@javax.annotation.Nullable String version) {
     this.version = version;
     return this;
   }
@@ -82,24 +91,17 @@ public class EchoResponse {
    * API version
    * @return version
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_VERSION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getVersion() {
     return version;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_VERSION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setVersion(@jakarta.annotation.Nullable String version) {
+  public void setVersion(@javax.annotation.Nullable String version) {
     this.version = version;
   }
 
 
-  /**
-   * Return true if this EchoResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,96 @@ public class EchoResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("message");
+    openapiFields.add("version");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to EchoResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!EchoResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in EchoResponse is not found in the empty JSON string", EchoResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!EchoResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `EchoResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("message") != null && !jsonObj.get("message").isJsonNull()) && !jsonObj.get("message").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
+      }
+      if ((jsonObj.get("version") != null && !jsonObj.get("version").isJsonNull()) && !jsonObj.get("version").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("version").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!EchoResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'EchoResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<EchoResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(EchoResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<EchoResponse>() {
+           @Override
+           public void write(JsonWriter out, EchoResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public EchoResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of EchoResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of EchoResponse
+   * @throws IOException if the JSON string is invalid with respect to EchoResponse
+   */
+  public static EchoResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, EchoResponse.class);
+  }
 
-    // add `message` to the URL query string
-    if (getMessage() != null) {
-      joiner.add(String.format("%smessage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMessage()))));
-    }
-
-    // add `version` to the URL query string
-    if (getVersion() != null) {
-      joiner.add(String.format("%sversion%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVersion()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of EchoResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

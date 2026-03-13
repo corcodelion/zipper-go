@@ -13,55 +13,66 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * A single status change event in the delivery lifecycle
  */
-@JsonPropertyOrder({
-  HubStatusEventDTO.JSON_PROPERTY_STATUS,
-  HubStatusEventDTO.JSON_PROPERTY_OCCURRED_AT,
-  HubStatusEventDTO.JSON_PROPERTY_DESCRIPTION,
-  HubStatusEventDTO.JSON_PROPERTY_PROOF_OF_DELIVERY_URL
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubStatusEventDTO {
   /**
    * Delivery status at this event
    */
+  @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
-    CREATED(String.valueOf("CREATED")),
+    CREATED("CREATED"),
     
-    ASSIGNED(String.valueOf("ASSIGNED")),
+    ASSIGNED("ASSIGNED"),
     
-    READY_FOR_PICKUP(String.valueOf("READY_FOR_PICKUP")),
+    READY_FOR_PICKUP("READY_FOR_PICKUP"),
     
-    PICKED_UP(String.valueOf("PICKED_UP")),
+    PICKED_UP("PICKED_UP"),
     
-    IN_TRANSIT(String.valueOf("IN_TRANSIT")),
+    IN_TRANSIT("IN_TRANSIT"),
     
-    DELIVERED(String.valueOf("DELIVERED")),
+    DELIVERED("DELIVERED"),
     
-    CANCELLED(String.valueOf("CANCELLED")),
+    CANCELLED("CANCELLED"),
     
-    FAILED(String.valueOf("FAILED")),
+    FAILED("FAILED"),
     
-    REJECTED(String.valueOf("REJECTED"));
+    REJECTED("REJECTED");
 
     private String value;
 
@@ -69,7 +80,6 @@ public class HubStatusEventDTO {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -79,7 +89,6 @@ public class HubStatusEventDTO {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static StatusEnum fromValue(String value) {
       for (StatusEnum b : StatusEnum.values()) {
         if (b.value.equals(value)) {
@@ -88,28 +97,50 @@ public class HubStatusEventDTO {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<StatusEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final StatusEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public StatusEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return StatusEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      StatusEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_STATUS = "status";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STATUS = "status";
+  @SerializedName(SERIALIZED_NAME_STATUS)
+  @javax.annotation.Nullable
   private StatusEnum status;
 
-  public static final String JSON_PROPERTY_OCCURRED_AT = "occurredAt";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_OCCURRED_AT = "occurredAt";
+  @SerializedName(SERIALIZED_NAME_OCCURRED_AT)
+  @javax.annotation.Nullable
   private OffsetDateTime occurredAt;
 
-  public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
+  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
+  @javax.annotation.Nullable
   private String description;
 
-  public static final String JSON_PROPERTY_PROOF_OF_DELIVERY_URL = "proofOfDeliveryUrl";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROOF_OF_DELIVERY_URL = "proofOfDeliveryUrl";
+  @SerializedName(SERIALIZED_NAME_PROOF_OF_DELIVERY_URL)
+  @javax.annotation.Nullable
   private String proofOfDeliveryUrl;
 
-  public HubStatusEventDTO() { 
+  public HubStatusEventDTO() {
   }
 
-  public HubStatusEventDTO status(@jakarta.annotation.Nullable StatusEnum status) {
+  public HubStatusEventDTO status(@javax.annotation.Nullable StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -118,22 +149,17 @@ public class HubStatusEventDTO {
    * Delivery status at this event
    * @return status
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public StatusEnum getStatus() {
     return status;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStatus(@jakarta.annotation.Nullable StatusEnum status) {
+  public void setStatus(@javax.annotation.Nullable StatusEnum status) {
     this.status = status;
   }
 
 
-  public HubStatusEventDTO occurredAt(@jakarta.annotation.Nullable OffsetDateTime occurredAt) {
+  public HubStatusEventDTO occurredAt(@javax.annotation.Nullable OffsetDateTime occurredAt) {
     this.occurredAt = occurredAt;
     return this;
   }
@@ -142,22 +168,17 @@ public class HubStatusEventDTO {
    * When this status change occurred
    * @return occurredAt
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_OCCURRED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getOccurredAt() {
     return occurredAt;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_OCCURRED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setOccurredAt(@jakarta.annotation.Nullable OffsetDateTime occurredAt) {
+  public void setOccurredAt(@javax.annotation.Nullable OffsetDateTime occurredAt) {
     this.occurredAt = occurredAt;
   }
 
 
-  public HubStatusEventDTO description(@jakarta.annotation.Nullable String description) {
+  public HubStatusEventDTO description(@javax.annotation.Nullable String description) {
     this.description = description;
     return this;
   }
@@ -166,22 +187,17 @@ public class HubStatusEventDTO {
    * Human-readable description of the event
    * @return description
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getDescription() {
     return description;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDescription(@jakarta.annotation.Nullable String description) {
+  public void setDescription(@javax.annotation.Nullable String description) {
     this.description = description;
   }
 
 
-  public HubStatusEventDTO proofOfDeliveryUrl(@jakarta.annotation.Nullable String proofOfDeliveryUrl) {
+  public HubStatusEventDTO proofOfDeliveryUrl(@javax.annotation.Nullable String proofOfDeliveryUrl) {
     this.proofOfDeliveryUrl = proofOfDeliveryUrl;
     return this;
   }
@@ -190,24 +206,17 @@ public class HubStatusEventDTO {
    * URL to proof-of-delivery image (only for DELIVERED status)
    * @return proofOfDeliveryUrl
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROOF_OF_DELIVERY_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getProofOfDeliveryUrl() {
     return proofOfDeliveryUrl;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROOF_OF_DELIVERY_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProofOfDeliveryUrl(@jakarta.annotation.Nullable String proofOfDeliveryUrl) {
+  public void setProofOfDeliveryUrl(@javax.annotation.Nullable String proofOfDeliveryUrl) {
     this.proofOfDeliveryUrl = proofOfDeliveryUrl;
   }
 
 
-  /**
-   * Return true if this HubStatusEventDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -251,59 +260,105 @@ public class HubStatusEventDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("status");
+    openapiFields.add("occurredAt");
+    openapiFields.add("description");
+    openapiFields.add("proofOfDeliveryUrl");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubStatusEventDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubStatusEventDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubStatusEventDTO is not found in the empty JSON string", HubStatusEventDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubStatusEventDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubStatusEventDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
+      }
+      // validate the optional field `status`
+      if (jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) {
+        StatusEnum.validateJsonElement(jsonObj.get("status"));
+      }
+      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
+      }
+      if ((jsonObj.get("proofOfDeliveryUrl") != null && !jsonObj.get("proofOfDeliveryUrl").isJsonNull()) && !jsonObj.get("proofOfDeliveryUrl").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `proofOfDeliveryUrl` to be a primitive type in the JSON string but got `%s`", jsonObj.get("proofOfDeliveryUrl").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubStatusEventDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubStatusEventDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubStatusEventDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubStatusEventDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubStatusEventDTO>() {
+           @Override
+           public void write(JsonWriter out, HubStatusEventDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubStatusEventDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubStatusEventDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubStatusEventDTO
+   * @throws IOException if the JSON string is invalid with respect to HubStatusEventDTO
+   */
+  public static HubStatusEventDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubStatusEventDTO.class);
+  }
 
-    // add `status` to the URL query string
-    if (getStatus() != null) {
-      joiner.add(String.format("%sstatus%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStatus()))));
-    }
-
-    // add `occurredAt` to the URL query string
-    if (getOccurredAt() != null) {
-      joiner.add(String.format("%soccurredAt%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOccurredAt()))));
-    }
-
-    // add `description` to the URL query string
-    if (getDescription() != null) {
-      joiner.add(String.format("%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
-    }
-
-    // add `proofOfDeliveryUrl` to the URL query string
-    if (getProofOfDeliveryUrl() != null) {
-      joiner.add(String.format("%sproofOfDeliveryUrl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProofOfDeliveryUrl()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubStatusEventDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

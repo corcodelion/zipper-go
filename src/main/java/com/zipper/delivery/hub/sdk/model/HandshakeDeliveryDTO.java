@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * PIN handshake configuration for a delivery
  */
-@JsonPropertyOrder({
-  HandshakeDeliveryDTO.JSON_PROPERTY_IS_REQUIRED,
-  HandshakeDeliveryDTO.JSON_PROPERTY_SEND_SMS_TO_DROPOFF_CONTACT
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HandshakeDeliveryDTO {
-  public static final String JSON_PROPERTY_IS_REQUIRED = "isRequired";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_IS_REQUIRED = "isRequired";
+  @SerializedName(SERIALIZED_NAME_IS_REQUIRED)
+  @javax.annotation.Nullable
   private Boolean isRequired = false;
 
-  public static final String JSON_PROPERTY_SEND_SMS_TO_DROPOFF_CONTACT = "sendSmsToDropoffContact";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SEND_SMS_TO_DROPOFF_CONTACT = "sendSmsToDropoffContact";
+  @SerializedName(SERIALIZED_NAME_SEND_SMS_TO_DROPOFF_CONTACT)
+  @javax.annotation.Nullable
   private Boolean sendSmsToDropoffContact = true;
 
-  public HandshakeDeliveryDTO() { 
+  public HandshakeDeliveryDTO() {
   }
 
-  public HandshakeDeliveryDTO isRequired(@jakarta.annotation.Nullable Boolean isRequired) {
+  public HandshakeDeliveryDTO isRequired(@javax.annotation.Nullable Boolean isRequired) {
     this.isRequired = isRequired;
     return this;
   }
@@ -58,22 +72,17 @@ public class HandshakeDeliveryDTO {
    * Enable PIN verification feature on the delivery.
    * @return isRequired
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_IS_REQUIRED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Boolean getIsRequired() {
     return isRequired;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_IS_REQUIRED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setIsRequired(@jakarta.annotation.Nullable Boolean isRequired) {
+  public void setIsRequired(@javax.annotation.Nullable Boolean isRequired) {
     this.isRequired = isRequired;
   }
 
 
-  public HandshakeDeliveryDTO sendSmsToDropoffContact(@jakarta.annotation.Nullable Boolean sendSmsToDropoffContact) {
+  public HandshakeDeliveryDTO sendSmsToDropoffContact(@javax.annotation.Nullable Boolean sendSmsToDropoffContact) {
     this.sendSmsToDropoffContact = sendSmsToDropoffContact;
     return this;
   }
@@ -82,24 +91,17 @@ public class HandshakeDeliveryDTO {
    * When enabled, DHS will send a pre-defined SMS to recipient including the delivery PIN code. Disable only if PIN is communicated some other way.
    * @return sendSmsToDropoffContact
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SEND_SMS_TO_DROPOFF_CONTACT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Boolean getSendSmsToDropoffContact() {
     return sendSmsToDropoffContact;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SEND_SMS_TO_DROPOFF_CONTACT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSendSmsToDropoffContact(@jakarta.annotation.Nullable Boolean sendSmsToDropoffContact) {
+  public void setSendSmsToDropoffContact(@javax.annotation.Nullable Boolean sendSmsToDropoffContact) {
     this.sendSmsToDropoffContact = sendSmsToDropoffContact;
   }
 
 
-  /**
-   * Return true if this HandshakeDeliveryDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,90 @@ public class HandshakeDeliveryDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("isRequired");
+    openapiFields.add("sendSmsToDropoffContact");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HandshakeDeliveryDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HandshakeDeliveryDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HandshakeDeliveryDTO is not found in the empty JSON string", HandshakeDeliveryDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HandshakeDeliveryDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HandshakeDeliveryDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HandshakeDeliveryDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HandshakeDeliveryDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HandshakeDeliveryDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HandshakeDeliveryDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HandshakeDeliveryDTO>() {
+           @Override
+           public void write(JsonWriter out, HandshakeDeliveryDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HandshakeDeliveryDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HandshakeDeliveryDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HandshakeDeliveryDTO
+   * @throws IOException if the JSON string is invalid with respect to HandshakeDeliveryDTO
+   */
+  public static HandshakeDeliveryDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HandshakeDeliveryDTO.class);
+  }
 
-    // add `isRequired` to the URL query string
-    if (getIsRequired() != null) {
-      joiner.add(String.format("%sisRequired%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsRequired()))));
-    }
-
-    // add `sendSmsToDropoffContact` to the URL query string
-    if (getSendSmsToDropoffContact() != null) {
-      joiner.add(String.format("%ssendSmsToDropoffContact%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSendSmsToDropoffContact()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HandshakeDeliveryDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

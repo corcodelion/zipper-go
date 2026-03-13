@@ -13,68 +13,66 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.HubDeliveryLocationDTO;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * HubDeliverySearchDTO
  */
-@JsonPropertyOrder({
-  HubDeliverySearchDTO.JSON_PROPERTY_DELIVERY_ID,
-  HubDeliverySearchDTO.JSON_PROPERTY_USER_ID,
-  HubDeliverySearchDTO.JSON_PROPERTY_DELIVERY_TYPE,
-  HubDeliverySearchDTO.JSON_PROPERTY_PROVIDER_TYPE,
-  HubDeliverySearchDTO.JSON_PROPERTY_STATUS,
-  HubDeliverySearchDTO.JSON_PROPERTY_HUB_TRACKING_NUMBER,
-  HubDeliverySearchDTO.JSON_PROPERTY_HUB_ORDER_ID,
-  HubDeliverySearchDTO.JSON_PROPERTY_EXTERNAL_ORDER_ID,
-  HubDeliverySearchDTO.JSON_PROPERTY_PROVIDER_TRACKING_ID,
-  HubDeliverySearchDTO.JSON_PROPERTY_PROVIDER_TRACKING_URL,
-  HubDeliverySearchDTO.JSON_PROPERTY_SCHEDULED_PICKUP_TIME,
-  HubDeliverySearchDTO.JSON_PROPERTY_ESTIMATED_ARRIVAL,
-  HubDeliverySearchDTO.JSON_PROPERTY_CREATED_DATE,
-  HubDeliverySearchDTO.JSON_PROPERTY_PICKUP_CONTACT_NAME,
-  HubDeliverySearchDTO.JSON_PROPERTY_PICKUP_CONTACT_PHONE,
-  HubDeliverySearchDTO.JSON_PROPERTY_PICKUP_LOCATION,
-  HubDeliverySearchDTO.JSON_PROPERTY_DROPOFF_CONTACT_NAME,
-  HubDeliverySearchDTO.JSON_PROPERTY_DROPOFF_CONTACT_PHONE,
-  HubDeliverySearchDTO.JSON_PROPERTY_DROPOFF_LOCATION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubDeliverySearchDTO {
-  public static final String JSON_PROPERTY_DELIVERY_ID = "deliveryId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_ID = "deliveryId";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_ID)
+  @javax.annotation.Nullable
   private UUID deliveryId;
 
-  public static final String JSON_PROPERTY_USER_ID = "userId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_USER_ID = "userId";
+  @SerializedName(SERIALIZED_NAME_USER_ID)
+  @javax.annotation.Nullable
   private Long userId;
 
   /**
    * Gets or Sets deliveryType
    */
+  @JsonAdapter(DeliveryTypeEnum.Adapter.class)
   public enum DeliveryTypeEnum {
-    STORE_IMMEDIATE(String.valueOf("STORE_IMMEDIATE")),
+    STORE_IMMEDIATE("STORE_IMMEDIATE"),
     
-    FOOD_IMMEDIATE(String.valueOf("FOOD_IMMEDIATE")),
+    FOOD_IMMEDIATE("FOOD_IMMEDIATE"),
     
-    STORE_NEXT_DAY(String.valueOf("STORE_NEXT_DAY"));
+    STORE_NEXT_DAY("STORE_NEXT_DAY");
 
     private String value;
 
@@ -82,7 +80,6 @@ public class HubDeliverySearchDTO {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -92,7 +89,6 @@ public class HubDeliverySearchDTO {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static DeliveryTypeEnum fromValue(String value) {
       for (DeliveryTypeEnum b : DeliveryTypeEnum.values()) {
         if (b.value.equals(value)) {
@@ -101,21 +97,41 @@ public class HubDeliverySearchDTO {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<DeliveryTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DeliveryTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public DeliveryTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return DeliveryTypeEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      DeliveryTypeEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_DELIVERY_TYPE = "deliveryType";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_TYPE = "deliveryType";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_TYPE)
+  @javax.annotation.Nullable
   private DeliveryTypeEnum deliveryType;
 
   /**
    * Gets or Sets providerType
    */
+  @JsonAdapter(ProviderTypeEnum.Adapter.class)
   public enum ProviderTypeEnum {
-    ZIPPERG(String.valueOf("ZIPPERG")),
+    ZIPPERG("ZIPPERG"),
     
-    ZIPPERW(String.valueOf("ZIPPERW")),
+    ZIPPERW("ZIPPERW"),
     
-    ZIPPERK(String.valueOf("ZIPPERK"));
+    ZIPPERK("ZIPPERK");
 
     private String value;
 
@@ -123,7 +139,6 @@ public class HubDeliverySearchDTO {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -133,7 +148,6 @@ public class HubDeliverySearchDTO {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static ProviderTypeEnum fromValue(String value) {
       for (ProviderTypeEnum b : ProviderTypeEnum.values()) {
         if (b.value.equals(value)) {
@@ -142,33 +156,53 @@ public class HubDeliverySearchDTO {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<ProviderTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final ProviderTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public ProviderTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return ProviderTypeEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      ProviderTypeEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_PROVIDER_TYPE = "providerType";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROVIDER_TYPE = "providerType";
+  @SerializedName(SERIALIZED_NAME_PROVIDER_TYPE)
+  @javax.annotation.Nullable
   private ProviderTypeEnum providerType;
 
   /**
    * Gets or Sets status
    */
+  @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
-    CREATED(String.valueOf("CREATED")),
+    CREATED("CREATED"),
     
-    ASSIGNED(String.valueOf("ASSIGNED")),
+    ASSIGNED("ASSIGNED"),
     
-    READY_FOR_PICKUP(String.valueOf("READY_FOR_PICKUP")),
+    READY_FOR_PICKUP("READY_FOR_PICKUP"),
     
-    PICKED_UP(String.valueOf("PICKED_UP")),
+    PICKED_UP("PICKED_UP"),
     
-    IN_TRANSIT(String.valueOf("IN_TRANSIT")),
+    IN_TRANSIT("IN_TRANSIT"),
     
-    DELIVERED(String.valueOf("DELIVERED")),
+    DELIVERED("DELIVERED"),
     
-    CANCELLED(String.valueOf("CANCELLED")),
+    CANCELLED("CANCELLED"),
     
-    FAILED(String.valueOf("FAILED")),
+    FAILED("FAILED"),
     
-    REJECTED(String.valueOf("REJECTED"));
+    REJECTED("REJECTED");
 
     private String value;
 
@@ -176,7 +210,6 @@ public class HubDeliverySearchDTO {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -186,7 +219,6 @@ public class HubDeliverySearchDTO {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static StatusEnum fromValue(String value) {
       for (StatusEnum b : StatusEnum.values()) {
         if (b.value.equals(value)) {
@@ -195,72 +227,105 @@ public class HubDeliverySearchDTO {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<StatusEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final StatusEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public StatusEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return StatusEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      StatusEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_STATUS = "status";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STATUS = "status";
+  @SerializedName(SERIALIZED_NAME_STATUS)
+  @javax.annotation.Nullable
   private StatusEnum status;
 
-  public static final String JSON_PROPERTY_HUB_TRACKING_NUMBER = "hubTrackingNumber";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_HUB_TRACKING_NUMBER = "hubTrackingNumber";
+  @SerializedName(SERIALIZED_NAME_HUB_TRACKING_NUMBER)
+  @javax.annotation.Nullable
   private String hubTrackingNumber;
 
-  public static final String JSON_PROPERTY_HUB_ORDER_ID = "hubOrderId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_HUB_ORDER_ID = "hubOrderId";
+  @SerializedName(SERIALIZED_NAME_HUB_ORDER_ID)
+  @javax.annotation.Nullable
   private String hubOrderId;
 
-  public static final String JSON_PROPERTY_EXTERNAL_ORDER_ID = "externalOrderId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXTERNAL_ORDER_ID = "externalOrderId";
+  @SerializedName(SERIALIZED_NAME_EXTERNAL_ORDER_ID)
+  @javax.annotation.Nullable
   private String externalOrderId;
 
-  public static final String JSON_PROPERTY_PROVIDER_TRACKING_ID = "providerTrackingId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROVIDER_TRACKING_ID = "providerTrackingId";
+  @SerializedName(SERIALIZED_NAME_PROVIDER_TRACKING_ID)
+  @javax.annotation.Nullable
   private String providerTrackingId;
 
-  public static final String JSON_PROPERTY_PROVIDER_TRACKING_URL = "providerTrackingUrl";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PROVIDER_TRACKING_URL = "providerTrackingUrl";
+  @SerializedName(SERIALIZED_NAME_PROVIDER_TRACKING_URL)
+  @javax.annotation.Nullable
   private String providerTrackingUrl;
 
-  public static final String JSON_PROPERTY_SCHEDULED_PICKUP_TIME = "scheduledPickupTime";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SCHEDULED_PICKUP_TIME = "scheduledPickupTime";
+  @SerializedName(SERIALIZED_NAME_SCHEDULED_PICKUP_TIME)
+  @javax.annotation.Nullable
   private OffsetDateTime scheduledPickupTime;
 
-  public static final String JSON_PROPERTY_ESTIMATED_ARRIVAL = "estimatedArrival";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ESTIMATED_ARRIVAL = "estimatedArrival";
+  @SerializedName(SERIALIZED_NAME_ESTIMATED_ARRIVAL)
+  @javax.annotation.Nullable
   private OffsetDateTime estimatedArrival;
 
-  public static final String JSON_PROPERTY_CREATED_DATE = "createdDate";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CREATED_DATE = "createdDate";
+  @SerializedName(SERIALIZED_NAME_CREATED_DATE)
+  @javax.annotation.Nullable
   private OffsetDateTime createdDate;
 
-  public static final String JSON_PROPERTY_PICKUP_CONTACT_NAME = "pickupContactName";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PICKUP_CONTACT_NAME = "pickupContactName";
+  @SerializedName(SERIALIZED_NAME_PICKUP_CONTACT_NAME)
+  @javax.annotation.Nullable
   private String pickupContactName;
 
-  public static final String JSON_PROPERTY_PICKUP_CONTACT_PHONE = "pickupContactPhone";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PICKUP_CONTACT_PHONE = "pickupContactPhone";
+  @SerializedName(SERIALIZED_NAME_PICKUP_CONTACT_PHONE)
+  @javax.annotation.Nullable
   private String pickupContactPhone;
 
-  public static final String JSON_PROPERTY_PICKUP_LOCATION = "pickupLocation";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PICKUP_LOCATION = "pickupLocation";
+  @SerializedName(SERIALIZED_NAME_PICKUP_LOCATION)
+  @javax.annotation.Nullable
   private HubDeliveryLocationDTO pickupLocation;
 
-  public static final String JSON_PROPERTY_DROPOFF_CONTACT_NAME = "dropoffContactName";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DROPOFF_CONTACT_NAME = "dropoffContactName";
+  @SerializedName(SERIALIZED_NAME_DROPOFF_CONTACT_NAME)
+  @javax.annotation.Nullable
   private String dropoffContactName;
 
-  public static final String JSON_PROPERTY_DROPOFF_CONTACT_PHONE = "dropoffContactPhone";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DROPOFF_CONTACT_PHONE = "dropoffContactPhone";
+  @SerializedName(SERIALIZED_NAME_DROPOFF_CONTACT_PHONE)
+  @javax.annotation.Nullable
   private String dropoffContactPhone;
 
-  public static final String JSON_PROPERTY_DROPOFF_LOCATION = "dropoffLocation";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DROPOFF_LOCATION = "dropoffLocation";
+  @SerializedName(SERIALIZED_NAME_DROPOFF_LOCATION)
+  @javax.annotation.Nullable
   private HubDeliveryLocationDTO dropoffLocation;
 
-  public HubDeliverySearchDTO() { 
+  public HubDeliverySearchDTO() {
   }
 
-  public HubDeliverySearchDTO deliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public HubDeliverySearchDTO deliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
     return this;
   }
@@ -269,22 +334,17 @@ public class HubDeliverySearchDTO {
    * Get deliveryId
    * @return deliveryId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public UUID getDeliveryId() {
     return deliveryId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public void setDeliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
   }
 
 
-  public HubDeliverySearchDTO userId(@jakarta.annotation.Nullable Long userId) {
+  public HubDeliverySearchDTO userId(@javax.annotation.Nullable Long userId) {
     this.userId = userId;
     return this;
   }
@@ -293,22 +353,17 @@ public class HubDeliverySearchDTO {
    * Get userId
    * @return userId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_USER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Long getUserId() {
     return userId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_USER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUserId(@jakarta.annotation.Nullable Long userId) {
+  public void setUserId(@javax.annotation.Nullable Long userId) {
     this.userId = userId;
   }
 
 
-  public HubDeliverySearchDTO deliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public HubDeliverySearchDTO deliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
     return this;
   }
@@ -317,22 +372,17 @@ public class HubDeliverySearchDTO {
    * Get deliveryType
    * @return deliveryType
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public DeliveryTypeEnum getDeliveryType() {
     return deliveryType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public void setDeliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
   }
 
 
-  public HubDeliverySearchDTO providerType(@jakarta.annotation.Nullable ProviderTypeEnum providerType) {
+  public HubDeliverySearchDTO providerType(@javax.annotation.Nullable ProviderTypeEnum providerType) {
     this.providerType = providerType;
     return this;
   }
@@ -341,22 +391,17 @@ public class HubDeliverySearchDTO {
    * Get providerType
    * @return providerType
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public ProviderTypeEnum getProviderType() {
     return providerType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProviderType(@jakarta.annotation.Nullable ProviderTypeEnum providerType) {
+  public void setProviderType(@javax.annotation.Nullable ProviderTypeEnum providerType) {
     this.providerType = providerType;
   }
 
 
-  public HubDeliverySearchDTO status(@jakarta.annotation.Nullable StatusEnum status) {
+  public HubDeliverySearchDTO status(@javax.annotation.Nullable StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -365,22 +410,17 @@ public class HubDeliverySearchDTO {
    * Get status
    * @return status
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public StatusEnum getStatus() {
     return status;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStatus(@jakarta.annotation.Nullable StatusEnum status) {
+  public void setStatus(@javax.annotation.Nullable StatusEnum status) {
     this.status = status;
   }
 
 
-  public HubDeliverySearchDTO hubTrackingNumber(@jakarta.annotation.Nullable String hubTrackingNumber) {
+  public HubDeliverySearchDTO hubTrackingNumber(@javax.annotation.Nullable String hubTrackingNumber) {
     this.hubTrackingNumber = hubTrackingNumber;
     return this;
   }
@@ -389,22 +429,17 @@ public class HubDeliverySearchDTO {
    * Get hubTrackingNumber
    * @return hubTrackingNumber
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HUB_TRACKING_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getHubTrackingNumber() {
     return hubTrackingNumber;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_HUB_TRACKING_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHubTrackingNumber(@jakarta.annotation.Nullable String hubTrackingNumber) {
+  public void setHubTrackingNumber(@javax.annotation.Nullable String hubTrackingNumber) {
     this.hubTrackingNumber = hubTrackingNumber;
   }
 
 
-  public HubDeliverySearchDTO hubOrderId(@jakarta.annotation.Nullable String hubOrderId) {
+  public HubDeliverySearchDTO hubOrderId(@javax.annotation.Nullable String hubOrderId) {
     this.hubOrderId = hubOrderId;
     return this;
   }
@@ -413,22 +448,17 @@ public class HubDeliverySearchDTO {
    * Get hubOrderId
    * @return hubOrderId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HUB_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getHubOrderId() {
     return hubOrderId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_HUB_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHubOrderId(@jakarta.annotation.Nullable String hubOrderId) {
+  public void setHubOrderId(@javax.annotation.Nullable String hubOrderId) {
     this.hubOrderId = hubOrderId;
   }
 
 
-  public HubDeliverySearchDTO externalOrderId(@jakarta.annotation.Nullable String externalOrderId) {
+  public HubDeliverySearchDTO externalOrderId(@javax.annotation.Nullable String externalOrderId) {
     this.externalOrderId = externalOrderId;
     return this;
   }
@@ -437,22 +467,17 @@ public class HubDeliverySearchDTO {
    * Get externalOrderId
    * @return externalOrderId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getExternalOrderId() {
     return externalOrderId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExternalOrderId(@jakarta.annotation.Nullable String externalOrderId) {
+  public void setExternalOrderId(@javax.annotation.Nullable String externalOrderId) {
     this.externalOrderId = externalOrderId;
   }
 
 
-  public HubDeliverySearchDTO providerTrackingId(@jakarta.annotation.Nullable String providerTrackingId) {
+  public HubDeliverySearchDTO providerTrackingId(@javax.annotation.Nullable String providerTrackingId) {
     this.providerTrackingId = providerTrackingId;
     return this;
   }
@@ -461,22 +486,17 @@ public class HubDeliverySearchDTO {
    * Get providerTrackingId
    * @return providerTrackingId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TRACKING_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getProviderTrackingId() {
     return providerTrackingId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TRACKING_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProviderTrackingId(@jakarta.annotation.Nullable String providerTrackingId) {
+  public void setProviderTrackingId(@javax.annotation.Nullable String providerTrackingId) {
     this.providerTrackingId = providerTrackingId;
   }
 
 
-  public HubDeliverySearchDTO providerTrackingUrl(@jakarta.annotation.Nullable String providerTrackingUrl) {
+  public HubDeliverySearchDTO providerTrackingUrl(@javax.annotation.Nullable String providerTrackingUrl) {
     this.providerTrackingUrl = providerTrackingUrl;
     return this;
   }
@@ -485,22 +505,17 @@ public class HubDeliverySearchDTO {
    * Get providerTrackingUrl
    * @return providerTrackingUrl
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TRACKING_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getProviderTrackingUrl() {
     return providerTrackingUrl;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PROVIDER_TRACKING_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setProviderTrackingUrl(@jakarta.annotation.Nullable String providerTrackingUrl) {
+  public void setProviderTrackingUrl(@javax.annotation.Nullable String providerTrackingUrl) {
     this.providerTrackingUrl = providerTrackingUrl;
   }
 
 
-  public HubDeliverySearchDTO scheduledPickupTime(@jakarta.annotation.Nullable OffsetDateTime scheduledPickupTime) {
+  public HubDeliverySearchDTO scheduledPickupTime(@javax.annotation.Nullable OffsetDateTime scheduledPickupTime) {
     this.scheduledPickupTime = scheduledPickupTime;
     return this;
   }
@@ -509,22 +524,17 @@ public class HubDeliverySearchDTO {
    * Get scheduledPickupTime
    * @return scheduledPickupTime
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SCHEDULED_PICKUP_TIME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getScheduledPickupTime() {
     return scheduledPickupTime;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SCHEDULED_PICKUP_TIME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setScheduledPickupTime(@jakarta.annotation.Nullable OffsetDateTime scheduledPickupTime) {
+  public void setScheduledPickupTime(@javax.annotation.Nullable OffsetDateTime scheduledPickupTime) {
     this.scheduledPickupTime = scheduledPickupTime;
   }
 
 
-  public HubDeliverySearchDTO estimatedArrival(@jakarta.annotation.Nullable OffsetDateTime estimatedArrival) {
+  public HubDeliverySearchDTO estimatedArrival(@javax.annotation.Nullable OffsetDateTime estimatedArrival) {
     this.estimatedArrival = estimatedArrival;
     return this;
   }
@@ -533,22 +543,17 @@ public class HubDeliverySearchDTO {
    * Get estimatedArrival
    * @return estimatedArrival
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ESTIMATED_ARRIVAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getEstimatedArrival() {
     return estimatedArrival;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ESTIMATED_ARRIVAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setEstimatedArrival(@jakarta.annotation.Nullable OffsetDateTime estimatedArrival) {
+  public void setEstimatedArrival(@javax.annotation.Nullable OffsetDateTime estimatedArrival) {
     this.estimatedArrival = estimatedArrival;
   }
 
 
-  public HubDeliverySearchDTO createdDate(@jakarta.annotation.Nullable OffsetDateTime createdDate) {
+  public HubDeliverySearchDTO createdDate(@javax.annotation.Nullable OffsetDateTime createdDate) {
     this.createdDate = createdDate;
     return this;
   }
@@ -557,22 +562,17 @@ public class HubDeliverySearchDTO {
    * Get createdDate
    * @return createdDate
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CREATED_DATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getCreatedDate() {
     return createdDate;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CREATED_DATE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCreatedDate(@jakarta.annotation.Nullable OffsetDateTime createdDate) {
+  public void setCreatedDate(@javax.annotation.Nullable OffsetDateTime createdDate) {
     this.createdDate = createdDate;
   }
 
 
-  public HubDeliverySearchDTO pickupContactName(@jakarta.annotation.Nullable String pickupContactName) {
+  public HubDeliverySearchDTO pickupContactName(@javax.annotation.Nullable String pickupContactName) {
     this.pickupContactName = pickupContactName;
     return this;
   }
@@ -581,22 +581,17 @@ public class HubDeliverySearchDTO {
    * Get pickupContactName
    * @return pickupContactName
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PICKUP_CONTACT_NAME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getPickupContactName() {
     return pickupContactName;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PICKUP_CONTACT_NAME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPickupContactName(@jakarta.annotation.Nullable String pickupContactName) {
+  public void setPickupContactName(@javax.annotation.Nullable String pickupContactName) {
     this.pickupContactName = pickupContactName;
   }
 
 
-  public HubDeliverySearchDTO pickupContactPhone(@jakarta.annotation.Nullable String pickupContactPhone) {
+  public HubDeliverySearchDTO pickupContactPhone(@javax.annotation.Nullable String pickupContactPhone) {
     this.pickupContactPhone = pickupContactPhone;
     return this;
   }
@@ -605,22 +600,17 @@ public class HubDeliverySearchDTO {
    * Get pickupContactPhone
    * @return pickupContactPhone
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PICKUP_CONTACT_PHONE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getPickupContactPhone() {
     return pickupContactPhone;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PICKUP_CONTACT_PHONE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPickupContactPhone(@jakarta.annotation.Nullable String pickupContactPhone) {
+  public void setPickupContactPhone(@javax.annotation.Nullable String pickupContactPhone) {
     this.pickupContactPhone = pickupContactPhone;
   }
 
 
-  public HubDeliverySearchDTO pickupLocation(@jakarta.annotation.Nullable HubDeliveryLocationDTO pickupLocation) {
+  public HubDeliverySearchDTO pickupLocation(@javax.annotation.Nullable HubDeliveryLocationDTO pickupLocation) {
     this.pickupLocation = pickupLocation;
     return this;
   }
@@ -629,22 +619,17 @@ public class HubDeliverySearchDTO {
    * Get pickupLocation
    * @return pickupLocation
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PICKUP_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public HubDeliveryLocationDTO getPickupLocation() {
     return pickupLocation;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PICKUP_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPickupLocation(@jakarta.annotation.Nullable HubDeliveryLocationDTO pickupLocation) {
+  public void setPickupLocation(@javax.annotation.Nullable HubDeliveryLocationDTO pickupLocation) {
     this.pickupLocation = pickupLocation;
   }
 
 
-  public HubDeliverySearchDTO dropoffContactName(@jakarta.annotation.Nullable String dropoffContactName) {
+  public HubDeliverySearchDTO dropoffContactName(@javax.annotation.Nullable String dropoffContactName) {
     this.dropoffContactName = dropoffContactName;
     return this;
   }
@@ -653,22 +638,17 @@ public class HubDeliverySearchDTO {
    * Get dropoffContactName
    * @return dropoffContactName
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DROPOFF_CONTACT_NAME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getDropoffContactName() {
     return dropoffContactName;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DROPOFF_CONTACT_NAME)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDropoffContactName(@jakarta.annotation.Nullable String dropoffContactName) {
+  public void setDropoffContactName(@javax.annotation.Nullable String dropoffContactName) {
     this.dropoffContactName = dropoffContactName;
   }
 
 
-  public HubDeliverySearchDTO dropoffContactPhone(@jakarta.annotation.Nullable String dropoffContactPhone) {
+  public HubDeliverySearchDTO dropoffContactPhone(@javax.annotation.Nullable String dropoffContactPhone) {
     this.dropoffContactPhone = dropoffContactPhone;
     return this;
   }
@@ -677,22 +657,17 @@ public class HubDeliverySearchDTO {
    * Get dropoffContactPhone
    * @return dropoffContactPhone
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DROPOFF_CONTACT_PHONE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getDropoffContactPhone() {
     return dropoffContactPhone;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DROPOFF_CONTACT_PHONE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDropoffContactPhone(@jakarta.annotation.Nullable String dropoffContactPhone) {
+  public void setDropoffContactPhone(@javax.annotation.Nullable String dropoffContactPhone) {
     this.dropoffContactPhone = dropoffContactPhone;
   }
 
 
-  public HubDeliverySearchDTO dropoffLocation(@jakarta.annotation.Nullable HubDeliveryLocationDTO dropoffLocation) {
+  public HubDeliverySearchDTO dropoffLocation(@javax.annotation.Nullable HubDeliveryLocationDTO dropoffLocation) {
     this.dropoffLocation = dropoffLocation;
     return this;
   }
@@ -701,24 +676,17 @@ public class HubDeliverySearchDTO {
    * Get dropoffLocation
    * @return dropoffLocation
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DROPOFF_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public HubDeliveryLocationDTO getDropoffLocation() {
     return dropoffLocation;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DROPOFF_LOCATION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDropoffLocation(@jakarta.annotation.Nullable HubDeliveryLocationDTO dropoffLocation) {
+  public void setDropoffLocation(@javax.annotation.Nullable HubDeliveryLocationDTO dropoffLocation) {
     this.dropoffLocation = dropoffLocation;
   }
 
 
-  /**
-   * Return true if this HubDeliverySearchDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -792,134 +760,166 @@ public class HubDeliverySearchDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("deliveryId");
+    openapiFields.add("userId");
+    openapiFields.add("deliveryType");
+    openapiFields.add("providerType");
+    openapiFields.add("status");
+    openapiFields.add("hubTrackingNumber");
+    openapiFields.add("hubOrderId");
+    openapiFields.add("externalOrderId");
+    openapiFields.add("providerTrackingId");
+    openapiFields.add("providerTrackingUrl");
+    openapiFields.add("scheduledPickupTime");
+    openapiFields.add("estimatedArrival");
+    openapiFields.add("createdDate");
+    openapiFields.add("pickupContactName");
+    openapiFields.add("pickupContactPhone");
+    openapiFields.add("pickupLocation");
+    openapiFields.add("dropoffContactName");
+    openapiFields.add("dropoffContactPhone");
+    openapiFields.add("dropoffLocation");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubDeliverySearchDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubDeliverySearchDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubDeliverySearchDTO is not found in the empty JSON string", HubDeliverySearchDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubDeliverySearchDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubDeliverySearchDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("deliveryId") != null && !jsonObj.get("deliveryId").isJsonNull()) && !jsonObj.get("deliveryId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryId").toString()));
+      }
+      if ((jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) && !jsonObj.get("deliveryType").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryType").toString()));
+      }
+      // validate the optional field `deliveryType`
+      if (jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) {
+        DeliveryTypeEnum.validateJsonElement(jsonObj.get("deliveryType"));
+      }
+      if ((jsonObj.get("providerType") != null && !jsonObj.get("providerType").isJsonNull()) && !jsonObj.get("providerType").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `providerType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("providerType").toString()));
+      }
+      // validate the optional field `providerType`
+      if (jsonObj.get("providerType") != null && !jsonObj.get("providerType").isJsonNull()) {
+        ProviderTypeEnum.validateJsonElement(jsonObj.get("providerType"));
+      }
+      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
+      }
+      // validate the optional field `status`
+      if (jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) {
+        StatusEnum.validateJsonElement(jsonObj.get("status"));
+      }
+      if ((jsonObj.get("hubTrackingNumber") != null && !jsonObj.get("hubTrackingNumber").isJsonNull()) && !jsonObj.get("hubTrackingNumber").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `hubTrackingNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("hubTrackingNumber").toString()));
+      }
+      if ((jsonObj.get("hubOrderId") != null && !jsonObj.get("hubOrderId").isJsonNull()) && !jsonObj.get("hubOrderId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `hubOrderId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("hubOrderId").toString()));
+      }
+      if ((jsonObj.get("externalOrderId") != null && !jsonObj.get("externalOrderId").isJsonNull()) && !jsonObj.get("externalOrderId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `externalOrderId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("externalOrderId").toString()));
+      }
+      if ((jsonObj.get("providerTrackingId") != null && !jsonObj.get("providerTrackingId").isJsonNull()) && !jsonObj.get("providerTrackingId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `providerTrackingId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("providerTrackingId").toString()));
+      }
+      if ((jsonObj.get("providerTrackingUrl") != null && !jsonObj.get("providerTrackingUrl").isJsonNull()) && !jsonObj.get("providerTrackingUrl").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `providerTrackingUrl` to be a primitive type in the JSON string but got `%s`", jsonObj.get("providerTrackingUrl").toString()));
+      }
+      if ((jsonObj.get("pickupContactName") != null && !jsonObj.get("pickupContactName").isJsonNull()) && !jsonObj.get("pickupContactName").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `pickupContactName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupContactName").toString()));
+      }
+      if ((jsonObj.get("pickupContactPhone") != null && !jsonObj.get("pickupContactPhone").isJsonNull()) && !jsonObj.get("pickupContactPhone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `pickupContactPhone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupContactPhone").toString()));
+      }
+      // validate the optional field `pickupLocation`
+      if (jsonObj.get("pickupLocation") != null && !jsonObj.get("pickupLocation").isJsonNull()) {
+        HubDeliveryLocationDTO.validateJsonElement(jsonObj.get("pickupLocation"));
+      }
+      if ((jsonObj.get("dropoffContactName") != null && !jsonObj.get("dropoffContactName").isJsonNull()) && !jsonObj.get("dropoffContactName").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `dropoffContactName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("dropoffContactName").toString()));
+      }
+      if ((jsonObj.get("dropoffContactPhone") != null && !jsonObj.get("dropoffContactPhone").isJsonNull()) && !jsonObj.get("dropoffContactPhone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `dropoffContactPhone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("dropoffContactPhone").toString()));
+      }
+      // validate the optional field `dropoffLocation`
+      if (jsonObj.get("dropoffLocation") != null && !jsonObj.get("dropoffLocation").isJsonNull()) {
+        HubDeliveryLocationDTO.validateJsonElement(jsonObj.get("dropoffLocation"));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubDeliverySearchDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubDeliverySearchDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubDeliverySearchDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubDeliverySearchDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubDeliverySearchDTO>() {
+           @Override
+           public void write(JsonWriter out, HubDeliverySearchDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubDeliverySearchDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubDeliverySearchDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubDeliverySearchDTO
+   * @throws IOException if the JSON string is invalid with respect to HubDeliverySearchDTO
+   */
+  public static HubDeliverySearchDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubDeliverySearchDTO.class);
+  }
 
-    // add `deliveryId` to the URL query string
-    if (getDeliveryId() != null) {
-      joiner.add(String.format("%sdeliveryId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryId()))));
-    }
-
-    // add `userId` to the URL query string
-    if (getUserId() != null) {
-      joiner.add(String.format("%suserId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
-    }
-
-    // add `deliveryType` to the URL query string
-    if (getDeliveryType() != null) {
-      joiner.add(String.format("%sdeliveryType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryType()))));
-    }
-
-    // add `providerType` to the URL query string
-    if (getProviderType() != null) {
-      joiner.add(String.format("%sproviderType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProviderType()))));
-    }
-
-    // add `status` to the URL query string
-    if (getStatus() != null) {
-      joiner.add(String.format("%sstatus%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStatus()))));
-    }
-
-    // add `hubTrackingNumber` to the URL query string
-    if (getHubTrackingNumber() != null) {
-      joiner.add(String.format("%shubTrackingNumber%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHubTrackingNumber()))));
-    }
-
-    // add `hubOrderId` to the URL query string
-    if (getHubOrderId() != null) {
-      joiner.add(String.format("%shubOrderId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHubOrderId()))));
-    }
-
-    // add `externalOrderId` to the URL query string
-    if (getExternalOrderId() != null) {
-      joiner.add(String.format("%sexternalOrderId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalOrderId()))));
-    }
-
-    // add `providerTrackingId` to the URL query string
-    if (getProviderTrackingId() != null) {
-      joiner.add(String.format("%sproviderTrackingId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProviderTrackingId()))));
-    }
-
-    // add `providerTrackingUrl` to the URL query string
-    if (getProviderTrackingUrl() != null) {
-      joiner.add(String.format("%sproviderTrackingUrl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProviderTrackingUrl()))));
-    }
-
-    // add `scheduledPickupTime` to the URL query string
-    if (getScheduledPickupTime() != null) {
-      joiner.add(String.format("%sscheduledPickupTime%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getScheduledPickupTime()))));
-    }
-
-    // add `estimatedArrival` to the URL query string
-    if (getEstimatedArrival() != null) {
-      joiner.add(String.format("%sestimatedArrival%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEstimatedArrival()))));
-    }
-
-    // add `createdDate` to the URL query string
-    if (getCreatedDate() != null) {
-      joiner.add(String.format("%screatedDate%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDate()))));
-    }
-
-    // add `pickupContactName` to the URL query string
-    if (getPickupContactName() != null) {
-      joiner.add(String.format("%spickupContactName%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPickupContactName()))));
-    }
-
-    // add `pickupContactPhone` to the URL query string
-    if (getPickupContactPhone() != null) {
-      joiner.add(String.format("%spickupContactPhone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPickupContactPhone()))));
-    }
-
-    // add `pickupLocation` to the URL query string
-    if (getPickupLocation() != null) {
-      joiner.add(getPickupLocation().toUrlQueryString(prefix + "pickupLocation" + suffix));
-    }
-
-    // add `dropoffContactName` to the URL query string
-    if (getDropoffContactName() != null) {
-      joiner.add(String.format("%sdropoffContactName%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDropoffContactName()))));
-    }
-
-    // add `dropoffContactPhone` to the URL query string
-    if (getDropoffContactPhone() != null) {
-      joiner.add(String.format("%sdropoffContactPhone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDropoffContactPhone()))));
-    }
-
-    // add `dropoffLocation` to the URL query string
-    if (getDropoffLocation() != null) {
-      joiner.add(getDropoffLocation().toUrlQueryString(prefix + "dropoffLocation" + suffix));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubDeliverySearchDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

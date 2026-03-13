@@ -13,61 +13,75 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.HubDeliverySearchDTO;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * PageResponseListHubDeliverySearchDTO
  */
-@JsonPropertyOrder({
-  PageResponseListHubDeliverySearchDTO.JSON_PROPERTY_PAGE,
-  PageResponseListHubDeliverySearchDTO.JSON_PROPERTY_TOTAL_PAGES,
-  PageResponseListHubDeliverySearchDTO.JSON_PROPERTY_TOTAL,
-  PageResponseListHubDeliverySearchDTO.JSON_PROPERTY_LIMIT,
-  PageResponseListHubDeliverySearchDTO.JSON_PROPERTY_DATA
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class PageResponseListHubDeliverySearchDTO {
-  public static final String JSON_PROPERTY_PAGE = "page";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PAGE = "page";
+  @SerializedName(SERIALIZED_NAME_PAGE)
+  @javax.annotation.Nullable
   private Integer page;
 
-  public static final String JSON_PROPERTY_TOTAL_PAGES = "totalPages";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_TOTAL_PAGES = "totalPages";
+  @SerializedName(SERIALIZED_NAME_TOTAL_PAGES)
+  @javax.annotation.Nullable
   private Integer totalPages;
 
-  public static final String JSON_PROPERTY_TOTAL = "total";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_TOTAL = "total";
+  @SerializedName(SERIALIZED_NAME_TOTAL)
+  @javax.annotation.Nullable
   private Long total;
 
-  public static final String JSON_PROPERTY_LIMIT = "limit";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_LIMIT = "limit";
+  @SerializedName(SERIALIZED_NAME_LIMIT)
+  @javax.annotation.Nullable
   private Integer limit;
 
-  public static final String JSON_PROPERTY_DATA = "data";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DATA = "data";
+  @SerializedName(SERIALIZED_NAME_DATA)
+  @javax.annotation.Nullable
   private List<HubDeliverySearchDTO> data = new ArrayList<>();
 
-  public PageResponseListHubDeliverySearchDTO() { 
+  public PageResponseListHubDeliverySearchDTO() {
   }
 
-  public PageResponseListHubDeliverySearchDTO page(@jakarta.annotation.Nullable Integer page) {
+  public PageResponseListHubDeliverySearchDTO page(@javax.annotation.Nullable Integer page) {
     this.page = page;
     return this;
   }
@@ -76,22 +90,17 @@ public class PageResponseListHubDeliverySearchDTO {
    * Get page
    * @return page
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getPage() {
     return page;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPage(@jakarta.annotation.Nullable Integer page) {
+  public void setPage(@javax.annotation.Nullable Integer page) {
     this.page = page;
   }
 
 
-  public PageResponseListHubDeliverySearchDTO totalPages(@jakarta.annotation.Nullable Integer totalPages) {
+  public PageResponseListHubDeliverySearchDTO totalPages(@javax.annotation.Nullable Integer totalPages) {
     this.totalPages = totalPages;
     return this;
   }
@@ -100,22 +109,17 @@ public class PageResponseListHubDeliverySearchDTO {
    * Get totalPages
    * @return totalPages
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TOTAL_PAGES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getTotalPages() {
     return totalPages;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_TOTAL_PAGES)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTotalPages(@jakarta.annotation.Nullable Integer totalPages) {
+  public void setTotalPages(@javax.annotation.Nullable Integer totalPages) {
     this.totalPages = totalPages;
   }
 
 
-  public PageResponseListHubDeliverySearchDTO total(@jakarta.annotation.Nullable Long total) {
+  public PageResponseListHubDeliverySearchDTO total(@javax.annotation.Nullable Long total) {
     this.total = total;
     return this;
   }
@@ -124,22 +128,17 @@ public class PageResponseListHubDeliverySearchDTO {
    * Get total
    * @return total
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TOTAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Long getTotal() {
     return total;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_TOTAL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTotal(@jakarta.annotation.Nullable Long total) {
+  public void setTotal(@javax.annotation.Nullable Long total) {
     this.total = total;
   }
 
 
-  public PageResponseListHubDeliverySearchDTO limit(@jakarta.annotation.Nullable Integer limit) {
+  public PageResponseListHubDeliverySearchDTO limit(@javax.annotation.Nullable Integer limit) {
     this.limit = limit;
     return this;
   }
@@ -148,22 +147,17 @@ public class PageResponseListHubDeliverySearchDTO {
    * Get limit
    * @return limit
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LIMIT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getLimit() {
     return limit;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LIMIT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLimit(@jakarta.annotation.Nullable Integer limit) {
+  public void setLimit(@javax.annotation.Nullable Integer limit) {
     this.limit = limit;
   }
 
 
-  public PageResponseListHubDeliverySearchDTO data(@jakarta.annotation.Nullable List<HubDeliverySearchDTO> data) {
+  public PageResponseListHubDeliverySearchDTO data(@javax.annotation.Nullable List<HubDeliverySearchDTO> data) {
     this.data = data;
     return this;
   }
@@ -180,24 +174,17 @@ public class PageResponseListHubDeliverySearchDTO {
    * Get data
    * @return data
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DATA)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public List<HubDeliverySearchDTO> getData() {
     return data;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DATA)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setData(@jakarta.annotation.Nullable List<HubDeliverySearchDTO> data) {
+  public void setData(@javax.annotation.Nullable List<HubDeliverySearchDTO> data) {
     this.data = data;
   }
 
 
-  /**
-   * Return true if this PageResponseListHubDeliverySearchDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -243,69 +230,107 @@ public class PageResponseListHubDeliverySearchDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("page");
+    openapiFields.add("totalPages");
+    openapiFields.add("total");
+    openapiFields.add("limit");
+    openapiFields.add("data");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to PageResponseListHubDeliverySearchDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
-    }
-
-    StringJoiner joiner = new StringJoiner("&");
-
-    // add `page` to the URL query string
-    if (getPage() != null) {
-      joiner.add(String.format("%spage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPage()))));
-    }
-
-    // add `totalPages` to the URL query string
-    if (getTotalPages() != null) {
-      joiner.add(String.format("%stotalPages%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalPages()))));
-    }
-
-    // add `total` to the URL query string
-    if (getTotal() != null) {
-      joiner.add(String.format("%stotal%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotal()))));
-    }
-
-    // add `limit` to the URL query string
-    if (getLimit() != null) {
-      joiner.add(String.format("%slimit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimit()))));
-    }
-
-    // add `data` to the URL query string
-    if (getData() != null) {
-      for (int i = 0; i < getData().size(); i++) {
-        if (getData().get(i) != null) {
-          joiner.add(getData().get(i).toUrlQueryString(String.format("%sdata%s%s", prefix, suffix,
-          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!PageResponseListHubDeliverySearchDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in PageResponseListHubDeliverySearchDTO is not found in the empty JSON string", PageResponseListHubDeliverySearchDTO.openapiRequiredFields.toString()));
         }
       }
-    }
 
-    return joiner.toString();
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!PageResponseListHubDeliverySearchDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `PageResponseListHubDeliverySearchDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (jsonObj.get("data") != null && !jsonObj.get("data").isJsonNull()) {
+        JsonArray jsonArraydata = jsonObj.getAsJsonArray("data");
+        if (jsonArraydata != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("data").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `data` to be an array in the JSON string but got `%s`", jsonObj.get("data").toString()));
+          }
+
+          // validate the optional field `data` (array)
+          for (int i = 0; i < jsonArraydata.size(); i++) {
+            HubDeliverySearchDTO.validateJsonElement(jsonArraydata.get(i));
+          };
+        }
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!PageResponseListHubDeliverySearchDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'PageResponseListHubDeliverySearchDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<PageResponseListHubDeliverySearchDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(PageResponseListHubDeliverySearchDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<PageResponseListHubDeliverySearchDTO>() {
+           @Override
+           public void write(JsonWriter out, PageResponseListHubDeliverySearchDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public PageResponseListHubDeliverySearchDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
+    }
+  }
+
+  /**
+   * Create an instance of PageResponseListHubDeliverySearchDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of PageResponseListHubDeliverySearchDTO
+   * @throws IOException if the JSON string is invalid with respect to PageResponseListHubDeliverySearchDTO
+   */
+  public static PageResponseListHubDeliverySearchDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, PageResponseListHubDeliverySearchDTO.class);
+  }
+
+  /**
+   * Convert an instance of PageResponseListHubDeliverySearchDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

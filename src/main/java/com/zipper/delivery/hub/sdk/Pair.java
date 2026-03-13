@@ -13,7 +13,7 @@
 
 package com.zipper.delivery.hub.sdk;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class Pair {
     private String name = "";
     private String value = "";

@@ -13,46 +13,60 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Sort criteria for ordering results
  */
-@JsonPropertyOrder({
-  SortField.JSON_PROPERTY_FIELD_NAME,
-  SortField.JSON_PROPERTY_DIRECTION
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class SortField {
-  public static final String JSON_PROPERTY_FIELD_NAME = "fieldName";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_FIELD_NAME = "fieldName";
+  @SerializedName(SERIALIZED_NAME_FIELD_NAME)
+  @javax.annotation.Nonnull
   private String fieldName;
 
   /**
    * Sort direction (case-insensitive)
    */
+  @JsonAdapter(DirectionEnum.Adapter.class)
   public enum DirectionEnum {
-    ASC(String.valueOf("ASC")),
+    ASC("ASC"),
     
-    ASC2(String.valueOf("asc")),
+    ASC2("asc"),
     
-    DESC(String.valueOf("DESC")),
+    DESC("DESC"),
     
-    DESC2(String.valueOf("desc"));
+    DESC2("desc");
 
     private String value;
 
@@ -60,7 +74,6 @@ public class SortField {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -70,7 +83,6 @@ public class SortField {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static DirectionEnum fromValue(String value) {
       for (DirectionEnum b : DirectionEnum.values()) {
         if (b.value.equals(value)) {
@@ -79,16 +91,35 @@ public class SortField {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<DirectionEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DirectionEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public DirectionEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return DirectionEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      DirectionEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_DIRECTION = "direction";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DIRECTION = "direction";
+  @SerializedName(SERIALIZED_NAME_DIRECTION)
+  @javax.annotation.Nullable
   private DirectionEnum direction = DirectionEnum.ASC2;
 
-  public SortField() { 
+  public SortField() {
   }
 
-  public SortField fieldName(@jakarta.annotation.Nonnull String fieldName) {
+  public SortField fieldName(@javax.annotation.Nonnull String fieldName) {
     this.fieldName = fieldName;
     return this;
   }
@@ -97,22 +128,17 @@ public class SortField {
    * Field name to sort by. Must be a sortable field.
    * @return fieldName
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_FIELD_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public String getFieldName() {
     return fieldName;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_FIELD_NAME)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setFieldName(@jakarta.annotation.Nonnull String fieldName) {
+  public void setFieldName(@javax.annotation.Nonnull String fieldName) {
     this.fieldName = fieldName;
   }
 
 
-  public SortField direction(@jakarta.annotation.Nullable DirectionEnum direction) {
+  public SortField direction(@javax.annotation.Nullable DirectionEnum direction) {
     this.direction = direction;
     return this;
   }
@@ -121,24 +147,17 @@ public class SortField {
    * Sort direction (case-insensitive)
    * @return direction
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DIRECTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public DirectionEnum getDirection() {
     return direction;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DIRECTION)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDirection(@jakarta.annotation.Nullable DirectionEnum direction) {
+  public void setDirection(@javax.annotation.Nullable DirectionEnum direction) {
     this.direction = direction;
   }
 
 
-  /**
-   * Return true if this SortField object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -178,49 +197,108 @@ public class SortField {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("fieldName");
+    openapiFields.add("direction");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("fieldName");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to SortField
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!SortField.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in SortField is not found in the empty JSON string", SortField.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!SortField.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SortField` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : SortField.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (!jsonObj.get("fieldName").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `fieldName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("fieldName").toString()));
+      }
+      if ((jsonObj.get("direction") != null && !jsonObj.get("direction").isJsonNull()) && !jsonObj.get("direction").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `direction` to be a primitive type in the JSON string but got `%s`", jsonObj.get("direction").toString()));
+      }
+      // validate the optional field `direction`
+      if (jsonObj.get("direction") != null && !jsonObj.get("direction").isJsonNull()) {
+        DirectionEnum.validateJsonElement(jsonObj.get("direction"));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!SortField.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'SortField' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<SortField> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(SortField.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<SortField>() {
+           @Override
+           public void write(JsonWriter out, SortField value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public SortField read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of SortField given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of SortField
+   * @throws IOException if the JSON string is invalid with respect to SortField
+   */
+  public static SortField fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, SortField.class);
+  }
 
-    // add `fieldName` to the URL query string
-    if (getFieldName() != null) {
-      joiner.add(String.format("%sfieldName%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFieldName()))));
-    }
-
-    // add `direction` to the URL query string
-    if (getDirection() != null) {
-      joiner.add(String.format("%sdirection%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDirection()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of SortField to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

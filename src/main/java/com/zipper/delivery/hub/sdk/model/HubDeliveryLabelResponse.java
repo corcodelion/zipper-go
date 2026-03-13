@@ -13,53 +13,67 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Label metadata and asset URLs for a delivery
  */
-@JsonPropertyOrder({
-  HubDeliveryLabelResponse.JSON_PROPERTY_BARCODE,
-  HubDeliveryLabelResponse.JSON_PROPERTY_BARCODE_IMAGE,
-  HubDeliveryLabelResponse.JSON_PROPERTY_QR_CODE,
-  HubDeliveryLabelResponse.JSON_PROPERTY_LABEL_PDF
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubDeliveryLabelResponse {
-  public static final String JSON_PROPERTY_BARCODE = "barcode";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_BARCODE = "barcode";
+  @SerializedName(SERIALIZED_NAME_BARCODE)
+  @javax.annotation.Nullable
   private String barcode;
 
-  public static final String JSON_PROPERTY_BARCODE_IMAGE = "barcodeImage";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_BARCODE_IMAGE = "barcodeImage";
+  @SerializedName(SERIALIZED_NAME_BARCODE_IMAGE)
+  @javax.annotation.Nullable
   private String barcodeImage;
 
-  public static final String JSON_PROPERTY_QR_CODE = "qrCode";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_QR_CODE = "qrCode";
+  @SerializedName(SERIALIZED_NAME_QR_CODE)
+  @javax.annotation.Nullable
   private String qrCode;
 
-  public static final String JSON_PROPERTY_LABEL_PDF = "labelPdf";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_LABEL_PDF = "labelPdf";
+  @SerializedName(SERIALIZED_NAME_LABEL_PDF)
+  @javax.annotation.Nullable
   private String labelPdf;
 
-  public HubDeliveryLabelResponse() { 
+  public HubDeliveryLabelResponse() {
   }
 
-  public HubDeliveryLabelResponse barcode(@jakarta.annotation.Nullable String barcode) {
+  public HubDeliveryLabelResponse barcode(@javax.annotation.Nullable String barcode) {
     this.barcode = barcode;
     return this;
   }
@@ -68,22 +82,17 @@ public class HubDeliveryLabelResponse {
    * Barcode value (tracking number or barcode)
    * @return barcode
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_BARCODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getBarcode() {
     return barcode;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_BARCODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBarcode(@jakarta.annotation.Nullable String barcode) {
+  public void setBarcode(@javax.annotation.Nullable String barcode) {
     this.barcode = barcode;
   }
 
 
-  public HubDeliveryLabelResponse barcodeImage(@jakarta.annotation.Nullable String barcodeImage) {
+  public HubDeliveryLabelResponse barcodeImage(@javax.annotation.Nullable String barcodeImage) {
     this.barcodeImage = barcodeImage;
     return this;
   }
@@ -92,22 +101,17 @@ public class HubDeliveryLabelResponse {
    * URL to the barcode image (PNG)
    * @return barcodeImage
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_BARCODE_IMAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getBarcodeImage() {
     return barcodeImage;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_BARCODE_IMAGE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setBarcodeImage(@jakarta.annotation.Nullable String barcodeImage) {
+  public void setBarcodeImage(@javax.annotation.Nullable String barcodeImage) {
     this.barcodeImage = barcodeImage;
   }
 
 
-  public HubDeliveryLabelResponse qrCode(@jakarta.annotation.Nullable String qrCode) {
+  public HubDeliveryLabelResponse qrCode(@javax.annotation.Nullable String qrCode) {
     this.qrCode = qrCode;
     return this;
   }
@@ -116,22 +120,17 @@ public class HubDeliveryLabelResponse {
    * URL to the QR code image (PNG)
    * @return qrCode
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_QR_CODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getQrCode() {
     return qrCode;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_QR_CODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setQrCode(@jakarta.annotation.Nullable String qrCode) {
+  public void setQrCode(@javax.annotation.Nullable String qrCode) {
     this.qrCode = qrCode;
   }
 
 
-  public HubDeliveryLabelResponse labelPdf(@jakarta.annotation.Nullable String labelPdf) {
+  public HubDeliveryLabelResponse labelPdf(@javax.annotation.Nullable String labelPdf) {
     this.labelPdf = labelPdf;
     return this;
   }
@@ -140,24 +139,17 @@ public class HubDeliveryLabelResponse {
    * URL to the label PDF
    * @return labelPdf
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LABEL_PDF)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getLabelPdf() {
     return labelPdf;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LABEL_PDF)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLabelPdf(@jakarta.annotation.Nullable String labelPdf) {
+  public void setLabelPdf(@javax.annotation.Nullable String labelPdf) {
     this.labelPdf = labelPdf;
   }
 
 
-  /**
-   * Return true if this HubDeliveryLabelResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -201,59 +193,104 @@ public class HubDeliveryLabelResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("barcode");
+    openapiFields.add("barcodeImage");
+    openapiFields.add("qrCode");
+    openapiFields.add("labelPdf");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubDeliveryLabelResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubDeliveryLabelResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubDeliveryLabelResponse is not found in the empty JSON string", HubDeliveryLabelResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubDeliveryLabelResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubDeliveryLabelResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("barcode") != null && !jsonObj.get("barcode").isJsonNull()) && !jsonObj.get("barcode").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `barcode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("barcode").toString()));
+      }
+      if ((jsonObj.get("barcodeImage") != null && !jsonObj.get("barcodeImage").isJsonNull()) && !jsonObj.get("barcodeImage").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `barcodeImage` to be a primitive type in the JSON string but got `%s`", jsonObj.get("barcodeImage").toString()));
+      }
+      if ((jsonObj.get("qrCode") != null && !jsonObj.get("qrCode").isJsonNull()) && !jsonObj.get("qrCode").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `qrCode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("qrCode").toString()));
+      }
+      if ((jsonObj.get("labelPdf") != null && !jsonObj.get("labelPdf").isJsonNull()) && !jsonObj.get("labelPdf").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `labelPdf` to be a primitive type in the JSON string but got `%s`", jsonObj.get("labelPdf").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubDeliveryLabelResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubDeliveryLabelResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubDeliveryLabelResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubDeliveryLabelResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubDeliveryLabelResponse>() {
+           @Override
+           public void write(JsonWriter out, HubDeliveryLabelResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubDeliveryLabelResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubDeliveryLabelResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubDeliveryLabelResponse
+   * @throws IOException if the JSON string is invalid with respect to HubDeliveryLabelResponse
+   */
+  public static HubDeliveryLabelResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubDeliveryLabelResponse.class);
+  }
 
-    // add `barcode` to the URL query string
-    if (getBarcode() != null) {
-      joiner.add(String.format("%sbarcode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBarcode()))));
-    }
-
-    // add `barcodeImage` to the URL query string
-    if (getBarcodeImage() != null) {
-      joiner.add(String.format("%sbarcodeImage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBarcodeImage()))));
-    }
-
-    // add `qrCode` to the URL query string
-    if (getQrCode() != null) {
-      joiner.add(String.format("%sqrCode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getQrCode()))));
-    }
-
-    // add `labelPdf` to the URL query string
-    if (getLabelPdf() != null) {
-      joiner.add(String.format("%slabelPdf%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLabelPdf()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubDeliveryLabelResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

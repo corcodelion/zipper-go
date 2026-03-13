@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Handshake PIN information for a delivery
  */
-@JsonPropertyOrder({
-  HubHandshakeDeliveryResponse.JSON_PROPERTY_REQUIRED,
-  HubHandshakeDeliveryResponse.JSON_PROPERTY_PIN_CODE
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubHandshakeDeliveryResponse {
-  public static final String JSON_PROPERTY_REQUIRED = "required";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_REQUIRED = "required";
+  @SerializedName(SERIALIZED_NAME_REQUIRED)
+  @javax.annotation.Nullable
   private Boolean required;
 
-  public static final String JSON_PROPERTY_PIN_CODE = "pinCode";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_PIN_CODE = "pinCode";
+  @SerializedName(SERIALIZED_NAME_PIN_CODE)
+  @javax.annotation.Nullable
   private Integer pinCode;
 
-  public HubHandshakeDeliveryResponse() { 
+  public HubHandshakeDeliveryResponse() {
   }
 
-  public HubHandshakeDeliveryResponse required(@jakarta.annotation.Nullable Boolean required) {
+  public HubHandshakeDeliveryResponse required(@javax.annotation.Nullable Boolean required) {
     this.required = required;
     return this;
   }
@@ -58,22 +72,17 @@ public class HubHandshakeDeliveryResponse {
    * Whether a PIN handshake is required for this delivery
    * @return required
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_REQUIRED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Boolean getRequired() {
     return required;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_REQUIRED)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setRequired(@jakarta.annotation.Nullable Boolean required) {
+  public void setRequired(@javax.annotation.Nullable Boolean required) {
     this.required = required;
   }
 
 
-  public HubHandshakeDeliveryResponse pinCode(@jakarta.annotation.Nullable Integer pinCode) {
+  public HubHandshakeDeliveryResponse pinCode(@javax.annotation.Nullable Integer pinCode) {
     this.pinCode = pinCode;
     return this;
   }
@@ -82,24 +91,17 @@ public class HubHandshakeDeliveryResponse {
    * PIN code for the handshake
    * @return pinCode
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_PIN_CODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getPinCode() {
     return pinCode;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PIN_CODE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setPinCode(@jakarta.annotation.Nullable Integer pinCode) {
+  public void setPinCode(@javax.annotation.Nullable Integer pinCode) {
     this.pinCode = pinCode;
   }
 
 
-  /**
-   * Return true if this HubHandshakeDeliveryResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,90 @@ public class HubHandshakeDeliveryResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("required");
+    openapiFields.add("pinCode");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubHandshakeDeliveryResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubHandshakeDeliveryResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubHandshakeDeliveryResponse is not found in the empty JSON string", HubHandshakeDeliveryResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubHandshakeDeliveryResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubHandshakeDeliveryResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubHandshakeDeliveryResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubHandshakeDeliveryResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubHandshakeDeliveryResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubHandshakeDeliveryResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubHandshakeDeliveryResponse>() {
+           @Override
+           public void write(JsonWriter out, HubHandshakeDeliveryResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubHandshakeDeliveryResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubHandshakeDeliveryResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubHandshakeDeliveryResponse
+   * @throws IOException if the JSON string is invalid with respect to HubHandshakeDeliveryResponse
+   */
+  public static HubHandshakeDeliveryResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubHandshakeDeliveryResponse.class);
+  }
 
-    // add `required` to the URL query string
-    if (getRequired() != null) {
-      joiner.add(String.format("%srequired%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRequired()))));
-    }
-
-    // add `pinCode` to the URL query string
-    if (getPinCode() != null) {
-      joiner.add(String.format("%spinCode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPinCode()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubHandshakeDeliveryResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

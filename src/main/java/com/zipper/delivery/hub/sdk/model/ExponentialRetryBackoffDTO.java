@@ -13,43 +13,57 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Exponential backoff retry configuration
  */
-@JsonPropertyOrder({
-  ExponentialRetryBackoffDTO.JSON_PROPERTY_EXPONENT_BASE,
-  ExponentialRetryBackoffDTO.JSON_PROPERTY_MAX_RETRY_COUNT
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class ExponentialRetryBackoffDTO {
-  public static final String JSON_PROPERTY_EXPONENT_BASE = "exponentBase";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXPONENT_BASE = "exponentBase";
+  @SerializedName(SERIALIZED_NAME_EXPONENT_BASE)
+  @javax.annotation.Nullable
   private Integer exponentBase;
 
-  public static final String JSON_PROPERTY_MAX_RETRY_COUNT = "maxRetryCount";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_MAX_RETRY_COUNT = "maxRetryCount";
+  @SerializedName(SERIALIZED_NAME_MAX_RETRY_COUNT)
+  @javax.annotation.Nullable
   private Integer maxRetryCount;
 
-  public ExponentialRetryBackoffDTO() { 
+  public ExponentialRetryBackoffDTO() {
   }
 
-  public ExponentialRetryBackoffDTO exponentBase(@jakarta.annotation.Nullable Integer exponentBase) {
+  public ExponentialRetryBackoffDTO exponentBase(@javax.annotation.Nullable Integer exponentBase) {
     this.exponentBase = exponentBase;
     return this;
   }
@@ -58,22 +72,17 @@ public class ExponentialRetryBackoffDTO {
    * Base for the exponential delay calculation (delay &#x3D; base^attempt seconds)
    * @return exponentBase
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPONENT_BASE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getExponentBase() {
     return exponentBase;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXPONENT_BASE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExponentBase(@jakarta.annotation.Nullable Integer exponentBase) {
+  public void setExponentBase(@javax.annotation.Nullable Integer exponentBase) {
     this.exponentBase = exponentBase;
   }
 
 
-  public ExponentialRetryBackoffDTO maxRetryCount(@jakarta.annotation.Nullable Integer maxRetryCount) {
+  public ExponentialRetryBackoffDTO maxRetryCount(@javax.annotation.Nullable Integer maxRetryCount) {
     this.maxRetryCount = maxRetryCount;
     return this;
   }
@@ -82,24 +91,17 @@ public class ExponentialRetryBackoffDTO {
    * Maximum number of retry attempts
    * @return maxRetryCount
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_MAX_RETRY_COUNT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Integer getMaxRetryCount() {
     return maxRetryCount;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_MAX_RETRY_COUNT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setMaxRetryCount(@jakarta.annotation.Nullable Integer maxRetryCount) {
+  public void setMaxRetryCount(@javax.annotation.Nullable Integer maxRetryCount) {
     this.maxRetryCount = maxRetryCount;
   }
 
 
-  /**
-   * Return true if this ExponentialRetryBackoffDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,49 +141,90 @@ public class ExponentialRetryBackoffDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("exponentBase");
+    openapiFields.add("maxRetryCount");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to ExponentialRetryBackoffDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!ExponentialRetryBackoffDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ExponentialRetryBackoffDTO is not found in the empty JSON string", ExponentialRetryBackoffDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!ExponentialRetryBackoffDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ExponentialRetryBackoffDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!ExponentialRetryBackoffDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ExponentialRetryBackoffDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<ExponentialRetryBackoffDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ExponentialRetryBackoffDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<ExponentialRetryBackoffDTO>() {
+           @Override
+           public void write(JsonWriter out, ExponentialRetryBackoffDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public ExponentialRetryBackoffDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of ExponentialRetryBackoffDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of ExponentialRetryBackoffDTO
+   * @throws IOException if the JSON string is invalid with respect to ExponentialRetryBackoffDTO
+   */
+  public static ExponentialRetryBackoffDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ExponentialRetryBackoffDTO.class);
+  }
 
-    // add `exponentBase` to the URL query string
-    if (getExponentBase() != null) {
-      joiner.add(String.format("%sexponentBase%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExponentBase()))));
-    }
-
-    // add `maxRetryCount` to the URL query string
-    if (getMaxRetryCount() != null) {
-      joiner.add(String.format("%smaxRetryCount%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxRetryCount()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of ExponentialRetryBackoffDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

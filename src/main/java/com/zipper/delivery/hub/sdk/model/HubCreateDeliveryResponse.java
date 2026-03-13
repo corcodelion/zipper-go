@@ -13,48 +13,59 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Response after successfully creating a delivery
  */
-@JsonPropertyOrder({
-  HubCreateDeliveryResponse.JSON_PROPERTY_DELIVERY_ID,
-  HubCreateDeliveryResponse.JSON_PROPERTY_DELIVERY_TYPE,
-  HubCreateDeliveryResponse.JSON_PROPERTY_STATUS,
-  HubCreateDeliveryResponse.JSON_PROPERTY_HUB_TRACKING_NUMBER,
-  HubCreateDeliveryResponse.JSON_PROPERTY_TRACKING_URL
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubCreateDeliveryResponse {
-  public static final String JSON_PROPERTY_DELIVERY_ID = "deliveryId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_ID = "deliveryId";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_ID)
+  @javax.annotation.Nullable
   private UUID deliveryId;
 
   /**
    * Type of delivery
    */
+  @JsonAdapter(DeliveryTypeEnum.Adapter.class)
   public enum DeliveryTypeEnum {
-    STORE_IMMEDIATE(String.valueOf("STORE_IMMEDIATE")),
+    STORE_IMMEDIATE("STORE_IMMEDIATE"),
     
-    FOOD_IMMEDIATE(String.valueOf("FOOD_IMMEDIATE")),
+    FOOD_IMMEDIATE("FOOD_IMMEDIATE"),
     
-    STORE_NEXT_DAY(String.valueOf("STORE_NEXT_DAY"));
+    STORE_NEXT_DAY("STORE_NEXT_DAY");
 
     private String value;
 
@@ -62,7 +73,6 @@ public class HubCreateDeliveryResponse {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -72,7 +82,6 @@ public class HubCreateDeliveryResponse {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static DeliveryTypeEnum fromValue(String value) {
       for (DeliveryTypeEnum b : DeliveryTypeEnum.values()) {
         if (b.value.equals(value)) {
@@ -81,28 +90,50 @@ public class HubCreateDeliveryResponse {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<DeliveryTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DeliveryTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public DeliveryTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return DeliveryTypeEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      DeliveryTypeEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_DELIVERY_TYPE = "deliveryType";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_TYPE = "deliveryType";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_TYPE)
+  @javax.annotation.Nullable
   private DeliveryTypeEnum deliveryType;
 
-  public static final String JSON_PROPERTY_STATUS = "status";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STATUS = "status";
+  @SerializedName(SERIALIZED_NAME_STATUS)
+  @javax.annotation.Nullable
   private String status;
 
-  public static final String JSON_PROPERTY_HUB_TRACKING_NUMBER = "hubTrackingNumber";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_HUB_TRACKING_NUMBER = "hubTrackingNumber";
+  @SerializedName(SERIALIZED_NAME_HUB_TRACKING_NUMBER)
+  @javax.annotation.Nullable
   private String hubTrackingNumber;
 
-  public static final String JSON_PROPERTY_TRACKING_URL = "trackingUrl";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_TRACKING_URL = "trackingUrl";
+  @SerializedName(SERIALIZED_NAME_TRACKING_URL)
+  @javax.annotation.Nullable
   private String trackingUrl;
 
-  public HubCreateDeliveryResponse() { 
+  public HubCreateDeliveryResponse() {
   }
 
-  public HubCreateDeliveryResponse deliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public HubCreateDeliveryResponse deliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
     return this;
   }
@@ -111,22 +142,17 @@ public class HubCreateDeliveryResponse {
    * Unique delivery identifier
    * @return deliveryId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public UUID getDeliveryId() {
     return deliveryId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public void setDeliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
   }
 
 
-  public HubCreateDeliveryResponse deliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public HubCreateDeliveryResponse deliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
     return this;
   }
@@ -135,22 +161,17 @@ public class HubCreateDeliveryResponse {
    * Type of delivery
    * @return deliveryType
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public DeliveryTypeEnum getDeliveryType() {
     return deliveryType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryType(@jakarta.annotation.Nullable DeliveryTypeEnum deliveryType) {
+  public void setDeliveryType(@javax.annotation.Nullable DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
   }
 
 
-  public HubCreateDeliveryResponse status(@jakarta.annotation.Nullable String status) {
+  public HubCreateDeliveryResponse status(@javax.annotation.Nullable String status) {
     this.status = status;
     return this;
   }
@@ -159,22 +180,17 @@ public class HubCreateDeliveryResponse {
    * Current delivery status
    * @return status
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getStatus() {
     return status;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStatus(@jakarta.annotation.Nullable String status) {
+  public void setStatus(@javax.annotation.Nullable String status) {
     this.status = status;
   }
 
 
-  public HubCreateDeliveryResponse hubTrackingNumber(@jakarta.annotation.Nullable String hubTrackingNumber) {
+  public HubCreateDeliveryResponse hubTrackingNumber(@javax.annotation.Nullable String hubTrackingNumber) {
     this.hubTrackingNumber = hubTrackingNumber;
     return this;
   }
@@ -183,22 +199,17 @@ public class HubCreateDeliveryResponse {
    * Hub-assigned tracking number
    * @return hubTrackingNumber
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HUB_TRACKING_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getHubTrackingNumber() {
     return hubTrackingNumber;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_HUB_TRACKING_NUMBER)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHubTrackingNumber(@jakarta.annotation.Nullable String hubTrackingNumber) {
+  public void setHubTrackingNumber(@javax.annotation.Nullable String hubTrackingNumber) {
     this.hubTrackingNumber = hubTrackingNumber;
   }
 
 
-  public HubCreateDeliveryResponse trackingUrl(@jakarta.annotation.Nullable String trackingUrl) {
+  public HubCreateDeliveryResponse trackingUrl(@javax.annotation.Nullable String trackingUrl) {
     this.trackingUrl = trackingUrl;
     return this;
   }
@@ -207,24 +218,17 @@ public class HubCreateDeliveryResponse {
    * Public tracking URL for the delivery
    * @return trackingUrl
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TRACKING_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getTrackingUrl() {
     return trackingUrl;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_TRACKING_URL)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTrackingUrl(@jakarta.annotation.Nullable String trackingUrl) {
+  public void setTrackingUrl(@javax.annotation.Nullable String trackingUrl) {
     this.trackingUrl = trackingUrl;
   }
 
 
-  /**
-   * Return true if this HubCreateDeliveryResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -270,64 +274,112 @@ public class HubCreateDeliveryResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("deliveryId");
+    openapiFields.add("deliveryType");
+    openapiFields.add("status");
+    openapiFields.add("hubTrackingNumber");
+    openapiFields.add("trackingUrl");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubCreateDeliveryResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubCreateDeliveryResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubCreateDeliveryResponse is not found in the empty JSON string", HubCreateDeliveryResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubCreateDeliveryResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubCreateDeliveryResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("deliveryId") != null && !jsonObj.get("deliveryId").isJsonNull()) && !jsonObj.get("deliveryId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryId").toString()));
+      }
+      if ((jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) && !jsonObj.get("deliveryType").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryType").toString()));
+      }
+      // validate the optional field `deliveryType`
+      if (jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) {
+        DeliveryTypeEnum.validateJsonElement(jsonObj.get("deliveryType"));
+      }
+      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
+      }
+      if ((jsonObj.get("hubTrackingNumber") != null && !jsonObj.get("hubTrackingNumber").isJsonNull()) && !jsonObj.get("hubTrackingNumber").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `hubTrackingNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("hubTrackingNumber").toString()));
+      }
+      if ((jsonObj.get("trackingUrl") != null && !jsonObj.get("trackingUrl").isJsonNull()) && !jsonObj.get("trackingUrl").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `trackingUrl` to be a primitive type in the JSON string but got `%s`", jsonObj.get("trackingUrl").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubCreateDeliveryResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubCreateDeliveryResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubCreateDeliveryResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubCreateDeliveryResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubCreateDeliveryResponse>() {
+           @Override
+           public void write(JsonWriter out, HubCreateDeliveryResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubCreateDeliveryResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubCreateDeliveryResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubCreateDeliveryResponse
+   * @throws IOException if the JSON string is invalid with respect to HubCreateDeliveryResponse
+   */
+  public static HubCreateDeliveryResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubCreateDeliveryResponse.class);
+  }
 
-    // add `deliveryId` to the URL query string
-    if (getDeliveryId() != null) {
-      joiner.add(String.format("%sdeliveryId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryId()))));
-    }
-
-    // add `deliveryType` to the URL query string
-    if (getDeliveryType() != null) {
-      joiner.add(String.format("%sdeliveryType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryType()))));
-    }
-
-    // add `status` to the URL query string
-    if (getStatus() != null) {
-      joiner.add(String.format("%sstatus%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStatus()))));
-    }
-
-    // add `hubTrackingNumber` to the URL query string
-    if (getHubTrackingNumber() != null) {
-      joiner.add(String.format("%shubTrackingNumber%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHubTrackingNumber()))));
-    }
-
-    // add `trackingUrl` to the URL query string
-    if (getTrackingUrl() != null) {
-      joiner.add(String.format("%strackingUrl%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTrackingUrl()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubCreateDeliveryResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

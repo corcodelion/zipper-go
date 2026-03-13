@@ -13,44 +13,58 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Response after cancelling a delivery
  */
-@JsonPropertyOrder({
-  HubCancelDeliveryResponse.JSON_PROPERTY_DELIVERY_ID,
-  HubCancelDeliveryResponse.JSON_PROPERTY_STATUS
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubCancelDeliveryResponse {
-  public static final String JSON_PROPERTY_DELIVERY_ID = "deliveryId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_DELIVERY_ID = "deliveryId";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_ID)
+  @javax.annotation.Nullable
   private UUID deliveryId;
 
-  public static final String JSON_PROPERTY_STATUS = "status";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_STATUS = "status";
+  @SerializedName(SERIALIZED_NAME_STATUS)
+  @javax.annotation.Nullable
   private String status;
 
-  public HubCancelDeliveryResponse() { 
+  public HubCancelDeliveryResponse() {
   }
 
-  public HubCancelDeliveryResponse deliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public HubCancelDeliveryResponse deliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
     return this;
   }
@@ -59,22 +73,17 @@ public class HubCancelDeliveryResponse {
    * UUID of the cancelled delivery
    * @return deliveryId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public UUID getDeliveryId() {
     return deliveryId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setDeliveryId(@jakarta.annotation.Nullable UUID deliveryId) {
+  public void setDeliveryId(@javax.annotation.Nullable UUID deliveryId) {
     this.deliveryId = deliveryId;
   }
 
 
-  public HubCancelDeliveryResponse status(@jakarta.annotation.Nullable String status) {
+  public HubCancelDeliveryResponse status(@javax.annotation.Nullable String status) {
     this.status = status;
     return this;
   }
@@ -83,24 +92,17 @@ public class HubCancelDeliveryResponse {
    * New delivery status
    * @return status
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getStatus() {
     return status;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_STATUS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setStatus(@jakarta.annotation.Nullable String status) {
+  public void setStatus(@javax.annotation.Nullable String status) {
     this.status = status;
   }
 
 
-  /**
-   * Return true if this HubCancelDeliveryResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -140,49 +142,96 @@ public class HubCancelDeliveryResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("deliveryId");
+    openapiFields.add("status");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubCancelDeliveryResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubCancelDeliveryResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubCancelDeliveryResponse is not found in the empty JSON string", HubCancelDeliveryResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubCancelDeliveryResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubCancelDeliveryResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("deliveryId") != null && !jsonObj.get("deliveryId").isJsonNull()) && !jsonObj.get("deliveryId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryId").toString()));
+      }
+      if ((jsonObj.get("status") != null && !jsonObj.get("status").isJsonNull()) && !jsonObj.get("status").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `status` to be a primitive type in the JSON string but got `%s`", jsonObj.get("status").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubCancelDeliveryResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubCancelDeliveryResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubCancelDeliveryResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubCancelDeliveryResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubCancelDeliveryResponse>() {
+           @Override
+           public void write(JsonWriter out, HubCancelDeliveryResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubCancelDeliveryResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubCancelDeliveryResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubCancelDeliveryResponse
+   * @throws IOException if the JSON string is invalid with respect to HubCancelDeliveryResponse
+   */
+  public static HubCancelDeliveryResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubCancelDeliveryResponse.class);
+  }
 
-    // add `deliveryId` to the URL query string
-    if (getDeliveryId() != null) {
-      joiner.add(String.format("%sdeliveryId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryId()))));
-    }
-
-    // add `status` to the URL query string
-    if (getStatus() != null) {
-      joiner.add(String.format("%sstatus%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStatus()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubCancelDeliveryResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

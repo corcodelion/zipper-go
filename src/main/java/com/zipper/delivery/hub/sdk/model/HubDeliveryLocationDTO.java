@@ -13,53 +13,67 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * HubDeliveryLocationDTO
  */
-@JsonPropertyOrder({
-  HubDeliveryLocationDTO.JSON_PROPERTY_LAT,
-  HubDeliveryLocationDTO.JSON_PROPERTY_LNG,
-  HubDeliveryLocationDTO.JSON_PROPERTY_FULL_ADDRESS,
-  HubDeliveryLocationDTO.JSON_PROPERTY_CITY
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubDeliveryLocationDTO {
-  public static final String JSON_PROPERTY_LAT = "lat";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_LAT = "lat";
+  @SerializedName(SERIALIZED_NAME_LAT)
+  @javax.annotation.Nullable
   private Double lat;
 
-  public static final String JSON_PROPERTY_LNG = "lng";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_LNG = "lng";
+  @SerializedName(SERIALIZED_NAME_LNG)
+  @javax.annotation.Nullable
   private Double lng;
 
-  public static final String JSON_PROPERTY_FULL_ADDRESS = "fullAddress";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_FULL_ADDRESS = "fullAddress";
+  @SerializedName(SERIALIZED_NAME_FULL_ADDRESS)
+  @javax.annotation.Nullable
   private String fullAddress;
 
-  public static final String JSON_PROPERTY_CITY = "city";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_CITY = "city";
+  @SerializedName(SERIALIZED_NAME_CITY)
+  @javax.annotation.Nullable
   private String city;
 
-  public HubDeliveryLocationDTO() { 
+  public HubDeliveryLocationDTO() {
   }
 
-  public HubDeliveryLocationDTO lat(@jakarta.annotation.Nullable Double lat) {
+  public HubDeliveryLocationDTO lat(@javax.annotation.Nullable Double lat) {
     this.lat = lat;
     return this;
   }
@@ -68,22 +82,17 @@ public class HubDeliveryLocationDTO {
    * Get lat
    * @return lat
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LAT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Double getLat() {
     return lat;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LAT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLat(@jakarta.annotation.Nullable Double lat) {
+  public void setLat(@javax.annotation.Nullable Double lat) {
     this.lat = lat;
   }
 
 
-  public HubDeliveryLocationDTO lng(@jakarta.annotation.Nullable Double lng) {
+  public HubDeliveryLocationDTO lng(@javax.annotation.Nullable Double lng) {
     this.lng = lng;
     return this;
   }
@@ -92,22 +101,17 @@ public class HubDeliveryLocationDTO {
    * Get lng
    * @return lng
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_LNG)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Double getLng() {
     return lng;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_LNG)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setLng(@jakarta.annotation.Nullable Double lng) {
+  public void setLng(@javax.annotation.Nullable Double lng) {
     this.lng = lng;
   }
 
 
-  public HubDeliveryLocationDTO fullAddress(@jakarta.annotation.Nullable String fullAddress) {
+  public HubDeliveryLocationDTO fullAddress(@javax.annotation.Nullable String fullAddress) {
     this.fullAddress = fullAddress;
     return this;
   }
@@ -116,22 +120,17 @@ public class HubDeliveryLocationDTO {
    * Get fullAddress
    * @return fullAddress
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FULL_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getFullAddress() {
     return fullAddress;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_FULL_ADDRESS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFullAddress(@jakarta.annotation.Nullable String fullAddress) {
+  public void setFullAddress(@javax.annotation.Nullable String fullAddress) {
     this.fullAddress = fullAddress;
   }
 
 
-  public HubDeliveryLocationDTO city(@jakarta.annotation.Nullable String city) {
+  public HubDeliveryLocationDTO city(@javax.annotation.Nullable String city) {
     this.city = city;
     return this;
   }
@@ -140,24 +139,17 @@ public class HubDeliveryLocationDTO {
    * Get city
    * @return city
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_CITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getCity() {
     return city;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_CITY)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCity(@jakarta.annotation.Nullable String city) {
+  public void setCity(@javax.annotation.Nullable String city) {
     this.city = city;
   }
 
 
-  /**
-   * Return true if this HubDeliveryLocationDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -201,59 +193,98 @@ public class HubDeliveryLocationDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("lat");
+    openapiFields.add("lng");
+    openapiFields.add("fullAddress");
+    openapiFields.add("city");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubDeliveryLocationDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubDeliveryLocationDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubDeliveryLocationDTO is not found in the empty JSON string", HubDeliveryLocationDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubDeliveryLocationDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubDeliveryLocationDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("fullAddress") != null && !jsonObj.get("fullAddress").isJsonNull()) && !jsonObj.get("fullAddress").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `fullAddress` to be a primitive type in the JSON string but got `%s`", jsonObj.get("fullAddress").toString()));
+      }
+      if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubDeliveryLocationDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubDeliveryLocationDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubDeliveryLocationDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubDeliveryLocationDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<HubDeliveryLocationDTO>() {
+           @Override
+           public void write(JsonWriter out, HubDeliveryLocationDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public HubDeliveryLocationDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of HubDeliveryLocationDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubDeliveryLocationDTO
+   * @throws IOException if the JSON string is invalid with respect to HubDeliveryLocationDTO
+   */
+  public static HubDeliveryLocationDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubDeliveryLocationDTO.class);
+  }
 
-    // add `lat` to the URL query string
-    if (getLat() != null) {
-      joiner.add(String.format("%slat%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLat()))));
-    }
-
-    // add `lng` to the URL query string
-    if (getLng() != null) {
-      joiner.add(String.format("%slng%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLng()))));
-    }
-
-    // add `fullAddress` to the URL query string
-    if (getFullAddress() != null) {
-      joiner.add(String.format("%sfullAddress%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFullAddress()))));
-    }
-
-    // add `city` to the URL query string
-    if (getCity() != null) {
-      joiner.add(String.format("%scity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCity()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of HubDeliveryLocationDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

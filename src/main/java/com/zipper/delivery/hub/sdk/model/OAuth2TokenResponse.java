@@ -13,48 +13,62 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * OAuth2 access token response
  */
-@JsonPropertyOrder({
-  OAuth2TokenResponse.JSON_PROPERTY_ACCESS_TOKEN,
-  OAuth2TokenResponse.JSON_PROPERTY_TOKEN_TYPE,
-  OAuth2TokenResponse.JSON_PROPERTY_EXPIRES_IN
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class OAuth2TokenResponse {
-  public static final String JSON_PROPERTY_ACCESS_TOKEN = "access_token";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ACCESS_TOKEN = "access_token";
+  @SerializedName(SERIALIZED_NAME_ACCESS_TOKEN)
+  @javax.annotation.Nullable
   private String accessToken;
 
-  public static final String JSON_PROPERTY_TOKEN_TYPE = "token_type";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_TOKEN_TYPE = "token_type";
+  @SerializedName(SERIALIZED_NAME_TOKEN_TYPE)
+  @javax.annotation.Nullable
   private String tokenType;
 
-  public static final String JSON_PROPERTY_EXPIRES_IN = "expires_in";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXPIRES_IN = "expires_in";
+  @SerializedName(SERIALIZED_NAME_EXPIRES_IN)
+  @javax.annotation.Nullable
   private Long expiresIn;
 
-  public OAuth2TokenResponse() { 
+  public OAuth2TokenResponse() {
   }
 
-  public OAuth2TokenResponse accessToken(@jakarta.annotation.Nullable String accessToken) {
+  public OAuth2TokenResponse accessToken(@javax.annotation.Nullable String accessToken) {
     this.accessToken = accessToken;
     return this;
   }
@@ -63,22 +77,17 @@ public class OAuth2TokenResponse {
    * JWT access token
    * @return accessToken
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ACCESS_TOKEN)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getAccessToken() {
     return accessToken;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ACCESS_TOKEN)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setAccessToken(@jakarta.annotation.Nullable String accessToken) {
+  public void setAccessToken(@javax.annotation.Nullable String accessToken) {
     this.accessToken = accessToken;
   }
 
 
-  public OAuth2TokenResponse tokenType(@jakarta.annotation.Nullable String tokenType) {
+  public OAuth2TokenResponse tokenType(@javax.annotation.Nullable String tokenType) {
     this.tokenType = tokenType;
     return this;
   }
@@ -87,22 +96,17 @@ public class OAuth2TokenResponse {
    * Token type
    * @return tokenType
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_TOKEN_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getTokenType() {
     return tokenType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_TOKEN_TYPE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setTokenType(@jakarta.annotation.Nullable String tokenType) {
+  public void setTokenType(@javax.annotation.Nullable String tokenType) {
     this.tokenType = tokenType;
   }
 
 
-  public OAuth2TokenResponse expiresIn(@jakarta.annotation.Nullable Long expiresIn) {
+  public OAuth2TokenResponse expiresIn(@javax.annotation.Nullable Long expiresIn) {
     this.expiresIn = expiresIn;
     return this;
   }
@@ -111,24 +115,17 @@ public class OAuth2TokenResponse {
    * Token lifetime in seconds
    * @return expiresIn
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Long getExpiresIn() {
     return expiresIn;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXPIRES_IN)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExpiresIn(@jakarta.annotation.Nullable Long expiresIn) {
+  public void setExpiresIn(@javax.annotation.Nullable Long expiresIn) {
     this.expiresIn = expiresIn;
   }
 
 
-  /**
-   * Return true if this OAuth2TokenResponse object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -170,54 +167,97 @@ public class OAuth2TokenResponse {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("access_token");
+    openapiFields.add("token_type");
+    openapiFields.add("expires_in");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to OAuth2TokenResponse
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!OAuth2TokenResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in OAuth2TokenResponse is not found in the empty JSON string", OAuth2TokenResponse.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!OAuth2TokenResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `OAuth2TokenResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if ((jsonObj.get("access_token") != null && !jsonObj.get("access_token").isJsonNull()) && !jsonObj.get("access_token").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `access_token` to be a primitive type in the JSON string but got `%s`", jsonObj.get("access_token").toString()));
+      }
+      if ((jsonObj.get("token_type") != null && !jsonObj.get("token_type").isJsonNull()) && !jsonObj.get("token_type").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `token_type` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_type").toString()));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!OAuth2TokenResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'OAuth2TokenResponse' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<OAuth2TokenResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(OAuth2TokenResponse.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<OAuth2TokenResponse>() {
+           @Override
+           public void write(JsonWriter out, OAuth2TokenResponse value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public OAuth2TokenResponse read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of OAuth2TokenResponse given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of OAuth2TokenResponse
+   * @throws IOException if the JSON string is invalid with respect to OAuth2TokenResponse
+   */
+  public static OAuth2TokenResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, OAuth2TokenResponse.class);
+  }
 
-    // add `access_token` to the URL query string
-    if (getAccessToken() != null) {
-      joiner.add(String.format("%saccess_token%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAccessToken()))));
-    }
-
-    // add `token_type` to the URL query string
-    if (getTokenType() != null) {
-      joiner.add(String.format("%stoken_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTokenType()))));
-    }
-
-    // add `expires_in` to the URL query string
-    if (getExpiresIn() != null) {
-      joiner.add(String.format("%sexpires_in%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpiresIn()))));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of OAuth2TokenResponse to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

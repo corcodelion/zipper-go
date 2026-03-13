@@ -10,13 +10,22 @@
  * Do not edit the class manually.
  */
 
+
 package com.zipper.delivery.hub.sdk.api;
 
+import com.zipper.delivery.hub.sdk.ApiCallback;
 import com.zipper.delivery.hub.sdk.ApiClient;
 import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.ApiResponse;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.Pair;
+import com.zipper.delivery.hub.sdk.ProgressRequestBody;
+import com.zipper.delivery.hub.sdk.ProgressResponseBody;
+
+import com.google.gson.reflect.TypeToken;
+
+import java.io.IOException;
+
 
 import java.io.File;
 import com.zipper.delivery.hub.sdk.model.HubCancelDeliveryResponse;
@@ -31,849 +40,1289 @@ import com.zipper.delivery.hub.sdk.model.PageResponseListHubDeliverySearchDTO;
 import com.zipper.delivery.hub.sdk.model.SearchDeliveriesRequest;
 import java.util.UUID;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.http.HttpRequest;
-import java.nio.channels.Channels;
-import java.nio.channels.Pipe;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class DeliveriesApi {
-  private final HttpClient memberVarHttpClient;
-  private final ObjectMapper memberVarObjectMapper;
-  private final String memberVarBaseUri;
-  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
-  private final Duration memberVarReadTimeout;
-  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
-  private final Consumer<HttpResponse<String>> memberVarAsyncResponseInterceptor;
+    private ApiClient localVarApiClient;
+    private int localHostIndex;
+    private String localCustomBaseUrl;
 
-  public DeliveriesApi() {
-    this(Configuration.getDefaultApiClient());
-  }
-
-  public DeliveriesApi(ApiClient apiClient) {
-    memberVarHttpClient = apiClient.getHttpClient();
-    memberVarObjectMapper = apiClient.getObjectMapper();
-    memberVarBaseUri = apiClient.getBaseUri();
-    memberVarInterceptor = apiClient.getRequestInterceptor();
-    memberVarReadTimeout = apiClient.getReadTimeout();
-    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
-    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
-  }
-
-  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
-    String body = response.body() == null ? null : new String(response.body().readAllBytes());
-    String message = formatExceptionMessage(operationId, response.statusCode(), body);
-    return new ApiException(response.statusCode(), message, response.headers(), body);
-  }
-
-  private String formatExceptionMessage(String operationId, int statusCode, String body) {
-    if (body == null || body.isEmpty()) {
-      body = "[no body]";
+    public DeliveriesApi() {
+        this(Configuration.getDefaultApiClient());
     }
-    return operationId + " call failed with: " + statusCode + " - " + body;
-  }
 
-  /**
-   * Cancel a delivery
-   * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
-   * @param deliveryId UUID of the delivery to cancel (required)
-   * @return HubCancelDeliveryResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubCancelDeliveryResponse cancelDelivery(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    ApiResponse<HubCancelDeliveryResponse> localVarResponse = cancelDeliveryWithHttpInfo(deliveryId);
-    return localVarResponse.getData();
-  }
+    public DeliveriesApi(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
 
-  /**
-   * Cancel a delivery
-   * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
-   * @param deliveryId UUID of the delivery to cancel (required)
-   * @return ApiResponse&lt;HubCancelDeliveryResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubCancelDeliveryResponse> cancelDeliveryWithHttpInfo(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = cancelDeliveryRequestBuilder(deliveryId);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("cancelDelivery", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubCancelDeliveryResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+    public ApiClient getApiClient() {
+        return localVarApiClient;
+    }
+
+    public void setApiClient(ApiClient apiClient) {
+        this.localVarApiClient = apiClient;
+    }
+
+    public int getHostIndex() {
+        return localHostIndex;
+    }
+
+    public void setHostIndex(int hostIndex) {
+        this.localHostIndex = hostIndex;
+    }
+
+    public String getCustomBaseUrl() {
+        return localCustomBaseUrl;
+    }
+
+    public void setCustomBaseUrl(String customBaseUrl) {
+        this.localCustomBaseUrl = customBaseUrl;
+    }
+
+    /**
+     * Build call for cancelDelivery
+     * @param deliveryId UUID of the delivery to cancel (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery cancelled successfully </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Delivery cannot be cancelled in its current status </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call cancelDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        Object localVarPostBody = null;
 
-        return new ApiResponse<HubCancelDeliveryResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubCancelDeliveryResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/{deliveryId}/cancel"
+            .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
 
-  private HttpRequest.Builder cancelDeliveryRequestBuilder(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    // verify the required parameter 'deliveryId' is set
-    if (deliveryId == null) {
-      throw new ApiException(400, "Missing the required parameter 'deliveryId' when calling cancelDelivery");
-    }
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/{deliveryId}/cancel"
-        .replace("{deliveryId}", ApiClient.urlEncode(deliveryId.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Create a delivery
-   * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
-   * @param hubCreateDeliveryRequest  (required)
-   * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
-   * @return HubCreateDeliveryResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubCreateDeliveryResponse createDelivery(@jakarta.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @jakarta.annotation.Nullable String idempotencyKey) throws ApiException {
-    ApiResponse<HubCreateDeliveryResponse> localVarResponse = createDeliveryWithHttpInfo(hubCreateDeliveryRequest, idempotencyKey);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Create a delivery
-   * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
-   * @param hubCreateDeliveryRequest  (required)
-   * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
-   * @return ApiResponse&lt;HubCreateDeliveryResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubCreateDeliveryResponse> createDeliveryWithHttpInfo(@jakarta.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @jakarta.annotation.Nullable String idempotencyKey) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = createDeliveryRequestBuilder(hubCreateDeliveryRequest, idempotencyKey);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("createDelivery", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubCreateDeliveryResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<HubCreateDeliveryResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubCreateDeliveryResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder createDeliveryRequestBuilder(@jakarta.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @jakarta.annotation.Nullable String idempotencyKey) throws ApiException {
-    // verify the required parameter 'hubCreateDeliveryRequest' is set
-    if (hubCreateDeliveryRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'hubCreateDeliveryRequest' when calling createDelivery");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    if (idempotencyKey != null) {
-      localVarRequestBuilder.header("Idempotency-Key", idempotencyKey.toString());
-    }
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(hubCreateDeliveryRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Get delivery status
-   * Retrieves the current status, tracking information, and full status history of a delivery.
-   * @param deliveryId UUID of the delivery to retrieve (required)
-   * @return HubDeliveryStatusResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubDeliveryStatusResponse getDelivery(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    ApiResponse<HubDeliveryStatusResponse> localVarResponse = getDeliveryWithHttpInfo(deliveryId);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Get delivery status
-   * Retrieves the current status, tracking information, and full status history of a delivery.
-   * @param deliveryId UUID of the delivery to retrieve (required)
-   * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubDeliveryStatusResponse> getDeliveryWithHttpInfo(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getDeliveryRequestBuilder(deliveryId);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("getDelivery", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubDeliveryStatusResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<HubDeliveryStatusResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubDeliveryStatusResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder getDeliveryRequestBuilder(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    // verify the required parameter 'deliveryId' is set
-    if (deliveryId == null) {
-      throw new ApiException(400, "Missing the required parameter 'deliveryId' when calling getDelivery");
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/{deliveryId}"
-        .replace("{deliveryId}", ApiClient.urlEncode(deliveryId.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Get delivery label metadata
-   * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @return HubDeliveryLabelResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubDeliveryLabelResponse getDeliveryLabel(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    ApiResponse<HubDeliveryLabelResponse> localVarResponse = getDeliveryLabelWithHttpInfo(hubTrackingNumber);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Get delivery label metadata
-   * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @return ApiResponse&lt;HubDeliveryLabelResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubDeliveryLabelResponse> getDeliveryLabelWithHttpInfo(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getDeliveryLabelRequestBuilder(hubTrackingNumber);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("getDeliveryLabel", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubDeliveryLabelResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call cancelDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'deliveryId' is set
+        if (deliveryId == null) {
+            throw new ApiException("Missing the required parameter 'deliveryId' when calling cancelDelivery(Async)");
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        return cancelDeliveryCall(deliveryId, _callback);
 
-        return new ApiResponse<HubDeliveryLabelResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubDeliveryLabelResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder getDeliveryLabelRequestBuilder(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    // verify the required parameter 'hubTrackingNumber' is set
-    if (hubTrackingNumber == null) {
-      throw new ApiException(400, "Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabel");
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label"
-        .replace("{hubTrackingNumber}", ApiClient.urlEncode(hubTrackingNumber.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Download a label asset
-   * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @param filename Asset filename (required)
-   * @return File
-   * @throws ApiException if fails to make API call
-   */
-  public File getDeliveryLabelAsset(@jakarta.annotation.Nonnull String hubTrackingNumber, @jakarta.annotation.Nonnull String filename) throws ApiException {
-    ApiResponse<File> localVarResponse = getDeliveryLabelAssetWithHttpInfo(hubTrackingNumber, filename);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Download a label asset
-   * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @param filename Asset filename (required)
-   * @return ApiResponse&lt;File&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<File> getDeliveryLabelAssetWithHttpInfo(@jakarta.annotation.Nonnull String hubTrackingNumber, @jakarta.annotation.Nonnull String filename) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getDeliveryLabelAssetRequestBuilder(hubTrackingNumber, filename);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("getDeliveryLabelAsset", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<File>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
-        }
-
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<File>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<File>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder getDeliveryLabelAssetRequestBuilder(@jakarta.annotation.Nonnull String hubTrackingNumber, @jakarta.annotation.Nonnull String filename) throws ApiException {
-    // verify the required parameter 'hubTrackingNumber' is set
-    if (hubTrackingNumber == null) {
-      throw new ApiException(400, "Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabelAsset");
-    }
-    // verify the required parameter 'filename' is set
-    if (filename == null) {
-      throw new ApiException(400, "Missing the required parameter 'filename' when calling getDeliveryLabelAsset");
+    /**
+     * Cancel a delivery
+     * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
+     * @param deliveryId UUID of the delivery to cancel (required)
+     * @return HubCancelDeliveryResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery cancelled successfully </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Delivery cannot be cancelled in its current status </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubCancelDeliveryResponse cancelDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        ApiResponse<HubCancelDeliveryResponse> localVarResp = cancelDeliveryWithHttpInfo(deliveryId);
+        return localVarResp.getData();
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label/{filename}"
-        .replace("{hubTrackingNumber}", ApiClient.urlEncode(hubTrackingNumber.toString()))
-        .replace("{filename}", ApiClient.urlEncode(filename.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    /**
+     * Cancel a delivery
+     * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
+     * @param deliveryId UUID of the delivery to cancel (required)
+     * @return ApiResponse&lt;HubCancelDeliveryResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery cancelled successfully </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Delivery cannot be cancelled in its current status </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubCancelDeliveryResponse> cancelDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, null);
+        Type localVarReturnType = new TypeToken<HubCancelDeliveryResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
+
+    /**
+     * Cancel a delivery (asynchronously)
+     * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
+     * @param deliveryId UUID of the delivery to cancel (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery cancelled successfully </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Delivery cannot be cancelled in its current status </td><td>  -  </td></tr>
+        <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call cancelDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubCancelDeliveryResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, _callback);
+        Type localVarReturnType = new TypeToken<HubCancelDeliveryResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
     }
-    return localVarRequestBuilder;
-  }
+    /**
+     * Build call for createDelivery
+     * @param hubCreateDeliveryRequest  (required)
+     * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Delivery created successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Duplicate idempotency key </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call createDeliveryCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
 
-  /**
-   * Get handshake PIN info
-   * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
-   * @param deliveryId UUID of the delivery (required)
-   * @return HubHandshakeDeliveryResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubHandshakeDeliveryResponse getHandshakeDelivery(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    ApiResponse<HubHandshakeDeliveryResponse> localVarResponse = getHandshakeDeliveryWithHttpInfo(deliveryId);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Get handshake PIN info
-   * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
-   * @param deliveryId UUID of the delivery (required)
-   * @return ApiResponse&lt;HubHandshakeDeliveryResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubHandshakeDeliveryResponse> getHandshakeDeliveryWithHttpInfo(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getHandshakeDeliveryRequestBuilder(deliveryId);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("getHandshakeDelivery", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubHandshakeDeliveryResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
+        Object localVarPostBody = hubCreateDeliveryRequest;
 
-        return new ApiResponse<HubHandshakeDeliveryResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubHandshakeDeliveryResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries";
 
-  private HttpRequest.Builder getHandshakeDeliveryRequestBuilder(@jakarta.annotation.Nonnull UUID deliveryId) throws ApiException {
-    // verify the required parameter 'deliveryId' is set
-    if (deliveryId == null) {
-      throw new ApiException(400, "Missing the required parameter 'deliveryId' when calling getHandshakeDelivery");
-    }
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/{deliveryId}/handshake"
-        .replace("{deliveryId}", ApiClient.urlEncode(deliveryId.toString()));
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Get a delivery quote
-   * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
-   * @param hubDeliveryQuoteRequest  (required)
-   * @return HubDeliveryQuoteResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubDeliveryQuoteResponse getQuote(@jakarta.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
-    ApiResponse<HubDeliveryQuoteResponse> localVarResponse = getQuoteWithHttpInfo(hubDeliveryQuoteRequest);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Get a delivery quote
-   * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
-   * @param hubDeliveryQuoteRequest  (required)
-   * @return ApiResponse&lt;HubDeliveryQuoteResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubDeliveryQuoteResponse> getQuoteWithHttpInfo(@jakarta.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = getQuoteRequestBuilder(hubDeliveryQuoteRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("getQuote", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubDeliveryQuoteResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<HubDeliveryQuoteResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubDeliveryQuoteResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder getQuoteRequestBuilder(@jakarta.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
-    // verify the required parameter 'hubDeliveryQuoteRequest' is set
-    if (hubDeliveryQuoteRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'hubDeliveryQuoteRequest' when calling getQuote");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/quote";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(hubDeliveryQuoteRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Search deliveries
-   * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
-   * @param searchDeliveriesRequest  (required)
-   * @return PageResponseListHubDeliverySearchDTO
-   * @throws ApiException if fails to make API call
-   */
-  public PageResponseListHubDeliverySearchDTO searchDeliveries(@jakarta.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
-    ApiResponse<PageResponseListHubDeliverySearchDTO> localVarResponse = searchDeliveriesWithHttpInfo(searchDeliveriesRequest);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Search deliveries
-   * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
-   * @param searchDeliveriesRequest  (required)
-   * @return ApiResponse&lt;PageResponseListHubDeliverySearchDTO&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<PageResponseListHubDeliverySearchDTO> searchDeliveriesWithHttpInfo(@jakarta.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = searchDeliveriesRequestBuilder(searchDeliveriesRequest);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("searchDeliveries", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<PageResponseListHubDeliverySearchDTO>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
-
-        return new ApiResponse<PageResponseListHubDeliverySearchDTO>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<PageResponseListHubDeliverySearchDTO>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder searchDeliveriesRequestBuilder(@jakarta.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
-    // verify the required parameter 'searchDeliveriesRequest' is set
-    if (searchDeliveriesRequest == null) {
-      throw new ApiException(400, "Missing the required parameter 'searchDeliveriesRequest' when calling searchDeliveries");
-    }
-
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
-
-    String localVarPath = "/api/v1/deliveries/search";
-
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Content-Type", "application/json");
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    try {
-      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(searchDeliveriesRequest);
-      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
-    }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
-
-  /**
-   * Track delivery by tracking number
-   * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @return HubDeliveryStatusResponse
-   * @throws ApiException if fails to make API call
-   */
-  public HubDeliveryStatusResponse trackDelivery(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    ApiResponse<HubDeliveryStatusResponse> localVarResponse = trackDeliveryWithHttpInfo(hubTrackingNumber);
-    return localVarResponse.getData();
-  }
-
-  /**
-   * Track delivery by tracking number
-   * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
-   * @param hubTrackingNumber Hub tracking number (required)
-   * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
-   * @throws ApiException if fails to make API call
-   */
-  public ApiResponse<HubDeliveryStatusResponse> trackDeliveryWithHttpInfo(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    HttpRequest.Builder localVarRequestBuilder = trackDeliveryRequestBuilder(hubTrackingNumber);
-    try {
-      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
-          localVarRequestBuilder.build(),
-          HttpResponse.BodyHandlers.ofInputStream());
-      if (memberVarResponseInterceptor != null) {
-        memberVarResponseInterceptor.accept(localVarResponse);
-      }
-      try {
-        if (localVarResponse.statusCode()/ 100 != 2) {
-          throw getApiException("trackDelivery", localVarResponse);
-        }
-        if (localVarResponse.body() == null) {
-          return new ApiResponse<HubDeliveryStatusResponse>(
-              localVarResponse.statusCode(),
-              localVarResponse.headers().map(),
-              null
-          );
+        if (idempotencyKey != null) {
+            localVarHeaderParams.put("Idempotency-Key", localVarApiClient.parameterToString(idempotencyKey));
         }
 
-        String responseBody = new String(localVarResponse.body().readAllBytes());
-        localVarResponse.body().close();
 
-        return new ApiResponse<HubDeliveryStatusResponse>(
-            localVarResponse.statusCode(),
-            localVarResponse.headers().map(),
-            responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HubDeliveryStatusResponse>() {})
-        );
-      } finally {
-      }
-    } catch (IOException e) {
-      throw new ApiException(e);
-    }
-    catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ApiException(e);
-    }
-  }
-
-  private HttpRequest.Builder trackDeliveryRequestBuilder(@jakarta.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-    // verify the required parameter 'hubTrackingNumber' is set
-    if (hubTrackingNumber == null) {
-      throw new ApiException(400, "Missing the required parameter 'hubTrackingNumber' when calling trackDelivery");
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
-    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call createDeliveryValidateBeforeCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'hubCreateDeliveryRequest' is set
+        if (hubCreateDeliveryRequest == null) {
+            throw new ApiException("Missing the required parameter 'hubCreateDeliveryRequest' when calling createDelivery(Async)");
+        }
 
-    String localVarPath = "/api/v1/deliveries/track/{hubTrackingNumber}"
-        .replace("{hubTrackingNumber}", ApiClient.urlEncode(hubTrackingNumber.toString()));
+        return createDeliveryCall(hubCreateDeliveryRequest, idempotencyKey, _callback);
 
-    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
-
-    localVarRequestBuilder.header("Accept", "*/*");
-
-    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
-    if (memberVarReadTimeout != null) {
-      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-    if (memberVarInterceptor != null) {
-      memberVarInterceptor.accept(localVarRequestBuilder);
-    }
-    return localVarRequestBuilder;
-  }
 
+    /**
+     * Create a delivery
+     * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
+     * @param hubCreateDeliveryRequest  (required)
+     * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @return HubCreateDeliveryResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Delivery created successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Duplicate idempotency key </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubCreateDeliveryResponse createDelivery(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+        ApiResponse<HubCreateDeliveryResponse> localVarResp = createDeliveryWithHttpInfo(hubCreateDeliveryRequest, idempotencyKey);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Create a delivery
+     * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
+     * @param hubCreateDeliveryRequest  (required)
+     * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @return ApiResponse&lt;HubCreateDeliveryResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Delivery created successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Duplicate idempotency key </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubCreateDeliveryResponse> createDeliveryWithHttpInfo(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
+        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, null);
+        Type localVarReturnType = new TypeToken<HubCreateDeliveryResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Create a delivery (asynchronously)
+     * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
+     * @param hubCreateDeliveryRequest  (required)
+     * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 201 </td><td> Delivery created successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Duplicate idempotency key </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call createDeliveryAsync(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback<HubCreateDeliveryResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, _callback);
+        Type localVarReturnType = new TypeToken<HubCreateDeliveryResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getDelivery
+     * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/{deliveryId}"
+            .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'deliveryId' is set
+        if (deliveryId == null) {
+            throw new ApiException("Missing the required parameter 'deliveryId' when calling getDelivery(Async)");
+        }
+
+        return getDeliveryCall(deliveryId, _callback);
+
+    }
+
+    /**
+     * Get delivery status
+     * Retrieves the current status, tracking information, and full status history of a delivery.
+     * @param deliveryId UUID of the delivery to retrieve (required)
+     * @return HubDeliveryStatusResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubDeliveryStatusResponse getDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        ApiResponse<HubDeliveryStatusResponse> localVarResp = getDeliveryWithHttpInfo(deliveryId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get delivery status
+     * Retrieves the current status, tracking information, and full status history of a delivery.
+     * @param deliveryId UUID of the delivery to retrieve (required)
+     * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubDeliveryStatusResponse> getDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, null);
+        Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get delivery status (asynchronously)
+     * Retrieves the current status, tracking information, and full status history of a delivery.
+     * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, _callback);
+        Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getDeliveryLabel
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Label metadata returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryLabelCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label"
+            .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getDeliveryLabelValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'hubTrackingNumber' is set
+        if (hubTrackingNumber == null) {
+            throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabel(Async)");
+        }
+
+        return getDeliveryLabelCall(hubTrackingNumber, _callback);
+
+    }
+
+    /**
+     * Get delivery label metadata
+     * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @return HubDeliveryLabelResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Label metadata returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubDeliveryLabelResponse getDeliveryLabel(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
+        ApiResponse<HubDeliveryLabelResponse> localVarResp = getDeliveryLabelWithHttpInfo(hubTrackingNumber);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get delivery label metadata
+     * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @return ApiResponse&lt;HubDeliveryLabelResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Label metadata returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubDeliveryLabelResponse> getDeliveryLabelWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, null);
+        Type localVarReturnType = new TypeToken<HubDeliveryLabelResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get delivery label metadata (asynchronously)
+     * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Label metadata returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryLabelAsync(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback<HubDeliveryLabelResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, _callback);
+        Type localVarReturnType = new TypeToken<HubDeliveryLabelResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getDeliveryLabelAsset
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param filename Asset filename (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Asset returned </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid filename </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryLabelAssetCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label/{filename}"
+            .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()))
+            .replace("{" + "filename" + "}", localVarApiClient.escapeString(filename.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getDeliveryLabelAssetValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'hubTrackingNumber' is set
+        if (hubTrackingNumber == null) {
+            throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabelAsset(Async)");
+        }
+
+        // verify the required parameter 'filename' is set
+        if (filename == null) {
+            throw new ApiException("Missing the required parameter 'filename' when calling getDeliveryLabelAsset(Async)");
+        }
+
+        return getDeliveryLabelAssetCall(hubTrackingNumber, filename, _callback);
+
+    }
+
+    /**
+     * Download a label asset
+     * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param filename Asset filename (required)
+     * @return File
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Asset returned </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid filename </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public File getDeliveryLabelAsset(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename) throws ApiException {
+        ApiResponse<File> localVarResp = getDeliveryLabelAssetWithHttpInfo(hubTrackingNumber, filename);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Download a label asset
+     * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param filename Asset filename (required)
+     * @return ApiResponse&lt;File&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Asset returned </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid filename </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<File> getDeliveryLabelAssetWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, null);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Download a label asset (asynchronously)
+     * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param filename Asset filename (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Asset returned </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid filename </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getDeliveryLabelAssetAsync(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback<File> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, _callback);
+        Type localVarReturnType = new TypeToken<File>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getHandshakeDelivery
+     * @param deliveryId UUID of the delivery (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Handshake info returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getHandshakeDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/{deliveryId}/handshake"
+            .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getHandshakeDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'deliveryId' is set
+        if (deliveryId == null) {
+            throw new ApiException("Missing the required parameter 'deliveryId' when calling getHandshakeDelivery(Async)");
+        }
+
+        return getHandshakeDeliveryCall(deliveryId, _callback);
+
+    }
+
+    /**
+     * Get handshake PIN info
+     * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
+     * @param deliveryId UUID of the delivery (required)
+     * @return HubHandshakeDeliveryResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Handshake info returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubHandshakeDeliveryResponse getHandshakeDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        ApiResponse<HubHandshakeDeliveryResponse> localVarResp = getHandshakeDeliveryWithHttpInfo(deliveryId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get handshake PIN info
+     * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
+     * @param deliveryId UUID of the delivery (required)
+     * @return ApiResponse&lt;HubHandshakeDeliveryResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Handshake info returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubHandshakeDeliveryResponse> getHandshakeDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
+        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, null);
+        Type localVarReturnType = new TypeToken<HubHandshakeDeliveryResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get handshake PIN info (asynchronously)
+     * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
+     * @param deliveryId UUID of the delivery (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Handshake info returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getHandshakeDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubHandshakeDeliveryResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, _callback);
+        Type localVarReturnType = new TypeToken<HubHandshakeDeliveryResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getQuote
+     * @param hubDeliveryQuoteRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Quote returned successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getQuoteCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = hubDeliveryQuoteRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/quote";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getQuoteValidateBeforeCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'hubDeliveryQuoteRequest' is set
+        if (hubDeliveryQuoteRequest == null) {
+            throw new ApiException("Missing the required parameter 'hubDeliveryQuoteRequest' when calling getQuote(Async)");
+        }
+
+        return getQuoteCall(hubDeliveryQuoteRequest, _callback);
+
+    }
+
+    /**
+     * Get a delivery quote
+     * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
+     * @param hubDeliveryQuoteRequest  (required)
+     * @return HubDeliveryQuoteResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Quote returned successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubDeliveryQuoteResponse getQuote(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
+        ApiResponse<HubDeliveryQuoteResponse> localVarResp = getQuoteWithHttpInfo(hubDeliveryQuoteRequest);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get a delivery quote
+     * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
+     * @param hubDeliveryQuoteRequest  (required)
+     * @return ApiResponse&lt;HubDeliveryQuoteResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Quote returned successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubDeliveryQuoteResponse> getQuoteWithHttpInfo(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
+        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, null);
+        Type localVarReturnType = new TypeToken<HubDeliveryQuoteResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get a delivery quote (asynchronously)
+     * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
+     * @param hubDeliveryQuoteRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Quote returned successfully </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Invalid request parameters </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getQuoteAsync(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback<HubDeliveryQuoteResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, _callback);
+        Type localVarReturnType = new TypeToken<HubDeliveryQuoteResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for searchDeliveries
+     * @param searchDeliveriesRequest  (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Search results returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call searchDeliveriesCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = searchDeliveriesRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/search";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call searchDeliveriesValidateBeforeCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'searchDeliveriesRequest' is set
+        if (searchDeliveriesRequest == null) {
+            throw new ApiException("Missing the required parameter 'searchDeliveriesRequest' when calling searchDeliveries(Async)");
+        }
+
+        return searchDeliveriesCall(searchDeliveriesRequest, _callback);
+
+    }
+
+    /**
+     * Search deliveries
+     * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
+     * @param searchDeliveriesRequest  (required)
+     * @return PageResponseListHubDeliverySearchDTO
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Search results returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+     </table>
+     */
+    public PageResponseListHubDeliverySearchDTO searchDeliveries(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
+        ApiResponse<PageResponseListHubDeliverySearchDTO> localVarResp = searchDeliveriesWithHttpInfo(searchDeliveriesRequest);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Search deliveries
+     * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
+     * @param searchDeliveriesRequest  (required)
+     * @return ApiResponse&lt;PageResponseListHubDeliverySearchDTO&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Search results returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<PageResponseListHubDeliverySearchDTO> searchDeliveriesWithHttpInfo(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
+        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, null);
+        Type localVarReturnType = new TypeToken<PageResponseListHubDeliverySearchDTO>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Search deliveries (asynchronously)
+     * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
+     * @param searchDeliveriesRequest  (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Search results returned </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call searchDeliveriesAsync(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback<PageResponseListHubDeliverySearchDTO> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, _callback);
+        Type localVarReturnType = new TypeToken<PageResponseListHubDeliverySearchDTO>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for trackDelivery
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call trackDeliveryCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/deliveries/track/{hubTrackingNumber}"
+            .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()));
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+            "*/*"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call trackDeliveryValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'hubTrackingNumber' is set
+        if (hubTrackingNumber == null) {
+            throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling trackDelivery(Async)");
+        }
+
+        return trackDeliveryCall(hubTrackingNumber, _callback);
+
+    }
+
+    /**
+     * Track delivery by tracking number
+     * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @return HubDeliveryStatusResponse
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public HubDeliveryStatusResponse trackDelivery(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
+        ApiResponse<HubDeliveryStatusResponse> localVarResp = trackDeliveryWithHttpInfo(hubTrackingNumber);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Track delivery by tracking number
+     * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<HubDeliveryStatusResponse> trackDeliveryWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
+        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, null);
+        Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Track delivery by tracking number (asynchronously)
+     * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
+     * @param hubTrackingNumber Hub tracking number (required)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Delivery details returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call trackDeliveryAsync(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, _callback);
+        Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
 }

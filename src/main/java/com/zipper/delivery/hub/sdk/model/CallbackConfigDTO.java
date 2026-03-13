@@ -13,39 +13,53 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.ExponentialRetryBackoffDTO;
+import java.io.IOException;
 import java.util.Arrays;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Callback delivery configuration
  */
-@JsonPropertyOrder({
-  CallbackConfigDTO.JSON_PROPERTY_EXPONENTIAL_RETRY_BACKOFF
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class CallbackConfigDTO {
-  public static final String JSON_PROPERTY_EXPONENTIAL_RETRY_BACKOFF = "exponentialRetryBackoff";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXPONENTIAL_RETRY_BACKOFF = "exponentialRetryBackoff";
+  @SerializedName(SERIALIZED_NAME_EXPONENTIAL_RETRY_BACKOFF)
+  @javax.annotation.Nullable
   private ExponentialRetryBackoffDTO exponentialRetryBackoff;
 
-  public CallbackConfigDTO() { 
+  public CallbackConfigDTO() {
   }
 
-  public CallbackConfigDTO exponentialRetryBackoff(@jakarta.annotation.Nullable ExponentialRetryBackoffDTO exponentialRetryBackoff) {
+  public CallbackConfigDTO exponentialRetryBackoff(@javax.annotation.Nullable ExponentialRetryBackoffDTO exponentialRetryBackoff) {
     this.exponentialRetryBackoff = exponentialRetryBackoff;
     return this;
   }
@@ -54,24 +68,17 @@ public class CallbackConfigDTO {
    * Exponential backoff retry settings
    * @return exponentialRetryBackoff
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXPONENTIAL_RETRY_BACKOFF)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public ExponentialRetryBackoffDTO getExponentialRetryBackoff() {
     return exponentialRetryBackoff;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXPONENTIAL_RETRY_BACKOFF)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExponentialRetryBackoff(@jakarta.annotation.Nullable ExponentialRetryBackoffDTO exponentialRetryBackoff) {
+  public void setExponentialRetryBackoff(@javax.annotation.Nullable ExponentialRetryBackoffDTO exponentialRetryBackoff) {
     this.exponentialRetryBackoff = exponentialRetryBackoff;
   }
 
 
-  /**
-   * Return true if this CallbackConfigDTO object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -109,44 +116,93 @@ public class CallbackConfigDTO {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("exponentialRetryBackoff");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to CallbackConfigDTO
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!CallbackConfigDTO.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in CallbackConfigDTO is not found in the empty JSON string", CallbackConfigDTO.openapiRequiredFields.toString()));
+        }
+      }
+
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!CallbackConfigDTO.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CallbackConfigDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      // validate the optional field `exponentialRetryBackoff`
+      if (jsonObj.get("exponentialRetryBackoff") != null && !jsonObj.get("exponentialRetryBackoff").isJsonNull()) {
+        ExponentialRetryBackoffDTO.validateJsonElement(jsonObj.get("exponentialRetryBackoff"));
+      }
+  }
+
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!CallbackConfigDTO.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'CallbackConfigDTO' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<CallbackConfigDTO> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(CallbackConfigDTO.class));
+
+       return (TypeAdapter<T>) new TypeAdapter<CallbackConfigDTO>() {
+           @Override
+           public void write(JsonWriter out, CallbackConfigDTO value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
+
+           @Override
+           public CallbackConfigDTO read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
     }
+  }
 
-    StringJoiner joiner = new StringJoiner("&");
+  /**
+   * Create an instance of CallbackConfigDTO given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of CallbackConfigDTO
+   * @throws IOException if the JSON string is invalid with respect to CallbackConfigDTO
+   */
+  public static CallbackConfigDTO fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, CallbackConfigDTO.class);
+  }
 
-    // add `exponentialRetryBackoff` to the URL query string
-    if (getExponentialRetryBackoff() != null) {
-      joiner.add(getExponentialRetryBackoff().toUrlQueryString(prefix + "exponentialRetryBackoff" + suffix));
-    }
-
-    return joiner.toString();
+  /**
+   * Convert an instance of CallbackConfigDTO to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 

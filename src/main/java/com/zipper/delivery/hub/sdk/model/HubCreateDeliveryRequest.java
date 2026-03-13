@@ -13,62 +13,67 @@
 
 package com.zipper.delivery.hub.sdk.model;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.StringJoiner;
 import java.util.Objects;
-import java.util.Map;
-import java.util.HashMap;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.HandshakeDeliveryDTO;
 import com.zipper.delivery.hub.sdk.model.HubContactDTO;
 import com.zipper.delivery.hub.sdk.model.HubItemDTO;
 import com.zipper.delivery.hub.sdk.model.RecipientDeliveryDTO;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import java.io.IOException;
 
-import com.zipper.delivery.hub.sdk.ApiClient;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.zipper.delivery.hub.sdk.JSON;
+
 /**
  * Request to create a new delivery order. A quoteId from a prior quote request is required; pickup and dropoff must match the quoted addresses.
  */
-@JsonPropertyOrder({
-  HubCreateDeliveryRequest.JSON_PROPERTY_QUOTE_ID,
-  HubCreateDeliveryRequest.JSON_PROPERTY_DELIVERY_TYPE,
-  HubCreateDeliveryRequest.JSON_PROPERTY_EXTERNAL_ORDER_ID,
-  HubCreateDeliveryRequest.JSON_PROPERTY_PICKUP,
-  HubCreateDeliveryRequest.JSON_PROPERTY_DROPOFF,
-  HubCreateDeliveryRequest.JSON_PROPERTY_ITEMS,
-  HubCreateDeliveryRequest.JSON_PROPERTY_COD_AMOUNT,
-  HubCreateDeliveryRequest.JSON_PROPERTY_SCHEDULED_AT,
-  HubCreateDeliveryRequest.JSON_PROPERTY_SMS_NOTIFICATIONS,
-  HubCreateDeliveryRequest.JSON_PROPERTY_HANDSHAKE,
-  HubCreateDeliveryRequest.JSON_PROPERTY_RECIPIENT
-})
-@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class HubCreateDeliveryRequest {
-  public static final String JSON_PROPERTY_QUOTE_ID = "quoteId";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_QUOTE_ID = "quoteId";
+  @SerializedName(SERIALIZED_NAME_QUOTE_ID)
+  @javax.annotation.Nonnull
   private UUID quoteId;
 
   /**
    * Type of delivery
    */
+  @JsonAdapter(DeliveryTypeEnum.Adapter.class)
   public enum DeliveryTypeEnum {
-    STORE_IMMEDIATE(String.valueOf("STORE_IMMEDIATE")),
+    STORE_IMMEDIATE("STORE_IMMEDIATE"),
     
-    FOOD_IMMEDIATE(String.valueOf("FOOD_IMMEDIATE")),
+    FOOD_IMMEDIATE("FOOD_IMMEDIATE"),
     
-    STORE_NEXT_DAY(String.valueOf("STORE_NEXT_DAY"));
+    STORE_NEXT_DAY("STORE_NEXT_DAY");
 
     private String value;
 
@@ -76,7 +81,6 @@ public class HubCreateDeliveryRequest {
       this.value = value;
     }
 
-    @JsonValue
     public String getValue() {
       return value;
     }
@@ -86,7 +90,6 @@ public class HubCreateDeliveryRequest {
       return String.valueOf(value);
     }
 
-    @JsonCreator
     public static DeliveryTypeEnum fromValue(String value) {
       for (DeliveryTypeEnum b : DeliveryTypeEnum.values()) {
         if (b.value.equals(value)) {
@@ -95,52 +98,80 @@ public class HubCreateDeliveryRequest {
       }
       throw new IllegalArgumentException("Unexpected value '" + value + "'");
     }
+
+    public static class Adapter extends TypeAdapter<DeliveryTypeEnum> {
+      @Override
+      public void write(final JsonWriter jsonWriter, final DeliveryTypeEnum enumeration) throws IOException {
+        jsonWriter.value(enumeration.getValue());
+      }
+
+      @Override
+      public DeliveryTypeEnum read(final JsonReader jsonReader) throws IOException {
+        String value =  jsonReader.nextString();
+        return DeliveryTypeEnum.fromValue(value);
+      }
+    }
+
+    public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      String value = jsonElement.getAsString();
+      DeliveryTypeEnum.fromValue(value);
+    }
   }
 
-  public static final String JSON_PROPERTY_DELIVERY_TYPE = "deliveryType";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_DELIVERY_TYPE = "deliveryType";
+  @SerializedName(SERIALIZED_NAME_DELIVERY_TYPE)
+  @javax.annotation.Nonnull
   private DeliveryTypeEnum deliveryType;
 
-  public static final String JSON_PROPERTY_EXTERNAL_ORDER_ID = "externalOrderId";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_EXTERNAL_ORDER_ID = "externalOrderId";
+  @SerializedName(SERIALIZED_NAME_EXTERNAL_ORDER_ID)
+  @javax.annotation.Nullable
   private String externalOrderId;
 
-  public static final String JSON_PROPERTY_PICKUP = "pickup";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_PICKUP = "pickup";
+  @SerializedName(SERIALIZED_NAME_PICKUP)
+  @javax.annotation.Nonnull
   private HubContactDTO pickup;
 
-  public static final String JSON_PROPERTY_DROPOFF = "dropoff";
-  @jakarta.annotation.Nonnull
+  public static final String SERIALIZED_NAME_DROPOFF = "dropoff";
+  @SerializedName(SERIALIZED_NAME_DROPOFF)
+  @javax.annotation.Nonnull
   private HubContactDTO dropoff;
 
-  public static final String JSON_PROPERTY_ITEMS = "items";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_ITEMS = "items";
+  @SerializedName(SERIALIZED_NAME_ITEMS)
+  @javax.annotation.Nullable
   private List<HubItemDTO> items = new ArrayList<>();
 
-  public static final String JSON_PROPERTY_COD_AMOUNT = "codAmount";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_COD_AMOUNT = "codAmount";
+  @SerializedName(SERIALIZED_NAME_COD_AMOUNT)
+  @javax.annotation.Nullable
   private BigDecimal codAmount;
 
-  public static final String JSON_PROPERTY_SCHEDULED_AT = "scheduledAt";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SCHEDULED_AT = "scheduledAt";
+  @SerializedName(SERIALIZED_NAME_SCHEDULED_AT)
+  @javax.annotation.Nullable
   private OffsetDateTime scheduledAt;
 
-  public static final String JSON_PROPERTY_SMS_NOTIFICATIONS = "smsNotifications";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_SMS_NOTIFICATIONS = "smsNotifications";
+  @SerializedName(SERIALIZED_NAME_SMS_NOTIFICATIONS)
+  @javax.annotation.Nullable
   private Boolean smsNotifications;
 
-  public static final String JSON_PROPERTY_HANDSHAKE = "handshake";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_HANDSHAKE = "handshake";
+  @SerializedName(SERIALIZED_NAME_HANDSHAKE)
+  @javax.annotation.Nullable
   private HandshakeDeliveryDTO handshake;
 
-  public static final String JSON_PROPERTY_RECIPIENT = "recipient";
-  @jakarta.annotation.Nullable
+  public static final String SERIALIZED_NAME_RECIPIENT = "recipient";
+  @SerializedName(SERIALIZED_NAME_RECIPIENT)
+  @javax.annotation.Nullable
   private RecipientDeliveryDTO recipient;
 
-  public HubCreateDeliveryRequest() { 
+  public HubCreateDeliveryRequest() {
   }
 
-  public HubCreateDeliveryRequest quoteId(@jakarta.annotation.Nonnull UUID quoteId) {
+  public HubCreateDeliveryRequest quoteId(@javax.annotation.Nonnull UUID quoteId) {
     this.quoteId = quoteId;
     return this;
   }
@@ -149,22 +180,17 @@ public class HubCreateDeliveryRequest {
    * Quote ID from a prior quote request
    * @return quoteId
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_QUOTE_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public UUID getQuoteId() {
     return quoteId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_QUOTE_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setQuoteId(@jakarta.annotation.Nonnull UUID quoteId) {
+  public void setQuoteId(@javax.annotation.Nonnull UUID quoteId) {
     this.quoteId = quoteId;
   }
 
 
-  public HubCreateDeliveryRequest deliveryType(@jakarta.annotation.Nonnull DeliveryTypeEnum deliveryType) {
+  public HubCreateDeliveryRequest deliveryType(@javax.annotation.Nonnull DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
     return this;
   }
@@ -173,22 +199,17 @@ public class HubCreateDeliveryRequest {
    * Type of delivery
    * @return deliveryType
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public DeliveryTypeEnum getDeliveryType() {
     return deliveryType;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DELIVERY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDeliveryType(@jakarta.annotation.Nonnull DeliveryTypeEnum deliveryType) {
+  public void setDeliveryType(@javax.annotation.Nonnull DeliveryTypeEnum deliveryType) {
     this.deliveryType = deliveryType;
   }
 
 
-  public HubCreateDeliveryRequest externalOrderId(@jakarta.annotation.Nullable String externalOrderId) {
+  public HubCreateDeliveryRequest externalOrderId(@javax.annotation.Nullable String externalOrderId) {
     this.externalOrderId = externalOrderId;
     return this;
   }
@@ -197,22 +218,17 @@ public class HubCreateDeliveryRequest {
    * Your external order reference ID
    * @return externalOrderId
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public String getExternalOrderId() {
     return externalOrderId;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_EXTERNAL_ORDER_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setExternalOrderId(@jakarta.annotation.Nullable String externalOrderId) {
+  public void setExternalOrderId(@javax.annotation.Nullable String externalOrderId) {
     this.externalOrderId = externalOrderId;
   }
 
 
-  public HubCreateDeliveryRequest pickup(@jakarta.annotation.Nonnull HubContactDTO pickup) {
+  public HubCreateDeliveryRequest pickup(@javax.annotation.Nonnull HubContactDTO pickup) {
     this.pickup = pickup;
     return this;
   }
@@ -221,22 +237,17 @@ public class HubCreateDeliveryRequest {
    * Pickup contact and location
    * @return pickup
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_PICKUP)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public HubContactDTO getPickup() {
     return pickup;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_PICKUP)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setPickup(@jakarta.annotation.Nonnull HubContactDTO pickup) {
+  public void setPickup(@javax.annotation.Nonnull HubContactDTO pickup) {
     this.pickup = pickup;
   }
 
 
-  public HubCreateDeliveryRequest dropoff(@jakarta.annotation.Nonnull HubContactDTO dropoff) {
+  public HubCreateDeliveryRequest dropoff(@javax.annotation.Nonnull HubContactDTO dropoff) {
     this.dropoff = dropoff;
     return this;
   }
@@ -245,22 +256,17 @@ public class HubCreateDeliveryRequest {
    * Dropoff contact and location
    * @return dropoff
    */
-  @jakarta.annotation.Nonnull
-  @JsonProperty(JSON_PROPERTY_DROPOFF)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @javax.annotation.Nonnull
   public HubContactDTO getDropoff() {
     return dropoff;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_DROPOFF)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setDropoff(@jakarta.annotation.Nonnull HubContactDTO dropoff) {
+  public void setDropoff(@javax.annotation.Nonnull HubContactDTO dropoff) {
     this.dropoff = dropoff;
   }
 
 
-  public HubCreateDeliveryRequest items(@jakarta.annotation.Nullable List<HubItemDTO> items) {
+  public HubCreateDeliveryRequest items(@javax.annotation.Nullable List<HubItemDTO> items) {
     this.items = items;
     return this;
   }
@@ -277,22 +283,17 @@ public class HubCreateDeliveryRequest {
    * List of items to deliver
    * @return items
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_ITEMS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public List<HubItemDTO> getItems() {
     return items;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_ITEMS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setItems(@jakarta.annotation.Nullable List<HubItemDTO> items) {
+  public void setItems(@javax.annotation.Nullable List<HubItemDTO> items) {
     this.items = items;
   }
 
 
-  public HubCreateDeliveryRequest codAmount(@jakarta.annotation.Nullable BigDecimal codAmount) {
+  public HubCreateDeliveryRequest codAmount(@javax.annotation.Nullable BigDecimal codAmount) {
     this.codAmount = codAmount;
     return this;
   }
@@ -301,22 +302,17 @@ public class HubCreateDeliveryRequest {
    * Cash-on-delivery amount (null if not COD)
    * @return codAmount
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_COD_AMOUNT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public BigDecimal getCodAmount() {
     return codAmount;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_COD_AMOUNT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setCodAmount(@jakarta.annotation.Nullable BigDecimal codAmount) {
+  public void setCodAmount(@javax.annotation.Nullable BigDecimal codAmount) {
     this.codAmount = codAmount;
   }
 
 
-  public HubCreateDeliveryRequest scheduledAt(@jakarta.annotation.Nullable OffsetDateTime scheduledAt) {
+  public HubCreateDeliveryRequest scheduledAt(@javax.annotation.Nullable OffsetDateTime scheduledAt) {
     this.scheduledAt = scheduledAt;
     return this;
   }
@@ -325,22 +321,17 @@ public class HubCreateDeliveryRequest {
    * Scheduled pickup time (null for immediate dispatch)
    * @return scheduledAt
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SCHEDULED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public OffsetDateTime getScheduledAt() {
     return scheduledAt;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SCHEDULED_AT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setScheduledAt(@jakarta.annotation.Nullable OffsetDateTime scheduledAt) {
+  public void setScheduledAt(@javax.annotation.Nullable OffsetDateTime scheduledAt) {
     this.scheduledAt = scheduledAt;
   }
 
 
-  public HubCreateDeliveryRequest smsNotifications(@jakarta.annotation.Nullable Boolean smsNotifications) {
+  public HubCreateDeliveryRequest smsNotifications(@javax.annotation.Nullable Boolean smsNotifications) {
     this.smsNotifications = smsNotifications;
     return this;
   }
@@ -349,22 +340,17 @@ public class HubCreateDeliveryRequest {
    * Content for the SMS message(s) which will be sent to the recipient at certain stages of the delivery.  This is an optional feature for communicating the tracking link to the recipient.
    * @return smsNotifications
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_SMS_NOTIFICATIONS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public Boolean getSmsNotifications() {
     return smsNotifications;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_SMS_NOTIFICATIONS)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setSmsNotifications(@jakarta.annotation.Nullable Boolean smsNotifications) {
+  public void setSmsNotifications(@javax.annotation.Nullable Boolean smsNotifications) {
     this.smsNotifications = smsNotifications;
   }
 
 
-  public HubCreateDeliveryRequest handshake(@jakarta.annotation.Nullable HandshakeDeliveryDTO handshake) {
+  public HubCreateDeliveryRequest handshake(@javax.annotation.Nullable HandshakeDeliveryDTO handshake) {
     this.handshake = handshake;
     return this;
   }
@@ -373,22 +359,17 @@ public class HubCreateDeliveryRequest {
    * Handshake details for secure delivery. Enables PIN verification on delivery.
    * @return handshake
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_HANDSHAKE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public HandshakeDeliveryDTO getHandshake() {
     return handshake;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_HANDSHAKE)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setHandshake(@jakarta.annotation.Nullable HandshakeDeliveryDTO handshake) {
+  public void setHandshake(@javax.annotation.Nullable HandshakeDeliveryDTO handshake) {
     this.handshake = handshake;
   }
 
 
-  public HubCreateDeliveryRequest recipient(@jakarta.annotation.Nullable RecipientDeliveryDTO recipient) {
+  public HubCreateDeliveryRequest recipient(@javax.annotation.Nullable RecipientDeliveryDTO recipient) {
     this.recipient = recipient;
     return this;
   }
@@ -397,24 +378,17 @@ public class HubCreateDeliveryRequest {
    * Details of the recipient who is going to receive the delivery
    * @return recipient
    */
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_RECIPIENT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @javax.annotation.Nullable
   public RecipientDeliveryDTO getRecipient() {
     return recipient;
   }
 
-
-  @JsonProperty(JSON_PROPERTY_RECIPIENT)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setRecipient(@jakarta.annotation.Nullable RecipientDeliveryDTO recipient) {
+  public void setRecipient(@javax.annotation.Nullable RecipientDeliveryDTO recipient) {
     this.recipient = recipient;
   }
 
 
-  /**
-   * Return true if this HubCreateDeliveryRequest object is equal to o.
-   */
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -472,99 +446,147 @@ public class HubCreateDeliveryRequest {
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Convert the instance into URL query string.
-   *
-   * @return URL query string
-   */
-  public String toUrlQueryString() {
-    return toUrlQueryString(null);
+
+  public static HashSet<String> openapiFields;
+  public static HashSet<String> openapiRequiredFields;
+
+  static {
+    // a set of all properties/fields (JSON key names)
+    openapiFields = new HashSet<String>();
+    openapiFields.add("quoteId");
+    openapiFields.add("deliveryType");
+    openapiFields.add("externalOrderId");
+    openapiFields.add("pickup");
+    openapiFields.add("dropoff");
+    openapiFields.add("items");
+    openapiFields.add("codAmount");
+    openapiFields.add("scheduledAt");
+    openapiFields.add("smsNotifications");
+    openapiFields.add("handshake");
+    openapiFields.add("recipient");
+
+    // a set of required properties/fields (JSON key names)
+    openapiRequiredFields = new HashSet<String>();
+    openapiRequiredFields.add("quoteId");
+    openapiRequiredFields.add("deliveryType");
+    openapiRequiredFields.add("pickup");
+    openapiRequiredFields.add("dropoff");
   }
 
   /**
-   * Convert the instance into URL query string.
+   * Validates the JSON Element and throws an exception if issues found
    *
-   * @param prefix prefix of the query string
-   * @return URL query string
+   * @param jsonElement JSON Element
+   * @throws IOException if the JSON Element is invalid with respect to HubCreateDeliveryRequest
    */
-  public String toUrlQueryString(String prefix) {
-    String suffix = "";
-    String containerSuffix = "";
-    String containerPrefix = "";
-    if (prefix == null) {
-      // style=form, explode=true, e.g. /pet?name=cat&type=manx
-      prefix = "";
-    } else {
-      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
-      prefix = prefix + "[";
-      suffix = "]";
-      containerSuffix = "]";
-      containerPrefix = "[";
-    }
-
-    StringJoiner joiner = new StringJoiner("&");
-
-    // add `quoteId` to the URL query string
-    if (getQuoteId() != null) {
-      joiner.add(String.format("%squoteId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getQuoteId()))));
-    }
-
-    // add `deliveryType` to the URL query string
-    if (getDeliveryType() != null) {
-      joiner.add(String.format("%sdeliveryType%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeliveryType()))));
-    }
-
-    // add `externalOrderId` to the URL query string
-    if (getExternalOrderId() != null) {
-      joiner.add(String.format("%sexternalOrderId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalOrderId()))));
-    }
-
-    // add `pickup` to the URL query string
-    if (getPickup() != null) {
-      joiner.add(getPickup().toUrlQueryString(prefix + "pickup" + suffix));
-    }
-
-    // add `dropoff` to the URL query string
-    if (getDropoff() != null) {
-      joiner.add(getDropoff().toUrlQueryString(prefix + "dropoff" + suffix));
-    }
-
-    // add `items` to the URL query string
-    if (getItems() != null) {
-      for (int i = 0; i < getItems().size(); i++) {
-        if (getItems().get(i) != null) {
-          joiner.add(getItems().get(i).toUrlQueryString(String.format("%sitems%s%s", prefix, suffix,
-          "".equals(suffix) ? "" : String.format("%s%d%s", containerPrefix, i, containerSuffix))));
+  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
+      if (jsonElement == null) {
+        if (!HubCreateDeliveryRequest.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in HubCreateDeliveryRequest is not found in the empty JSON string", HubCreateDeliveryRequest.openapiRequiredFields.toString()));
         }
       }
-    }
 
-    // add `codAmount` to the URL query string
-    if (getCodAmount() != null) {
-      joiner.add(String.format("%scodAmount%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCodAmount()))));
-    }
+      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
+      // check to see if the JSON string contains additional fields
+      for (Map.Entry<String, JsonElement> entry : entries) {
+        if (!HubCreateDeliveryRequest.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HubCreateDeliveryRequest` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        }
+      }
 
-    // add `scheduledAt` to the URL query string
-    if (getScheduledAt() != null) {
-      joiner.add(String.format("%sscheduledAt%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getScheduledAt()))));
-    }
+      // check to make sure all required properties/fields are present in the JSON string
+      for (String requiredField : HubCreateDeliveryRequest.openapiRequiredFields) {
+        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+        }
+      }
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+      if (!jsonObj.get("quoteId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `quoteId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("quoteId").toString()));
+      }
+      if (!jsonObj.get("deliveryType").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `deliveryType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryType").toString()));
+      }
+      // validate the required field `deliveryType`
+      DeliveryTypeEnum.validateJsonElement(jsonObj.get("deliveryType"));
+      if ((jsonObj.get("externalOrderId") != null && !jsonObj.get("externalOrderId").isJsonNull()) && !jsonObj.get("externalOrderId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `externalOrderId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("externalOrderId").toString()));
+      }
+      // validate the required field `pickup`
+      HubContactDTO.validateJsonElement(jsonObj.get("pickup"));
+      // validate the required field `dropoff`
+      HubContactDTO.validateJsonElement(jsonObj.get("dropoff"));
+      if (jsonObj.get("items") != null && !jsonObj.get("items").isJsonNull()) {
+        JsonArray jsonArrayitems = jsonObj.getAsJsonArray("items");
+        if (jsonArrayitems != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("items").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `items` to be an array in the JSON string but got `%s`", jsonObj.get("items").toString()));
+          }
 
-    // add `smsNotifications` to the URL query string
-    if (getSmsNotifications() != null) {
-      joiner.add(String.format("%ssmsNotifications%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSmsNotifications()))));
-    }
+          // validate the optional field `items` (array)
+          for (int i = 0; i < jsonArrayitems.size(); i++) {
+            HubItemDTO.validateJsonElement(jsonArrayitems.get(i));
+          };
+        }
+      }
+      // validate the optional field `handshake`
+      if (jsonObj.get("handshake") != null && !jsonObj.get("handshake").isJsonNull()) {
+        HandshakeDeliveryDTO.validateJsonElement(jsonObj.get("handshake"));
+      }
+      // validate the optional field `recipient`
+      if (jsonObj.get("recipient") != null && !jsonObj.get("recipient").isJsonNull()) {
+        RecipientDeliveryDTO.validateJsonElement(jsonObj.get("recipient"));
+      }
+  }
 
-    // add `handshake` to the URL query string
-    if (getHandshake() != null) {
-      joiner.add(getHandshake().toUrlQueryString(prefix + "handshake" + suffix));
-    }
+  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+       if (!HubCreateDeliveryRequest.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'HubCreateDeliveryRequest' and its subtypes
+       }
+       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
+       final TypeAdapter<HubCreateDeliveryRequest> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(HubCreateDeliveryRequest.class));
 
-    // add `recipient` to the URL query string
-    if (getRecipient() != null) {
-      joiner.add(getRecipient().toUrlQueryString(prefix + "recipient" + suffix));
-    }
+       return (TypeAdapter<T>) new TypeAdapter<HubCreateDeliveryRequest>() {
+           @Override
+           public void write(JsonWriter out, HubCreateDeliveryRequest value) throws IOException {
+             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
+             elementAdapter.write(out, obj);
+           }
 
-    return joiner.toString();
+           @Override
+           public HubCreateDeliveryRequest read(JsonReader in) throws IOException {
+             JsonElement jsonElement = elementAdapter.read(in);
+             validateJsonElement(jsonElement);
+             return thisAdapter.fromJsonTree(jsonElement);
+           }
+
+       }.nullSafe();
+    }
+  }
+
+  /**
+   * Create an instance of HubCreateDeliveryRequest given an JSON string
+   *
+   * @param jsonString JSON string
+   * @return An instance of HubCreateDeliveryRequest
+   * @throws IOException if the JSON string is invalid with respect to HubCreateDeliveryRequest
+   */
+  public static HubCreateDeliveryRequest fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, HubCreateDeliveryRequest.class);
+  }
+
+  /**
+   * Convert an instance of HubCreateDeliveryRequest to an JSON string
+   *
+   * @return JSON string
+   */
+  public String toJson() {
+    return JSON.getGson().toJson(this);
   }
 }
 
