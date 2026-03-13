@@ -663,8 +663,8 @@ components:
             maxRetryCount: 3
         callbackUrl: https://example.com/webhooks
         eventTypes:
-        - DELIVERY_STATUS_CHANGED
-        - TEST_EVENT
+        - status_changed
+        - test_event
         webhookSecret: whsec-my-custom-secret-key
         enabled: true
       properties:
@@ -681,8 +681,8 @@ components:
         eventTypes:
           description: Event types to subscribe to
           example:
-          - DELIVERY_STATUS_CHANGED
-          - TEST_EVENT
+          - status_changed
+          - test_event
           items:
             type: string
           maxItems: 2147483647
