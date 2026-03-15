@@ -72,7 +72,9 @@ public class HubStatusEventDTO {
     
     FAILED("FAILED"),
     
-    REJECTED("REJECTED");
+    REJECTED("REJECTED"),
+    
+    AWAITING_DRIVER("AWAITING_DRIVER");
 
     private String value;
 

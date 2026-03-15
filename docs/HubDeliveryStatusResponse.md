@@ -57,6 +57,7 @@ Full delivery status including tracking and history
 | CANCELLED | &quot;CANCELLED&quot; |
 | FAILED | &quot;FAILED&quot; |
 | REJECTED | &quot;REJECTED&quot; |
+| AWAITING_DRIVER | &quot;AWAITING_DRIVER&quot; |
 
 
 

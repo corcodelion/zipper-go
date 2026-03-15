@@ -1279,6 +1279,7 @@ components:
           - CANCELLED
           - FAILED
           - REJECTED
+          - AWAITING_DRIVER
           type: string
         hubTrackingNumber:
           type: string
@@ -1676,6 +1677,7 @@ components:
           - CANCELLED
           - FAILED
           - REJECTED
+          - AWAITING_DRIVER
           example: IN_TRANSIT
           type: string
         provider:
@@ -1779,6 +1781,7 @@ components:
           - CANCELLED
           - FAILED
           - REJECTED
+          - AWAITING_DRIVER
           example: PICKED_UP
           type: string
         occurredAt:

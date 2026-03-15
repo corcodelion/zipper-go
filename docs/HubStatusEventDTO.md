@@ -28,6 +28,7 @@ A single status change event in the delivery lifecycle
 | CANCELLED | &quot;CANCELLED&quot; |
 | FAILED | &quot;FAILED&quot; |
 | REJECTED | &quot;REJECTED&quot; |
+| AWAITING_DRIVER | &quot;AWAITING_DRIVER&quot; |
 
 
 
