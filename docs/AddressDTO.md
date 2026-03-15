@@ -8,7 +8,7 @@ Structured address information
 
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
-|**fullAddress** | **String** | Full formatted address string |  |
+|**fullAddress** | **String** | Full formatted address string. Auto-generated from individual fields if not provided. |  [optional] |
 |**city** | **String** | City name |  [optional] |
 |**house** | **String** | House/building number |  [optional] |
 |**state** | **String** | State or region |  [optional] |

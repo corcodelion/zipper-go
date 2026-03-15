@@ -53,7 +53,7 @@ import com.zipper.delivery.hub.sdk.JSON;
 public class AddressDTO {
   public static final String SERIALIZED_NAME_FULL_ADDRESS = "fullAddress";
   @SerializedName(SERIALIZED_NAME_FULL_ADDRESS)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String fullAddress;
 
   public static final String SERIALIZED_NAME_CITY = "city";
@@ -94,21 +94,21 @@ public class AddressDTO {
   public AddressDTO() {
   }
 
-  public AddressDTO fullAddress(@javax.annotation.Nonnull String fullAddress) {
+  public AddressDTO fullAddress(@javax.annotation.Nullable String fullAddress) {
     this.fullAddress = fullAddress;
     return this;
   }
 
   /**
-   * Full formatted address string
+   * Full formatted address string. Auto-generated from individual fields if not provided.
    * @return fullAddress
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getFullAddress() {
     return fullAddress;
   }
 
-  public void setFullAddress(@javax.annotation.Nonnull String fullAddress) {
+  public void setFullAddress(@javax.annotation.Nullable String fullAddress) {
     this.fullAddress = fullAddress;
   }
 
@@ -316,7 +316,6 @@ public class AddressDTO {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("fullAddress");
   }
 
   /**
@@ -339,15 +338,8 @@ public class AddressDTO {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AddressDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AddressDTO.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("fullAddress").isJsonPrimitive()) {
+      if ((jsonObj.get("fullAddress") != null && !jsonObj.get("fullAddress").isJsonNull()) && !jsonObj.get("fullAddress").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `fullAddress` to be a primitive type in the JSON string but got `%s`", jsonObj.get("fullAddress").toString()));
       }
       if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {

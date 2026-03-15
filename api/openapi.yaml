@@ -724,9 +724,9 @@ components:
         house: 123
       properties:
         fullAddress:
-          description: Full formatted address string
+          description: Full formatted address string. Auto-generated from individual
+            fields if not provided.
           example: 123
-          minLength: 1
           type: string
         city:
           description: City name
@@ -754,8 +754,6 @@ components:
           type: string
         addressPlace:
           $ref: '#/components/schemas/AddressPlaceDTO'
-      required:
-      - fullAddress
     AddressPlaceDTO:
       description: Third-party address place reference (e.g. Google Places)
       example:
