@@ -20,8 +20,11 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.LocationDTO;
+import com.zipper.delivery.hub.sdk.model.OpenHoursEntryDTO;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,6 +78,16 @@ public class HubContactDTO {
   @SerializedName(SERIALIZED_NAME_LOCATION)
   @javax.annotation.Nonnull
   private LocationDTO location;
+
+  public static final String SERIALIZED_NAME_OPEN_HOURS = "openHours";
+  @SerializedName(SERIALIZED_NAME_OPEN_HOURS)
+  @javax.annotation.Nullable
+  private List<OpenHoursEntryDTO> openHours = new ArrayList<>();
+
+  public static final String SERIALIZED_NAME_TIMEZONE = "timezone";
+  @SerializedName(SERIALIZED_NAME_TIMEZONE)
+  @javax.annotation.Nullable
+  private String timezone;
 
   public HubContactDTO() {
   }
@@ -174,6 +187,52 @@ public class HubContactDTO {
   }
 
 
+  public HubContactDTO openHours(@javax.annotation.Nullable List<OpenHoursEntryDTO> openHours) {
+    this.openHours = openHours;
+    return this;
+  }
+
+  public HubContactDTO addOpenHoursItem(OpenHoursEntryDTO openHoursItem) {
+    if (this.openHours == null) {
+      this.openHours = new ArrayList<>();
+    }
+    this.openHours.add(openHoursItem);
+    return this;
+  }
+
+  /**
+   * Pickup availability windows (time-of-day). Null or empty means always available.
+   * @return openHours
+   */
+  @javax.annotation.Nullable
+  public List<OpenHoursEntryDTO> getOpenHours() {
+    return openHours;
+  }
+
+  public void setOpenHours(@javax.annotation.Nullable List<OpenHoursEntryDTO> openHours) {
+    this.openHours = openHours;
+  }
+
+
+  public HubContactDTO timezone(@javax.annotation.Nullable String timezone) {
+    this.timezone = timezone;
+    return this;
+  }
+
+  /**
+   * IANA timezone of the pickup location, required when openHours is provided
+   * @return timezone
+   */
+  @javax.annotation.Nullable
+  public String getTimezone() {
+    return timezone;
+  }
+
+  public void setTimezone(@javax.annotation.Nullable String timezone) {
+    this.timezone = timezone;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -188,12 +247,14 @@ public class HubContactDTO {
         Objects.equals(this.phone, hubContactDTO.phone) &&
         Objects.equals(this.email, hubContactDTO.email) &&
         Objects.equals(this.notes, hubContactDTO.notes) &&
-        Objects.equals(this.location, hubContactDTO.location);
+        Objects.equals(this.location, hubContactDTO.location) &&
+        Objects.equals(this.openHours, hubContactDTO.openHours) &&
+        Objects.equals(this.timezone, hubContactDTO.timezone);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, phone, email, notes, location);
+    return Objects.hash(name, phone, email, notes, location, openHours, timezone);
   }
 
   @Override
@@ -205,6 +266,8 @@ public class HubContactDTO {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    notes: ").append(toIndentedString(notes)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
+    sb.append("    openHours: ").append(toIndentedString(openHours)).append("\n");
+    sb.append("    timezone: ").append(toIndentedString(timezone)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -232,6 +295,8 @@ public class HubContactDTO {
     openapiFields.add("email");
     openapiFields.add("notes");
     openapiFields.add("location");
+    openapiFields.add("openHours");
+    openapiFields.add("timezone");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -282,6 +347,23 @@ public class HubContactDTO {
       }
       // validate the required field `location`
       LocationDTO.validateJsonElement(jsonObj.get("location"));
+      if (jsonObj.get("openHours") != null && !jsonObj.get("openHours").isJsonNull()) {
+        JsonArray jsonArrayopenHours = jsonObj.getAsJsonArray("openHours");
+        if (jsonArrayopenHours != null) {
+          // ensure the json data is an array
+          if (!jsonObj.get("openHours").isJsonArray()) {
+            throw new IllegalArgumentException(String.format("Expected the field `openHours` to be an array in the JSON string but got `%s`", jsonObj.get("openHours").toString()));
+          }
+
+          // validate the optional field `openHours` (array)
+          for (int i = 0; i < jsonArrayopenHours.size(); i++) {
+            OpenHoursEntryDTO.validateJsonElement(jsonArrayopenHours.get(i));
+          };
+        }
+      }
+      if ((jsonObj.get("timezone") != null && !jsonObj.get("timezone").isJsonNull()) && !jsonObj.get("timezone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `timezone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("timezone").toString()));
+      }
   }
 
   public static class CustomTypeAdapterFactory implements TypeAdapterFactory {

@@ -33,6 +33,7 @@ docs/LocationDTO.md
 docs/OAuth2Api.md
 docs/OAuth2ErrorResponse.md
 docs/OAuth2TokenResponse.md
+docs/OpenHoursEntryDTO.md
 docs/PageResponseListHubDeliverySearchDTO.md
 docs/Pagination.md
 docs/RecipientDeliveryDTO.md
@@ -97,6 +98,7 @@ src/main/java/com/zipper/delivery/hub/sdk/model/HubStatusEventDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/LocationDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/OAuth2ErrorResponse.java
 src/main/java/com/zipper/delivery/hub/sdk/model/OAuth2TokenResponse.java
+src/main/java/com/zipper/delivery/hub/sdk/model/OpenHoursEntryDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/PageResponseListHubDeliverySearchDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/Pagination.java
 src/main/java/com/zipper/delivery/hub/sdk/model/RecipientDeliveryDTO.java

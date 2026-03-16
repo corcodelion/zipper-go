@@ -163,6 +163,7 @@ Class | Method | HTTP request | Description
  - [LocationDTO](docs/LocationDTO.md)
  - [OAuth2ErrorResponse](docs/OAuth2ErrorResponse.md)
  - [OAuth2TokenResponse](docs/OAuth2TokenResponse.md)
+ - [OpenHoursEntryDTO](docs/OpenHoursEntryDTO.md)
  - [PageResponseListHubDeliverySearchDTO](docs/PageResponseListHubDeliverySearchDTO.md)
  - [Pagination](docs/Pagination.md)
  - [RecipientDeliveryDTO](docs/RecipientDeliveryDTO.md)
