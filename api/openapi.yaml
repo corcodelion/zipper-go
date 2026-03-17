@@ -1052,9 +1052,6 @@ components:
           description: Window end time (exclusive)
           example: 17:30
           type: string
-      required:
-      - from
-      - to
     RecipientDeliveryDTO:
       description: Details of the recipient who is going to receive the delivery
       example:

@@ -52,18 +52,18 @@ import com.zipper.delivery.hub.sdk.JSON;
 public class OpenHoursEntryDTO {
   public static final String SERIALIZED_NAME_FROM = "from";
   @SerializedName(SERIALIZED_NAME_FROM)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String from;
 
   public static final String SERIALIZED_NAME_TO = "to";
   @SerializedName(SERIALIZED_NAME_TO)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private String to;
 
   public OpenHoursEntryDTO() {
   }
 
-  public OpenHoursEntryDTO from(@javax.annotation.Nonnull String from) {
+  public OpenHoursEntryDTO from(@javax.annotation.Nullable String from) {
     this.from = from;
     return this;
   }
@@ -72,17 +72,17 @@ public class OpenHoursEntryDTO {
    * Window start time (inclusive)
    * @return from
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getFrom() {
     return from;
   }
 
-  public void setFrom(@javax.annotation.Nonnull String from) {
+  public void setFrom(@javax.annotation.Nullable String from) {
     this.from = from;
   }
 
 
-  public OpenHoursEntryDTO to(@javax.annotation.Nonnull String to) {
+  public OpenHoursEntryDTO to(@javax.annotation.Nullable String to) {
     this.to = to;
     return this;
   }
@@ -91,12 +91,12 @@ public class OpenHoursEntryDTO {
    * Window end time (exclusive)
    * @return to
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public String getTo() {
     return to;
   }
 
-  public void setTo(@javax.annotation.Nonnull String to) {
+  public void setTo(@javax.annotation.Nullable String to) {
     this.to = to;
   }
 
@@ -153,8 +153,6 @@ public class OpenHoursEntryDTO {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("from");
-    openapiRequiredFields.add("to");
   }
 
   /**
@@ -177,18 +175,11 @@ public class OpenHoursEntryDTO {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `OpenHoursEntryDTO` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : OpenHoursEntryDTO.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("from").isJsonPrimitive()) {
+      if ((jsonObj.get("from") != null && !jsonObj.get("from").isJsonNull()) && !jsonObj.get("from").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `from` to be a primitive type in the JSON string but got `%s`", jsonObj.get("from").toString()));
       }
-      if (!jsonObj.get("to").isJsonPrimitive()) {
+      if ((jsonObj.get("to") != null && !jsonObj.get("to").isJsonNull()) && !jsonObj.get("to").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `to` to be a primitive type in the JSON string but got `%s`", jsonObj.get("to").toString()));
       }
   }
