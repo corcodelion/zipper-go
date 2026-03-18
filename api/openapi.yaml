@@ -789,14 +789,8 @@ components:
     HubContactDTO:
       description: Contact and location details for a pickup or dropoff point
       example:
-        openHours:
-        - from: 08:00
-          to: 17:30
-        - from: 08:00
-          to: 17:30
         notes: "Floor 3, door code 1234"
         phone: "+972501234567"
-        timezone: Asia/Jerusalem
         name: John Doe
         location:
           address:
@@ -834,17 +828,6 @@ components:
           type: string
         location:
           $ref: '#/components/schemas/LocationDTO'
-        openHours:
-          description: Pickup availability windows (time-of-day). Null or empty means
-            always available.
-          items:
-            $ref: '#/components/schemas/OpenHoursEntryDTO'
-          type: array
-        timezone:
-          description: "IANA timezone of the pickup location, required when openHours\
-            \ is provided"
-          example: Asia/Jerusalem
-          type: string
       required:
       - location
       - name
@@ -860,14 +843,8 @@ components:
         codAmount: 49.9
         deliveryType: FOOD_IMMEDIATE
         dropoff:
-          openHours:
-          - from: 08:00
-            to: 17:30
-          - from: 08:00
-            to: 17:30
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
-          timezone: Asia/Jerusalem
           name: John Doe
           location:
             address:
@@ -889,14 +866,8 @@ components:
           name: John Doe
           email: john@example.com
         pickup:
-          openHours:
-          - from: 08:00
-            to: 17:30
-          - from: 08:00
-            to: 17:30
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
-          timezone: Asia/Jerusalem
           name: John Doe
           location:
             address:
@@ -1038,20 +1009,6 @@ components:
       - address
       - lat
       - lng
-    OpenHoursEntryDTO:
-      description: A time-of-day availability window for pickup
-      example:
-        from: 08:00
-        to: 17:30
-      properties:
-        from:
-          description: Window start time (inclusive)
-          example: 08:00
-          type: string
-        to:
-          description: Window end time (exclusive)
-          example: 17:30
-          type: string
     RecipientDeliveryDTO:
       description: Details of the recipient who is going to receive the delivery
       example:
@@ -1436,14 +1393,8 @@ components:
       example:
         deliveryType: FOOD_IMMEDIATE
         dropoff:
-          openHours:
-          - from: 08:00
-            to: 17:30
-          - from: 08:00
-            to: 17:30
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
-          timezone: Asia/Jerusalem
           name: John Doe
           location:
             address:
@@ -1461,14 +1412,8 @@ components:
             lat: 32.0853
           email: john@example.com
         pickup:
-          openHours:
-          - from: 08:00
-            to: 17:30
-          - from: 08:00
-            to: 17:30
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
-          timezone: Asia/Jerusalem
           name: John Doe
           location:
             address:
