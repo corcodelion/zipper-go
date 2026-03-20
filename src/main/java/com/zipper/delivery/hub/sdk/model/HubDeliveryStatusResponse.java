@@ -318,6 +318,11 @@ public class HubDeliveryStatusResponse {
   @javax.annotation.Nullable
   private String pickupNotes;
 
+  public static final String SERIALIZED_NAME_PICKUP_REFERENCE_NUMBER = "pickupReferenceNumber";
+  @SerializedName(SERIALIZED_NAME_PICKUP_REFERENCE_NUMBER)
+  @javax.annotation.Nullable
+  private String pickupReferenceNumber;
+
   public static final String SERIALIZED_NAME_PICKUP_LOCATION = "pickupLocation";
   @SerializedName(SERIALIZED_NAME_PICKUP_LOCATION)
   @javax.annotation.Nullable
@@ -690,6 +695,25 @@ public class HubDeliveryStatusResponse {
   }
 
 
+  public HubDeliveryStatusResponse pickupReferenceNumber(@javax.annotation.Nullable String pickupReferenceNumber) {
+    this.pickupReferenceNumber = pickupReferenceNumber;
+    return this;
+  }
+
+  /**
+   * Pickup reference number used by the driver to collect the package (e.g., invoice number, warehouse release code)
+   * @return pickupReferenceNumber
+   */
+  @javax.annotation.Nullable
+  public String getPickupReferenceNumber() {
+    return pickupReferenceNumber;
+  }
+
+  public void setPickupReferenceNumber(@javax.annotation.Nullable String pickupReferenceNumber) {
+    this.pickupReferenceNumber = pickupReferenceNumber;
+  }
+
+
   public HubDeliveryStatusResponse pickupLocation(@javax.annotation.Nullable HubDeliveryLocationDTO pickupLocation) {
     this.pickupLocation = pickupLocation;
     return this;
@@ -831,6 +855,7 @@ public class HubDeliveryStatusResponse {
         Objects.equals(this.pickupContactPhone, hubDeliveryStatusResponse.pickupContactPhone) &&
         Objects.equals(this.pickupEmail, hubDeliveryStatusResponse.pickupEmail) &&
         Objects.equals(this.pickupNotes, hubDeliveryStatusResponse.pickupNotes) &&
+        Objects.equals(this.pickupReferenceNumber, hubDeliveryStatusResponse.pickupReferenceNumber) &&
         Objects.equals(this.pickupLocation, hubDeliveryStatusResponse.pickupLocation) &&
         Objects.equals(this.dropoffContactName, hubDeliveryStatusResponse.dropoffContactName) &&
         Objects.equals(this.dropoffContactPhone, hubDeliveryStatusResponse.dropoffContactPhone) &&
@@ -841,7 +866,7 @@ public class HubDeliveryStatusResponse {
 
   @Override
   public int hashCode() {
-    return Objects.hash(deliveryId, deliveryType, status, provider, providerTrackingId, hubTrackingNumber, hubOrderId, hubBarcode, estimatedArrival, trackingUrl, statusHistory, proofOfDeliveryUrl, items, pickupContactName, pickupContactPhone, pickupEmail, pickupNotes, pickupLocation, dropoffContactName, dropoffContactPhone, dropoffEmail, dropoffNotes, dropoffLocation);
+    return Objects.hash(deliveryId, deliveryType, status, provider, providerTrackingId, hubTrackingNumber, hubOrderId, hubBarcode, estimatedArrival, trackingUrl, statusHistory, proofOfDeliveryUrl, items, pickupContactName, pickupContactPhone, pickupEmail, pickupNotes, pickupReferenceNumber, pickupLocation, dropoffContactName, dropoffContactPhone, dropoffEmail, dropoffNotes, dropoffLocation);
   }
 
   @Override
@@ -865,6 +890,7 @@ public class HubDeliveryStatusResponse {
     sb.append("    pickupContactPhone: ").append(toIndentedString(pickupContactPhone)).append("\n");
     sb.append("    pickupEmail: ").append(toIndentedString(pickupEmail)).append("\n");
     sb.append("    pickupNotes: ").append(toIndentedString(pickupNotes)).append("\n");
+    sb.append("    pickupReferenceNumber: ").append(toIndentedString(pickupReferenceNumber)).append("\n");
     sb.append("    pickupLocation: ").append(toIndentedString(pickupLocation)).append("\n");
     sb.append("    dropoffContactName: ").append(toIndentedString(dropoffContactName)).append("\n");
     sb.append("    dropoffContactPhone: ").append(toIndentedString(dropoffContactPhone)).append("\n");
@@ -910,6 +936,7 @@ public class HubDeliveryStatusResponse {
     openapiFields.add("pickupContactPhone");
     openapiFields.add("pickupEmail");
     openapiFields.add("pickupNotes");
+    openapiFields.add("pickupReferenceNumber");
     openapiFields.add("pickupLocation");
     openapiFields.add("dropoffContactName");
     openapiFields.add("dropoffContactPhone");
@@ -1023,6 +1050,9 @@ public class HubDeliveryStatusResponse {
       }
       if ((jsonObj.get("pickupNotes") != null && !jsonObj.get("pickupNotes").isJsonNull()) && !jsonObj.get("pickupNotes").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `pickupNotes` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupNotes").toString()));
+      }
+      if ((jsonObj.get("pickupReferenceNumber") != null && !jsonObj.get("pickupReferenceNumber").isJsonNull()) && !jsonObj.get("pickupReferenceNumber").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `pickupReferenceNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupReferenceNumber").toString()));
       }
       // validate the optional field `pickupLocation`
       if (jsonObj.get("pickupLocation") != null && !jsonObj.get("pickupLocation").isJsonNull()) {

@@ -717,11 +717,13 @@ components:
         street: Dizengoff St
         fullAddress: 123
         postcode: 6100000
+        intercom: 4521
         addressPlace:
           provider: google
           id: ChIJN1t_tDeuEmsRUsoyG83frY4
         state: Tel Aviv District
         house: 123
+        apartmentNumber: 12A
       properties:
         fullAddress:
           description: Full formatted address string. Auto-generated from individual
@@ -751,6 +753,14 @@ components:
         postcode:
           description: Postal code
           example: 6100000
+          type: string
+        apartmentNumber:
+          description: Apartment or unit number
+          example: 12A
+          type: string
+        intercom:
+          description: Intercom or buzzer code for building entry
+          example: 4521
           type: string
         addressPlace:
           $ref: '#/components/schemas/AddressPlaceDTO'
@@ -792,6 +802,7 @@ components:
         notes: "Floor 3, door code 1234"
         phone: "+972501234567"
         name: John Doe
+        pickupReferenceNumber: INV-2026-78432
         location:
           address:
             country: IL
@@ -799,11 +810,13 @@ components:
             street: Dizengoff St
             fullAddress: 123
             postcode: 6100000
+            intercom: 4521
             addressPlace:
               provider: google
               id: ChIJN1t_tDeuEmsRUsoyG83frY4
             state: Tel Aviv District
             house: 123
+            apartmentNumber: 12A
           lng: 34.7818
           lat: 32.0853
         email: john@example.com
@@ -811,7 +824,8 @@ components:
         name:
           description: Contact person name
           example: John Doe
-          minLength: 1
+          maxLength: 200
+          minLength: 0
           type: string
         phone:
           description: Contact phone number
@@ -825,6 +839,16 @@ components:
         notes:
           description: Notes or instructions for the driver
           example: "Floor 3, door code 1234"
+          maxLength: 500
+          minLength: 0
+          type: string
+        pickupReferenceNumber:
+          description: "Pickup reference number used by the driver to collect the\
+            \ package (e.g., invoice number, order reference, or warehouse release\
+            \ code)"
+          example: INV-2026-78432
+          maxLength: 200
+          minLength: 0
           type: string
         location:
           $ref: '#/components/schemas/LocationDTO'
@@ -846,6 +870,7 @@ components:
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
           name: John Doe
+          pickupReferenceNumber: INV-2026-78432
           location:
             address:
               country: IL
@@ -853,11 +878,13 @@ components:
               street: Dizengoff St
               fullAddress: 123
               postcode: 6100000
+              intercom: 4521
               addressPlace:
                 provider: google
                 id: ChIJN1t_tDeuEmsRUsoyG83frY4
               state: Tel Aviv District
               house: 123
+              apartmentNumber: 12A
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
@@ -869,6 +896,7 @@ components:
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
           name: John Doe
+          pickupReferenceNumber: INV-2026-78432
           location:
             address:
               country: IL
@@ -876,11 +904,13 @@ components:
               street: Dizengoff St
               fullAddress: 123
               postcode: 6100000
+              intercom: 4521
               addressPlace:
                 provider: google
                 id: ChIJN1t_tDeuEmsRUsoyG83frY4
               state: Tel Aviv District
               house: 123
+              apartmentNumber: 12A
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
@@ -985,11 +1015,13 @@ components:
           street: Dizengoff St
           fullAddress: 123
           postcode: 6100000
+          intercom: 4521
           addressPlace:
             provider: google
             id: ChIJN1t_tDeuEmsRUsoyG83frY4
           state: Tel Aviv District
           house: 123
+          apartmentNumber: 12A
         lng: 34.7818
         lat: 32.0853
       properties:
@@ -1396,6 +1428,7 @@ components:
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
           name: John Doe
+          pickupReferenceNumber: INV-2026-78432
           location:
             address:
               country: IL
@@ -1403,11 +1436,13 @@ components:
               street: Dizengoff St
               fullAddress: 123
               postcode: 6100000
+              intercom: 4521
               addressPlace:
                 provider: google
                 id: ChIJN1t_tDeuEmsRUsoyG83frY4
               state: Tel Aviv District
               house: 123
+              apartmentNumber: 12A
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
@@ -1415,6 +1450,7 @@ components:
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
           name: John Doe
+          pickupReferenceNumber: INV-2026-78432
           location:
             address:
               country: IL
@@ -1422,11 +1458,13 @@ components:
               street: Dizengoff St
               fullAddress: 123
               postcode: 6100000
+              intercom: 4521
               addressPlace:
                 provider: google
                 id: ChIJN1t_tDeuEmsRUsoyG83frY4
               state: Tel Aviv District
               house: 123
+              apartmentNumber: 12A
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
@@ -1606,6 +1644,7 @@ components:
         pickupContactPhone: "+972501234567"
         trackingUrl: trackingUrl
         deliveryType: FOOD_IMMEDIATE
+        pickupReferenceNumber: INV-2026-78432
         dropoffLocation:
           lng: 7.061401241503109
           city: city
@@ -1738,6 +1777,11 @@ components:
         pickupNotes:
           description: Pickup notes or instructions
           example: Ring doorbell twice
+          type: string
+        pickupReferenceNumber:
+          description: "Pickup reference number used by the driver to collect the\
+            \ package (e.g., invoice number, warehouse release code)"
+          example: INV-2026-78432
           type: string
         pickupLocation:
           $ref: '#/components/schemas/HubDeliveryLocationDTO'

@@ -25,6 +25,7 @@ Full delivery status including tracking and history
 |**pickupContactPhone** | **String** | Pickup contact phone number |  [optional] |
 |**pickupEmail** | **String** | Pickup contact email |  [optional] |
 |**pickupNotes** | **String** | Pickup notes or instructions |  [optional] |
+|**pickupReferenceNumber** | **String** | Pickup reference number used by the driver to collect the package (e.g., invoice number, warehouse release code) |  [optional] |
 |**pickupLocation** | [**HubDeliveryLocationDTO**](HubDeliveryLocationDTO.md) | Pickup location details |  [optional] |
 |**dropoffContactName** | **String** | Dropoff contact name |  [optional] |
 |**dropoffContactPhone** | **String** | Dropoff contact phone number |  [optional] |

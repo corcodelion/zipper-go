@@ -86,6 +86,16 @@ public class AddressDTO {
   @javax.annotation.Nullable
   private String postcode;
 
+  public static final String SERIALIZED_NAME_APARTMENT_NUMBER = "apartmentNumber";
+  @SerializedName(SERIALIZED_NAME_APARTMENT_NUMBER)
+  @javax.annotation.Nullable
+  private String apartmentNumber;
+
+  public static final String SERIALIZED_NAME_INTERCOM = "intercom";
+  @SerializedName(SERIALIZED_NAME_INTERCOM)
+  @javax.annotation.Nullable
+  private String intercom;
+
   public static final String SERIALIZED_NAME_ADDRESS_PLACE = "addressPlace";
   @SerializedName(SERIALIZED_NAME_ADDRESS_PLACE)
   @javax.annotation.Nullable
@@ -227,6 +237,44 @@ public class AddressDTO {
   }
 
 
+  public AddressDTO apartmentNumber(@javax.annotation.Nullable String apartmentNumber) {
+    this.apartmentNumber = apartmentNumber;
+    return this;
+  }
+
+  /**
+   * Apartment or unit number
+   * @return apartmentNumber
+   */
+  @javax.annotation.Nullable
+  public String getApartmentNumber() {
+    return apartmentNumber;
+  }
+
+  public void setApartmentNumber(@javax.annotation.Nullable String apartmentNumber) {
+    this.apartmentNumber = apartmentNumber;
+  }
+
+
+  public AddressDTO intercom(@javax.annotation.Nullable String intercom) {
+    this.intercom = intercom;
+    return this;
+  }
+
+  /**
+   * Intercom or buzzer code for building entry
+   * @return intercom
+   */
+  @javax.annotation.Nullable
+  public String getIntercom() {
+    return intercom;
+  }
+
+  public void setIntercom(@javax.annotation.Nullable String intercom) {
+    this.intercom = intercom;
+  }
+
+
   public AddressDTO addressPlace(@javax.annotation.Nullable AddressPlaceDTO addressPlace) {
     this.addressPlace = addressPlace;
     return this;
@@ -263,12 +311,14 @@ public class AddressDTO {
         Objects.equals(this.street, addressDTO.street) &&
         Objects.equals(this.country, addressDTO.country) &&
         Objects.equals(this.postcode, addressDTO.postcode) &&
+        Objects.equals(this.apartmentNumber, addressDTO.apartmentNumber) &&
+        Objects.equals(this.intercom, addressDTO.intercom) &&
         Objects.equals(this.addressPlace, addressDTO.addressPlace);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fullAddress, city, house, state, street, country, postcode, addressPlace);
+    return Objects.hash(fullAddress, city, house, state, street, country, postcode, apartmentNumber, intercom, addressPlace);
   }
 
   @Override
@@ -282,6 +332,8 @@ public class AddressDTO {
     sb.append("    street: ").append(toIndentedString(street)).append("\n");
     sb.append("    country: ").append(toIndentedString(country)).append("\n");
     sb.append("    postcode: ").append(toIndentedString(postcode)).append("\n");
+    sb.append("    apartmentNumber: ").append(toIndentedString(apartmentNumber)).append("\n");
+    sb.append("    intercom: ").append(toIndentedString(intercom)).append("\n");
     sb.append("    addressPlace: ").append(toIndentedString(addressPlace)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -312,6 +364,8 @@ public class AddressDTO {
     openapiFields.add("street");
     openapiFields.add("country");
     openapiFields.add("postcode");
+    openapiFields.add("apartmentNumber");
+    openapiFields.add("intercom");
     openapiFields.add("addressPlace");
 
     // a set of required properties/fields (JSON key names)
@@ -359,6 +413,12 @@ public class AddressDTO {
       }
       if ((jsonObj.get("postcode") != null && !jsonObj.get("postcode").isJsonNull()) && !jsonObj.get("postcode").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `postcode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("postcode").toString()));
+      }
+      if ((jsonObj.get("apartmentNumber") != null && !jsonObj.get("apartmentNumber").isJsonNull()) && !jsonObj.get("apartmentNumber").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `apartmentNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("apartmentNumber").toString()));
+      }
+      if ((jsonObj.get("intercom") != null && !jsonObj.get("intercom").isJsonNull()) && !jsonObj.get("intercom").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `intercom` to be a primitive type in the JSON string but got `%s`", jsonObj.get("intercom").toString()));
       }
       // validate the optional field `addressPlace`
       if (jsonObj.get("addressPlace") != null && !jsonObj.get("addressPlace").isJsonNull()) {

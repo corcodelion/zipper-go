@@ -71,6 +71,11 @@ public class HubContactDTO {
   @javax.annotation.Nullable
   private String notes;
 
+  public static final String SERIALIZED_NAME_PICKUP_REFERENCE_NUMBER = "pickupReferenceNumber";
+  @SerializedName(SERIALIZED_NAME_PICKUP_REFERENCE_NUMBER)
+  @javax.annotation.Nullable
+  private String pickupReferenceNumber;
+
   public static final String SERIALIZED_NAME_LOCATION = "location";
   @SerializedName(SERIALIZED_NAME_LOCATION)
   @javax.annotation.Nonnull
@@ -155,6 +160,25 @@ public class HubContactDTO {
   }
 
 
+  public HubContactDTO pickupReferenceNumber(@javax.annotation.Nullable String pickupReferenceNumber) {
+    this.pickupReferenceNumber = pickupReferenceNumber;
+    return this;
+  }
+
+  /**
+   * Pickup reference number used by the driver to collect the package (e.g., invoice number, order reference, or warehouse release code)
+   * @return pickupReferenceNumber
+   */
+  @javax.annotation.Nullable
+  public String getPickupReferenceNumber() {
+    return pickupReferenceNumber;
+  }
+
+  public void setPickupReferenceNumber(@javax.annotation.Nullable String pickupReferenceNumber) {
+    this.pickupReferenceNumber = pickupReferenceNumber;
+  }
+
+
   public HubContactDTO location(@javax.annotation.Nonnull LocationDTO location) {
     this.location = location;
     return this;
@@ -188,12 +212,13 @@ public class HubContactDTO {
         Objects.equals(this.phone, hubContactDTO.phone) &&
         Objects.equals(this.email, hubContactDTO.email) &&
         Objects.equals(this.notes, hubContactDTO.notes) &&
+        Objects.equals(this.pickupReferenceNumber, hubContactDTO.pickupReferenceNumber) &&
         Objects.equals(this.location, hubContactDTO.location);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, phone, email, notes, location);
+    return Objects.hash(name, phone, email, notes, pickupReferenceNumber, location);
   }
 
   @Override
@@ -204,6 +229,7 @@ public class HubContactDTO {
     sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    notes: ").append(toIndentedString(notes)).append("\n");
+    sb.append("    pickupReferenceNumber: ").append(toIndentedString(pickupReferenceNumber)).append("\n");
     sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -231,6 +257,7 @@ public class HubContactDTO {
     openapiFields.add("phone");
     openapiFields.add("email");
     openapiFields.add("notes");
+    openapiFields.add("pickupReferenceNumber");
     openapiFields.add("location");
 
     // a set of required properties/fields (JSON key names)
@@ -279,6 +306,9 @@ public class HubContactDTO {
       }
       if ((jsonObj.get("notes") != null && !jsonObj.get("notes").isJsonNull()) && !jsonObj.get("notes").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `notes` to be a primitive type in the JSON string but got `%s`", jsonObj.get("notes").toString()));
+      }
+      if ((jsonObj.get("pickupReferenceNumber") != null && !jsonObj.get("pickupReferenceNumber").isJsonNull()) && !jsonObj.get("pickupReferenceNumber").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `pickupReferenceNumber` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupReferenceNumber").toString()));
       }
       // validate the required field `location`
       LocationDTO.validateJsonElement(jsonObj.get("location"));

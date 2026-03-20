@@ -15,6 +15,8 @@ Structured address information
 |**street** | **String** | Street name |  [optional] |
 |**country** | **String** | Country code (ISO 3166-1 alpha-2) |  [optional] |
 |**postcode** | **String** | Postal code |  [optional] |
+|**apartmentNumber** | **String** | Apartment or unit number |  [optional] |
+|**intercom** | **String** | Intercom or buzzer code for building entry |  [optional] |
 |**addressPlace** | [**AddressPlaceDTO**](AddressPlaceDTO.md) | Third-party address place reference |  [optional] |
 
 
