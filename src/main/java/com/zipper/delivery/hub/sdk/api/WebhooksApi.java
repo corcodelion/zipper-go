@@ -78,6 +78,7 @@ public class WebhooksApi {
     /**
      * Build call for createWebhook
      * @param createWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -92,7 +93,7 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createWebhookCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createWebhookCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -133,18 +134,23 @@ public class WebhooksApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createWebhookValidateBeforeCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createWebhookValidateBeforeCall(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'createWebhookRequest' is set
         if (createWebhookRequest == null) {
             throw new ApiException("Missing the required parameter 'createWebhookRequest' when calling createWebhook(Async)");
         }
 
-        return createWebhookCall(createWebhookRequest, _callback);
+        return createWebhookCall(createWebhookRequest, acceptLanguage, _callback);
 
     }
 
@@ -152,6 +158,7 @@ public class WebhooksApi {
      * Create a webhook
      * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return WebhookDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -165,8 +172,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public WebhookDTO createWebhook(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-        ApiResponse<WebhookDTO> localVarResp = createWebhookWithHttpInfo(createWebhookRequest);
+    public WebhookDTO createWebhook(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<WebhookDTO> localVarResp = createWebhookWithHttpInfo(createWebhookRequest, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -174,6 +181,7 @@ public class WebhooksApi {
      * Create a webhook
      * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;WebhookDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -187,8 +195,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<WebhookDTO> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest) throws ApiException {
-        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, null);
+    public ApiResponse<WebhookDTO> createWebhookWithHttpInfo(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -197,6 +205,7 @@ public class WebhooksApi {
      * Create a webhook (asynchronously)
      * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -211,9 +220,9 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createWebhookAsync(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, final ApiCallback<WebhookDTO> _callback) throws ApiException {
+    public okhttp3.Call createWebhookAsync(@javax.annotation.Nonnull CreateWebhookRequest createWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<WebhookDTO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, _callback);
+        okhttp3.Call localVarCall = createWebhookValidateBeforeCall(createWebhookRequest, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -221,6 +230,7 @@ public class WebhooksApi {
     /**
      * Build call for deleteWebhookById
      * @param id Webhook ID (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -234,7 +244,7 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deleteWebhookByIdCall(@javax.annotation.Nonnull Long id, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call deleteWebhookByIdCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -274,18 +284,23 @@ public class WebhooksApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteWebhookByIdValidateBeforeCall(@javax.annotation.Nonnull Long id, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call deleteWebhookByIdValidateBeforeCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling deleteWebhookById(Async)");
         }
 
-        return deleteWebhookByIdCall(id, _callback);
+        return deleteWebhookByIdCall(id, acceptLanguage, _callback);
 
     }
 
@@ -293,6 +308,7 @@ public class WebhooksApi {
      * Delete a specific webhook
      * Removes a specific webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
@@ -304,14 +320,15 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public void deleteWebhookById(@javax.annotation.Nonnull Long id) throws ApiException {
-        deleteWebhookByIdWithHttpInfo(id);
+    public void deleteWebhookById(@javax.annotation.Nonnull Long id, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        deleteWebhookByIdWithHttpInfo(id, acceptLanguage);
     }
 
     /**
      * Delete a specific webhook
      * Removes a specific webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -324,8 +341,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> deleteWebhookByIdWithHttpInfo(@javax.annotation.Nonnull Long id) throws ApiException {
-        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, null);
+    public ApiResponse<Void> deleteWebhookByIdWithHttpInfo(@javax.annotation.Nonnull Long id, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, acceptLanguage, null);
         return localVarApiClient.execute(localVarCall);
     }
 
@@ -333,6 +350,7 @@ public class WebhooksApi {
      * Delete a specific webhook (asynchronously)
      * Removes a specific webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -346,14 +364,15 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call deleteWebhookByIdAsync(@javax.annotation.Nonnull Long id, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call deleteWebhookByIdAsync(@javax.annotation.Nonnull Long id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, _callback);
+        okhttp3.Call localVarCall = deleteWebhookByIdValidateBeforeCall(id, acceptLanguage, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
     /**
      * Build call for listWebhooks
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -366,7 +385,7 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listWebhooksCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call listWebhooksCall(@javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -406,19 +425,25 @@ public class WebhooksApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call listWebhooksValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return listWebhooksCall(_callback);
+    private okhttp3.Call listWebhooksValidateBeforeCall(@javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        return listWebhooksCall(acceptLanguage, _callback);
 
     }
 
     /**
      * List all webhooks
      * Returns all webhook subscriptions for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return List&lt;WebhookDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -430,14 +455,15 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public List<WebhookDTO> listWebhooks() throws ApiException {
-        ApiResponse<List<WebhookDTO>> localVarResp = listWebhooksWithHttpInfo();
+    public List<WebhookDTO> listWebhooks(@javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<List<WebhookDTO>> localVarResp = listWebhooksWithHttpInfo(acceptLanguage);
         return localVarResp.getData();
     }
 
     /**
      * List all webhooks
      * Returns all webhook subscriptions for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;List&lt;WebhookDTO&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -449,8 +475,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<List<WebhookDTO>> listWebhooksWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(null);
+    public ApiResponse<List<WebhookDTO>> listWebhooksWithHttpInfo(@javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(acceptLanguage, null);
         Type localVarReturnType = new TypeToken<List<WebhookDTO>>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -458,6 +484,7 @@ public class WebhooksApi {
     /**
      * List all webhooks (asynchronously)
      * Returns all webhook subscriptions for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -470,15 +497,16 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call listWebhooksAsync(final ApiCallback<List<WebhookDTO>> _callback) throws ApiException {
+    public okhttp3.Call listWebhooksAsync(@javax.annotation.Nullable String acceptLanguage, final ApiCallback<List<WebhookDTO>> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = listWebhooksValidateBeforeCall(acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<List<WebhookDTO>>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }
     /**
      * Build call for testWebhook
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -493,7 +521,7 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call testWebhookCall(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call testWebhookCall(@javax.annotation.Nullable String acceptLanguage, @javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -533,19 +561,25 @@ public class WebhooksApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call testWebhookValidateBeforeCall(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
-        return testWebhookCall(testWebhookRequest, _callback);
+    private okhttp3.Call testWebhookValidateBeforeCall(@javax.annotation.Nullable String acceptLanguage, @javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback _callback) throws ApiException {
+        return testWebhookCall(acceptLanguage, testWebhookRequest, _callback);
 
     }
 
     /**
      * Send a test webhook event
      * Publishes a test event to all registered webhooks for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -558,13 +592,14 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public void testWebhook(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
-        testWebhookWithHttpInfo(testWebhookRequest);
+    public void testWebhook(@javax.annotation.Nullable String acceptLanguage, @javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
+        testWebhookWithHttpInfo(acceptLanguage, testWebhookRequest);
     }
 
     /**
      * Send a test webhook event
      * Publishes a test event to all registered webhooks for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -578,14 +613,15 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<Void> testWebhookWithHttpInfo(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
-        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(testWebhookRequest, null);
+    public ApiResponse<Void> testWebhookWithHttpInfo(@javax.annotation.Nullable String acceptLanguage, @javax.annotation.Nullable TestWebhookRequest testWebhookRequest) throws ApiException {
+        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(acceptLanguage, testWebhookRequest, null);
         return localVarApiClient.execute(localVarCall);
     }
 
     /**
      * Send a test webhook event (asynchronously)
      * Publishes a test event to all registered webhooks for the current API client.
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -600,9 +636,9 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call testWebhookAsync(@javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback<Void> _callback) throws ApiException {
+    public okhttp3.Call testWebhookAsync(@javax.annotation.Nullable String acceptLanguage, @javax.annotation.Nullable TestWebhookRequest testWebhookRequest, final ApiCallback<Void> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(testWebhookRequest, _callback);
+        okhttp3.Call localVarCall = testWebhookValidateBeforeCall(acceptLanguage, testWebhookRequest, _callback);
         localVarApiClient.executeAsync(localVarCall, _callback);
         return localVarCall;
     }
@@ -610,6 +646,7 @@ public class WebhooksApi {
      * Build call for updateWebhook
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -625,7 +662,7 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call updateWebhookCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call updateWebhookCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -667,12 +704,17 @@ public class WebhooksApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateWebhookValidateBeforeCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call updateWebhookValidateBeforeCall(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'id' is set
         if (id == null) {
             throw new ApiException("Missing the required parameter 'id' when calling updateWebhook(Async)");
@@ -683,7 +725,7 @@ public class WebhooksApi {
             throw new ApiException("Missing the required parameter 'updateWebhookRequest' when calling updateWebhook(Async)");
         }
 
-        return updateWebhookCall(id, updateWebhookRequest, _callback);
+        return updateWebhookCall(id, updateWebhookRequest, acceptLanguage, _callback);
 
     }
 
@@ -692,6 +734,7 @@ public class WebhooksApi {
      * Updates an existing webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return WebhookDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -706,8 +749,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public WebhookDTO updateWebhook(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-        ApiResponse<WebhookDTO> localVarResp = updateWebhookWithHttpInfo(id, updateWebhookRequest);
+    public WebhookDTO updateWebhook(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<WebhookDTO> localVarResp = updateWebhookWithHttpInfo(id, updateWebhookRequest, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -716,6 +759,7 @@ public class WebhooksApi {
      * Updates an existing webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;WebhookDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -730,8 +774,8 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<WebhookDTO> updateWebhookWithHttpInfo(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest) throws ApiException {
-        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, null);
+    public ApiResponse<WebhookDTO> updateWebhookWithHttpInfo(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -741,6 +785,7 @@ public class WebhooksApi {
      * Updates an existing webhook subscription by ID for the current API client.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -756,9 +801,9 @@ public class WebhooksApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call updateWebhookAsync(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, final ApiCallback<WebhookDTO> _callback) throws ApiException {
+    public okhttp3.Call updateWebhookAsync(@javax.annotation.Nonnull Long id, @javax.annotation.Nonnull UpdateWebhookRequest updateWebhookRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<WebhookDTO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, _callback);
+        okhttp3.Call localVarCall = updateWebhookValidateBeforeCall(id, updateWebhookRequest, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<WebhookDTO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

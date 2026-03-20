@@ -9,7 +9,7 @@ All URIs are relative to *http://localhost*
 
 <a id="token"></a>
 # **token**
-> OAuth2TokenResponse token(grantType, clientId, clientSecret)
+> OAuth2TokenResponse token(grantType, clientId, clientSecret, acceptLanguage)
 
 Exchange client credentials for an access token
 
@@ -38,8 +38,9 @@ public class Example {
     String grantType = "grantType_example"; // String | OAuth2 grant type (must be 'client_credentials')
     String clientId = "clientId_example"; // String | API client identifier
     String clientSecret = "clientSecret_example"; // String | API client secret key
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      OAuth2TokenResponse result = apiInstance.token(grantType, clientId, clientSecret);
+      OAuth2TokenResponse result = apiInstance.token(grantType, clientId, clientSecret, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling OAuth2Api#token");
@@ -59,6 +60,7 @@ public class Example {
 | **grantType** | **String**| OAuth2 grant type (must be &#39;client_credentials&#39;) | |
 | **clientId** | **String**| API client identifier | |
 | **clientSecret** | **String**| API client secret key | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 

@@ -86,6 +86,7 @@ public class DeliveriesApi {
     /**
      * Build call for cancelDelivery
      * @param deliveryId UUID of the delivery to cancel (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -99,7 +100,7 @@ public class DeliveriesApi {
         <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call cancelDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call cancelDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -140,18 +141,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call cancelDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call cancelDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'deliveryId' is set
         if (deliveryId == null) {
             throw new ApiException("Missing the required parameter 'deliveryId' when calling cancelDelivery(Async)");
         }
 
-        return cancelDeliveryCall(deliveryId, _callback);
+        return cancelDeliveryCall(deliveryId, acceptLanguage, _callback);
 
     }
 
@@ -159,6 +165,7 @@ public class DeliveriesApi {
      * Cancel a delivery
      * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
      * @param deliveryId UUID of the delivery to cancel (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubCancelDeliveryResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -171,8 +178,8 @@ public class DeliveriesApi {
         <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
      </table>
      */
-    public HubCancelDeliveryResponse cancelDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        ApiResponse<HubCancelDeliveryResponse> localVarResp = cancelDeliveryWithHttpInfo(deliveryId);
+    public HubCancelDeliveryResponse cancelDelivery(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubCancelDeliveryResponse> localVarResp = cancelDeliveryWithHttpInfo(deliveryId, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -180,6 +187,7 @@ public class DeliveriesApi {
      * Cancel a delivery
      * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
      * @param deliveryId UUID of the delivery to cancel (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubCancelDeliveryResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -192,8 +200,8 @@ public class DeliveriesApi {
         <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubCancelDeliveryResponse> cancelDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, null);
+    public ApiResponse<HubCancelDeliveryResponse> cancelDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubCancelDeliveryResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -202,6 +210,7 @@ public class DeliveriesApi {
      * Cancel a delivery (asynchronously)
      * Cancels a delivery that is in CREATED or ASSIGNED status. If the delivery has been dispatched to a provider, the cancellation is also forwarded to the provider.
      * @param deliveryId UUID of the delivery to cancel (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -215,9 +224,9 @@ public class DeliveriesApi {
         <tr><td> 422 </td><td> Provider cancellation failed </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call cancelDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubCancelDeliveryResponse> _callback) throws ApiException {
+    public okhttp3.Call cancelDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubCancelDeliveryResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, _callback);
+        okhttp3.Call localVarCall = cancelDeliveryValidateBeforeCall(deliveryId, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubCancelDeliveryResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -226,6 +235,7 @@ public class DeliveriesApi {
      * Build call for createDelivery
      * @param hubCreateDeliveryRequest  (required)
      * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -240,7 +250,7 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createDeliveryCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call createDeliveryCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -286,18 +296,23 @@ public class DeliveriesApi {
         }
 
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call createDeliveryValidateBeforeCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call createDeliveryValidateBeforeCall(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'hubCreateDeliveryRequest' is set
         if (hubCreateDeliveryRequest == null) {
             throw new ApiException("Missing the required parameter 'hubCreateDeliveryRequest' when calling createDelivery(Async)");
         }
 
-        return createDeliveryCall(hubCreateDeliveryRequest, idempotencyKey, _callback);
+        return createDeliveryCall(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage, _callback);
 
     }
 
@@ -306,6 +321,7 @@ public class DeliveriesApi {
      * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
      * @param hubCreateDeliveryRequest  (required)
      * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubCreateDeliveryResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -319,8 +335,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public HubCreateDeliveryResponse createDelivery(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
-        ApiResponse<HubCreateDeliveryResponse> localVarResp = createDeliveryWithHttpInfo(hubCreateDeliveryRequest, idempotencyKey);
+    public HubCreateDeliveryResponse createDelivery(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubCreateDeliveryResponse> localVarResp = createDeliveryWithHttpInfo(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -329,6 +345,7 @@ public class DeliveriesApi {
      * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
      * @param hubCreateDeliveryRequest  (required)
      * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubCreateDeliveryResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -342,8 +359,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubCreateDeliveryResponse> createDeliveryWithHttpInfo(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey) throws ApiException {
-        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, null);
+    public ApiResponse<HubCreateDeliveryResponse> createDeliveryWithHttpInfo(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubCreateDeliveryResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -353,6 +370,7 @@ public class DeliveriesApi {
      * Dispatches a new delivery order to the best available carrier provider. An optional idempotency key prevents duplicate orders.
      * @param hubCreateDeliveryRequest  (required)
      * @param idempotencyKey Unique key to ensure idempotent delivery creation (optional)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -367,9 +385,9 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call createDeliveryAsync(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, final ApiCallback<HubCreateDeliveryResponse> _callback) throws ApiException {
+    public okhttp3.Call createDeliveryAsync(@javax.annotation.Nonnull HubCreateDeliveryRequest hubCreateDeliveryRequest, @javax.annotation.Nullable String idempotencyKey, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubCreateDeliveryResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, _callback);
+        okhttp3.Call localVarCall = createDeliveryValidateBeforeCall(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubCreateDeliveryResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -377,6 +395,7 @@ public class DeliveriesApi {
     /**
      * Build call for getDelivery
      * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -390,7 +409,7 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -431,18 +450,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'deliveryId' is set
         if (deliveryId == null) {
             throw new ApiException("Missing the required parameter 'deliveryId' when calling getDelivery(Async)");
         }
 
-        return getDeliveryCall(deliveryId, _callback);
+        return getDeliveryCall(deliveryId, acceptLanguage, _callback);
 
     }
 
@@ -450,6 +474,7 @@ public class DeliveriesApi {
      * Get delivery status
      * Retrieves the current status, tracking information, and full status history of a delivery.
      * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubDeliveryStatusResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -462,8 +487,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public HubDeliveryStatusResponse getDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        ApiResponse<HubDeliveryStatusResponse> localVarResp = getDeliveryWithHttpInfo(deliveryId);
+    public HubDeliveryStatusResponse getDelivery(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubDeliveryStatusResponse> localVarResp = getDeliveryWithHttpInfo(deliveryId, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -471,6 +496,7 @@ public class DeliveriesApi {
      * Get delivery status
      * Retrieves the current status, tracking information, and full status history of a delivery.
      * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -483,8 +509,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubDeliveryStatusResponse> getDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, null);
+    public ApiResponse<HubDeliveryStatusResponse> getDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -493,6 +519,7 @@ public class DeliveriesApi {
      * Get delivery status (asynchronously)
      * Retrieves the current status, tracking information, and full status history of a delivery.
      * @param deliveryId UUID of the delivery to retrieve (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -506,9 +533,9 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
+    public okhttp3.Call getDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, _callback);
+        okhttp3.Call localVarCall = getDeliveryValidateBeforeCall(deliveryId, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -516,6 +543,7 @@ public class DeliveriesApi {
     /**
      * Build call for getDeliveryLabel
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -527,7 +555,7 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryLabelCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getDeliveryLabelCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -568,18 +596,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getDeliveryLabelValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getDeliveryLabelValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'hubTrackingNumber' is set
         if (hubTrackingNumber == null) {
             throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabel(Async)");
         }
 
-        return getDeliveryLabelCall(hubTrackingNumber, _callback);
+        return getDeliveryLabelCall(hubTrackingNumber, acceptLanguage, _callback);
 
     }
 
@@ -587,6 +620,7 @@ public class DeliveriesApi {
      * Get delivery label metadata
      * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubDeliveryLabelResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -597,8 +631,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public HubDeliveryLabelResponse getDeliveryLabel(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-        ApiResponse<HubDeliveryLabelResponse> localVarResp = getDeliveryLabelWithHttpInfo(hubTrackingNumber);
+    public HubDeliveryLabelResponse getDeliveryLabel(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubDeliveryLabelResponse> localVarResp = getDeliveryLabelWithHttpInfo(hubTrackingNumber, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -606,6 +640,7 @@ public class DeliveriesApi {
      * Get delivery label metadata
      * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubDeliveryLabelResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -616,8 +651,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubDeliveryLabelResponse> getDeliveryLabelWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, null);
+    public ApiResponse<HubDeliveryLabelResponse> getDeliveryLabelWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubDeliveryLabelResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -626,6 +661,7 @@ public class DeliveriesApi {
      * Get delivery label metadata (asynchronously)
      * Returns barcode value and URLs for barcode image, QR code, and label PDF for a delivery identified by its hub tracking number.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -637,9 +673,9 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryLabelAsync(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback<HubDeliveryLabelResponse> _callback) throws ApiException {
+    public okhttp3.Call getDeliveryLabelAsync(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubDeliveryLabelResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, _callback);
+        okhttp3.Call localVarCall = getDeliveryLabelValidateBeforeCall(hubTrackingNumber, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubDeliveryLabelResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -648,6 +684,7 @@ public class DeliveriesApi {
      * Build call for getDeliveryLabelAsset
      * @param hubTrackingNumber Hub tracking number (required)
      * @param filename Asset filename (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -660,7 +697,7 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryLabelAssetCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getDeliveryLabelAssetCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -702,12 +739,17 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getDeliveryLabelAssetValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getDeliveryLabelAssetValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'hubTrackingNumber' is set
         if (hubTrackingNumber == null) {
             throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling getDeliveryLabelAsset(Async)");
@@ -718,7 +760,7 @@ public class DeliveriesApi {
             throw new ApiException("Missing the required parameter 'filename' when calling getDeliveryLabelAsset(Async)");
         }
 
-        return getDeliveryLabelAssetCall(hubTrackingNumber, filename, _callback);
+        return getDeliveryLabelAssetCall(hubTrackingNumber, filename, acceptLanguage, _callback);
 
     }
 
@@ -727,6 +769,7 @@ public class DeliveriesApi {
      * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
      * @param hubTrackingNumber Hub tracking number (required)
      * @param filename Asset filename (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return File
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -738,8 +781,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public File getDeliveryLabelAsset(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename) throws ApiException {
-        ApiResponse<File> localVarResp = getDeliveryLabelAssetWithHttpInfo(hubTrackingNumber, filename);
+    public File getDeliveryLabelAsset(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<File> localVarResp = getDeliveryLabelAssetWithHttpInfo(hubTrackingNumber, filename, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -748,6 +791,7 @@ public class DeliveriesApi {
      * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
      * @param hubTrackingNumber Hub tracking number (required)
      * @param filename Asset filename (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;File&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -759,8 +803,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<File> getDeliveryLabelAssetWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename) throws ApiException {
-        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, null);
+    public ApiResponse<File> getDeliveryLabelAssetWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<File>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -770,6 +814,7 @@ public class DeliveriesApi {
      * Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Streams from storage or generates on-the-fly if not yet uploaded.
      * @param hubTrackingNumber Hub tracking number (required)
      * @param filename Asset filename (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -782,9 +827,9 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getDeliveryLabelAssetAsync(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, final ApiCallback<File> _callback) throws ApiException {
+    public okhttp3.Call getDeliveryLabelAssetAsync(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nonnull String filename, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<File> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, _callback);
+        okhttp3.Call localVarCall = getDeliveryLabelAssetValidateBeforeCall(hubTrackingNumber, filename, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<File>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -792,6 +837,7 @@ public class DeliveriesApi {
     /**
      * Build call for getHandshakeDelivery
      * @param deliveryId UUID of the delivery (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -804,7 +850,7 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getHandshakeDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getHandshakeDeliveryCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -845,18 +891,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getHandshakeDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getHandshakeDeliveryValidateBeforeCall(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'deliveryId' is set
         if (deliveryId == null) {
             throw new ApiException("Missing the required parameter 'deliveryId' when calling getHandshakeDelivery(Async)");
         }
 
-        return getHandshakeDeliveryCall(deliveryId, _callback);
+        return getHandshakeDeliveryCall(deliveryId, acceptLanguage, _callback);
 
     }
 
@@ -864,6 +915,7 @@ public class DeliveriesApi {
      * Get handshake PIN info
      * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
      * @param deliveryId UUID of the delivery (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubHandshakeDeliveryResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -875,8 +927,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public HubHandshakeDeliveryResponse getHandshakeDelivery(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        ApiResponse<HubHandshakeDeliveryResponse> localVarResp = getHandshakeDeliveryWithHttpInfo(deliveryId);
+    public HubHandshakeDeliveryResponse getHandshakeDelivery(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubHandshakeDeliveryResponse> localVarResp = getHandshakeDeliveryWithHttpInfo(deliveryId, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -884,6 +936,7 @@ public class DeliveriesApi {
      * Get handshake PIN info
      * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
      * @param deliveryId UUID of the delivery (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubHandshakeDeliveryResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -895,8 +948,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubHandshakeDeliveryResponse> getHandshakeDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId) throws ApiException {
-        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, null);
+    public ApiResponse<HubHandshakeDeliveryResponse> getHandshakeDeliveryWithHttpInfo(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubHandshakeDeliveryResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -905,6 +958,7 @@ public class DeliveriesApi {
      * Get handshake PIN info (asynchronously)
      * Returns PIN handshake information for a delivery, including whether a PIN is required and the PIN code if applicable.
      * @param deliveryId UUID of the delivery (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -917,9 +971,9 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getHandshakeDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, final ApiCallback<HubHandshakeDeliveryResponse> _callback) throws ApiException {
+    public okhttp3.Call getHandshakeDeliveryAsync(@javax.annotation.Nonnull UUID deliveryId, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubHandshakeDeliveryResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, _callback);
+        okhttp3.Call localVarCall = getHandshakeDeliveryValidateBeforeCall(deliveryId, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubHandshakeDeliveryResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -927,6 +981,7 @@ public class DeliveriesApi {
     /**
      * Build call for getQuote
      * @param hubDeliveryQuoteRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -940,7 +995,7 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getQuoteCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getQuoteCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -981,18 +1036,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getQuoteValidateBeforeCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getQuoteValidateBeforeCall(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'hubDeliveryQuoteRequest' is set
         if (hubDeliveryQuoteRequest == null) {
             throw new ApiException("Missing the required parameter 'hubDeliveryQuoteRequest' when calling getQuote(Async)");
         }
 
-        return getQuoteCall(hubDeliveryQuoteRequest, _callback);
+        return getQuoteCall(hubDeliveryQuoteRequest, acceptLanguage, _callback);
 
     }
 
@@ -1000,6 +1060,7 @@ public class DeliveriesApi {
      * Get a delivery quote
      * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
      * @param hubDeliveryQuoteRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubDeliveryQuoteResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1012,8 +1073,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public HubDeliveryQuoteResponse getQuote(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
-        ApiResponse<HubDeliveryQuoteResponse> localVarResp = getQuoteWithHttpInfo(hubDeliveryQuoteRequest);
+    public HubDeliveryQuoteResponse getQuote(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubDeliveryQuoteResponse> localVarResp = getQuoteWithHttpInfo(hubDeliveryQuoteRequest, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -1021,6 +1082,7 @@ public class DeliveriesApi {
      * Get a delivery quote
      * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
      * @param hubDeliveryQuoteRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubDeliveryQuoteResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1033,8 +1095,8 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubDeliveryQuoteResponse> getQuoteWithHttpInfo(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest) throws ApiException {
-        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, null);
+    public ApiResponse<HubDeliveryQuoteResponse> getQuoteWithHttpInfo(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubDeliveryQuoteResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -1043,6 +1105,7 @@ public class DeliveriesApi {
      * Get a delivery quote (asynchronously)
      * Returns a price quote and estimated arrival time for the given pickup/dropoff route and delivery type.
      * @param hubDeliveryQuoteRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -1056,9 +1119,9 @@ public class DeliveriesApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getQuoteAsync(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, final ApiCallback<HubDeliveryQuoteResponse> _callback) throws ApiException {
+    public okhttp3.Call getQuoteAsync(@javax.annotation.Nonnull HubDeliveryQuoteRequest hubDeliveryQuoteRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubDeliveryQuoteResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, _callback);
+        okhttp3.Call localVarCall = getQuoteValidateBeforeCall(hubDeliveryQuoteRequest, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubDeliveryQuoteResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -1066,6 +1129,7 @@ public class DeliveriesApi {
     /**
      * Build call for searchDeliveries
      * @param searchDeliveriesRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -1077,7 +1141,7 @@ public class DeliveriesApi {
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call searchDeliveriesCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call searchDeliveriesCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1118,18 +1182,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call searchDeliveriesValidateBeforeCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call searchDeliveriesValidateBeforeCall(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'searchDeliveriesRequest' is set
         if (searchDeliveriesRequest == null) {
             throw new ApiException("Missing the required parameter 'searchDeliveriesRequest' when calling searchDeliveries(Async)");
         }
 
-        return searchDeliveriesCall(searchDeliveriesRequest, _callback);
+        return searchDeliveriesCall(searchDeliveriesRequest, acceptLanguage, _callback);
 
     }
 
@@ -1137,6 +1206,7 @@ public class DeliveriesApi {
      * Search deliveries
      * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
      * @param searchDeliveriesRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return PageResponseListHubDeliverySearchDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1147,8 +1217,8 @@ public class DeliveriesApi {
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
      </table>
      */
-    public PageResponseListHubDeliverySearchDTO searchDeliveries(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
-        ApiResponse<PageResponseListHubDeliverySearchDTO> localVarResp = searchDeliveriesWithHttpInfo(searchDeliveriesRequest);
+    public PageResponseListHubDeliverySearchDTO searchDeliveries(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<PageResponseListHubDeliverySearchDTO> localVarResp = searchDeliveriesWithHttpInfo(searchDeliveriesRequest, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -1156,6 +1226,7 @@ public class DeliveriesApi {
      * Search deliveries
      * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
      * @param searchDeliveriesRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;PageResponseListHubDeliverySearchDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1166,8 +1237,8 @@ public class DeliveriesApi {
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<PageResponseListHubDeliverySearchDTO> searchDeliveriesWithHttpInfo(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest) throws ApiException {
-        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, null);
+    public ApiResponse<PageResponseListHubDeliverySearchDTO> searchDeliveriesWithHttpInfo(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<PageResponseListHubDeliverySearchDTO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -1176,6 +1247,7 @@ public class DeliveriesApi {
      * Search deliveries (asynchronously)
      * Search and filter deliveries with pagination. Supports filtering by status, date range, and other criteria. Returns a paginated list of deliveries matching the search parameters.
      * @param searchDeliveriesRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -1187,9 +1259,9 @@ public class DeliveriesApi {
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call searchDeliveriesAsync(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, final ApiCallback<PageResponseListHubDeliverySearchDTO> _callback) throws ApiException {
+    public okhttp3.Call searchDeliveriesAsync(@javax.annotation.Nonnull SearchDeliveriesRequest searchDeliveriesRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<PageResponseListHubDeliverySearchDTO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, _callback);
+        okhttp3.Call localVarCall = searchDeliveriesValidateBeforeCall(searchDeliveriesRequest, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<PageResponseListHubDeliverySearchDTO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -1197,6 +1269,7 @@ public class DeliveriesApi {
     /**
      * Build call for trackDelivery
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -1208,7 +1281,7 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call trackDeliveryCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call trackDeliveryCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -1249,18 +1322,23 @@ public class DeliveriesApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call trackDeliveryValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call trackDeliveryValidateBeforeCall(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'hubTrackingNumber' is set
         if (hubTrackingNumber == null) {
             throw new ApiException("Missing the required parameter 'hubTrackingNumber' when calling trackDelivery(Async)");
         }
 
-        return trackDeliveryCall(hubTrackingNumber, _callback);
+        return trackDeliveryCall(hubTrackingNumber, acceptLanguage, _callback);
 
     }
 
@@ -1268,6 +1346,7 @@ public class DeliveriesApi {
      * Track delivery by tracking number
      * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return HubDeliveryStatusResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1278,8 +1357,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public HubDeliveryStatusResponse trackDelivery(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-        ApiResponse<HubDeliveryStatusResponse> localVarResp = trackDeliveryWithHttpInfo(hubTrackingNumber);
+    public HubDeliveryStatusResponse trackDelivery(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<HubDeliveryStatusResponse> localVarResp = trackDeliveryWithHttpInfo(hubTrackingNumber, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -1287,6 +1366,7 @@ public class DeliveriesApi {
      * Track delivery by tracking number
      * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;HubDeliveryStatusResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -1297,8 +1377,8 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<HubDeliveryStatusResponse> trackDeliveryWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber) throws ApiException {
-        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, null);
+    public ApiResponse<HubDeliveryStatusResponse> trackDeliveryWithHttpInfo(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -1307,6 +1387,7 @@ public class DeliveriesApi {
      * Track delivery by tracking number (asynchronously)
      * Retrieves delivery status and tracking information using the hub tracking number. This endpoint is designed for easy tracking URL sharing and does not require authentication, but will only return information for deliveries that have been marked as &#39;trackable&#39; by the sender.
      * @param hubTrackingNumber Hub tracking number (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -1318,9 +1399,9 @@ public class DeliveriesApi {
         <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call trackDeliveryAsync(@javax.annotation.Nonnull String hubTrackingNumber, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
+    public okhttp3.Call trackDeliveryAsync(@javax.annotation.Nonnull String hubTrackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<HubDeliveryStatusResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, _callback);
+        okhttp3.Call localVarCall = trackDeliveryValidateBeforeCall(hubTrackingNumber, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<HubDeliveryStatusResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

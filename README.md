@@ -98,8 +98,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to cancel
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubCancelDeliveryResponse result = apiInstance.cancelDelivery(deliveryId);
+      HubCancelDeliveryResponse result = apiInstance.cancelDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#cancelDelivery");

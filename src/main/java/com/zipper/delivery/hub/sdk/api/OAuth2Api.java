@@ -78,6 +78,7 @@ public class OAuth2Api {
      * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
      * @param clientId API client identifier (required)
      * @param clientSecret API client secret key (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -91,7 +92,7 @@ public class OAuth2Api {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call tokenCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call tokenCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -144,12 +145,17 @@ public class OAuth2Api {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call tokenValidateBeforeCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call tokenValidateBeforeCall(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'grantType' is set
         if (grantType == null) {
             throw new ApiException("Missing the required parameter 'grantType' when calling token(Async)");
@@ -165,7 +171,7 @@ public class OAuth2Api {
             throw new ApiException("Missing the required parameter 'clientSecret' when calling token(Async)");
         }
 
-        return tokenCall(grantType, clientId, clientSecret, _callback);
+        return tokenCall(grantType, clientId, clientSecret, acceptLanguage, _callback);
 
     }
 
@@ -175,6 +181,7 @@ public class OAuth2Api {
      * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
      * @param clientId API client identifier (required)
      * @param clientSecret API client secret key (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return OAuth2TokenResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -187,8 +194,8 @@ public class OAuth2Api {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public OAuth2TokenResponse token(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret) throws ApiException {
-        ApiResponse<OAuth2TokenResponse> localVarResp = tokenWithHttpInfo(grantType, clientId, clientSecret);
+    public OAuth2TokenResponse token(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<OAuth2TokenResponse> localVarResp = tokenWithHttpInfo(grantType, clientId, clientSecret, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -198,6 +205,7 @@ public class OAuth2Api {
      * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
      * @param clientId API client identifier (required)
      * @param clientSecret API client secret key (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;OAuth2TokenResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -210,8 +218,8 @@ public class OAuth2Api {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<OAuth2TokenResponse> tokenWithHttpInfo(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret) throws ApiException {
-        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, null);
+    public ApiResponse<OAuth2TokenResponse> tokenWithHttpInfo(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<OAuth2TokenResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -222,6 +230,7 @@ public class OAuth2Api {
      * @param grantType OAuth2 grant type (must be &#39;client_credentials&#39;) (required)
      * @param clientId API client identifier (required)
      * @param clientSecret API client secret key (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -235,9 +244,9 @@ public class OAuth2Api {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call tokenAsync(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, final ApiCallback<OAuth2TokenResponse> _callback) throws ApiException {
+    public okhttp3.Call tokenAsync(@javax.annotation.Nonnull String grantType, @javax.annotation.Nonnull String clientId, @javax.annotation.Nonnull String clientSecret, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<OAuth2TokenResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, _callback);
+        okhttp3.Call localVarCall = tokenValidateBeforeCall(grantType, clientId, clientSecret, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<OAuth2TokenResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

@@ -13,7 +13,7 @@ All URIs are relative to *http://localhost*
 
 <a id="createWebhook"></a>
 # **createWebhook**
-> WebhookDTO createWebhook(createWebhookRequest)
+> WebhookDTO createWebhook(createWebhookRequest, acceptLanguage)
 
 Create a webhook
 
@@ -40,8 +40,9 @@ public class Example {
 
     WebhooksApi apiInstance = new WebhooksApi(defaultClient);
     CreateWebhookRequest createWebhookRequest = new CreateWebhookRequest(); // CreateWebhookRequest | 
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      WebhookDTO result = apiInstance.createWebhook(createWebhookRequest);
+      WebhookDTO result = apiInstance.createWebhook(createWebhookRequest, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling WebhooksApi#createWebhook");
@@ -59,6 +60,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **createWebhookRequest** | [**CreateWebhookRequest**](CreateWebhookRequest.md)|  | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -84,7 +86,7 @@ public class Example {
 
 <a id="deleteWebhookById"></a>
 # **deleteWebhookById**
-> deleteWebhookById(id)
+> deleteWebhookById(id, acceptLanguage)
 
 Delete a specific webhook
 
@@ -111,8 +113,9 @@ public class Example {
 
     WebhooksApi apiInstance = new WebhooksApi(defaultClient);
     Long id = 1L; // Long | Webhook ID
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      apiInstance.deleteWebhookById(id);
+      apiInstance.deleteWebhookById(id, acceptLanguage);
     } catch (ApiException e) {
       System.err.println("Exception when calling WebhooksApi#deleteWebhookById");
       System.err.println("Status code: " + e.getCode());
@@ -129,6 +132,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **id** | **Long**| Webhook ID | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -153,7 +157,7 @@ null (empty response body)
 
 <a id="listWebhooks"></a>
 # **listWebhooks**
-> List&lt;WebhookDTO&gt; listWebhooks()
+> List&lt;WebhookDTO&gt; listWebhooks(acceptLanguage)
 
 List all webhooks
 
@@ -179,8 +183,9 @@ public class Example {
     bearerAuth.setBearerToken("BEARER TOKEN");
 
     WebhooksApi apiInstance = new WebhooksApi(defaultClient);
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      List<WebhookDTO> result = apiInstance.listWebhooks();
+      List<WebhookDTO> result = apiInstance.listWebhooks(acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling WebhooksApi#listWebhooks");
@@ -194,7 +199,10 @@ public class Example {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -218,7 +226,7 @@ This endpoint does not need any parameter.
 
 <a id="testWebhook"></a>
 # **testWebhook**
-> testWebhook(testWebhookRequest)
+> testWebhook(acceptLanguage, testWebhookRequest)
 
 Send a test webhook event
 
@@ -244,9 +252,10 @@ public class Example {
     bearerAuth.setBearerToken("BEARER TOKEN");
 
     WebhooksApi apiInstance = new WebhooksApi(defaultClient);
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     TestWebhookRequest testWebhookRequest = new TestWebhookRequest(); // TestWebhookRequest | 
     try {
-      apiInstance.testWebhook(testWebhookRequest);
+      apiInstance.testWebhook(acceptLanguage, testWebhookRequest);
     } catch (ApiException e) {
       System.err.println("Exception when calling WebhooksApi#testWebhook");
       System.err.println("Status code: " + e.getCode());
@@ -262,6 +271,7 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 | **testWebhookRequest** | [**TestWebhookRequest**](TestWebhookRequest.md)|  | [optional] |
 
 ### Return type
@@ -287,7 +297,7 @@ null (empty response body)
 
 <a id="updateWebhook"></a>
 # **updateWebhook**
-> WebhookDTO updateWebhook(id, updateWebhookRequest)
+> WebhookDTO updateWebhook(id, updateWebhookRequest, acceptLanguage)
 
 Update a webhook
 
@@ -315,8 +325,9 @@ public class Example {
     WebhooksApi apiInstance = new WebhooksApi(defaultClient);
     Long id = 1L; // Long | Webhook ID
     UpdateWebhookRequest updateWebhookRequest = new UpdateWebhookRequest(); // UpdateWebhookRequest | 
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      WebhookDTO result = apiInstance.updateWebhook(id, updateWebhookRequest);
+      WebhookDTO result = apiInstance.updateWebhook(id, updateWebhookRequest, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling WebhooksApi#updateWebhook");
@@ -335,6 +346,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **id** | **Long**| Webhook ID | |
 | **updateWebhookRequest** | [**UpdateWebhookRequest**](UpdateWebhookRequest.md)|  | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 

@@ -75,6 +75,7 @@ public class EchoApi {
     /**
      * Build call for echoV1
      * @param message Message to echo back (optional, default to hello)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -87,7 +88,7 @@ public class EchoApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Call(@javax.annotation.Nullable String message, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call echoV1Call(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -131,13 +132,18 @@ public class EchoApi {
             localVarHeaderParams.put("Content-Type", localVarContentType);
         }
 
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
         String[] localVarAuthNames = new String[] { "bearerAuth" };
         return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call echoV1ValidateBeforeCall(@javax.annotation.Nullable String message, final ApiCallback _callback) throws ApiException {
-        return echoV1Call(message, _callback);
+    private okhttp3.Call echoV1ValidateBeforeCall(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        return echoV1Call(message, acceptLanguage, _callback);
 
     }
 
@@ -145,6 +151,7 @@ public class EchoApi {
      * Echo a message back
      * Returns the provided message along with the API version. Useful for connectivity checks.
      * @param message Message to echo back (optional, default to hello)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return EchoResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -156,8 +163,8 @@ public class EchoApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public EchoResponse echoV1(@javax.annotation.Nullable String message) throws ApiException {
-        ApiResponse<EchoResponse> localVarResp = echoV1WithHttpInfo(message);
+    public EchoResponse echoV1(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<EchoResponse> localVarResp = echoV1WithHttpInfo(message, acceptLanguage);
         return localVarResp.getData();
     }
 
@@ -165,6 +172,7 @@ public class EchoApi {
      * Echo a message back
      * Returns the provided message along with the API version. Useful for connectivity checks.
      * @param message Message to echo back (optional, default to hello)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;EchoResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
@@ -176,8 +184,8 @@ public class EchoApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<EchoResponse> echoV1WithHttpInfo(@javax.annotation.Nullable String message) throws ApiException {
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, null);
+    public ApiResponse<EchoResponse> echoV1WithHttpInfo(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, null);
         Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -186,6 +194,7 @@ public class EchoApi {
      * Echo a message back (asynchronously)
      * Returns the provided message along with the API version. Useful for connectivity checks.
      * @param message Message to echo back (optional, default to hello)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
@@ -198,9 +207,9 @@ public class EchoApi {
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Async(@javax.annotation.Nullable String message, final ApiCallback<EchoResponse> _callback) throws ApiException {
+    public okhttp3.Call echoV1Async(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<EchoResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, _callback);
+        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, _callback);
         Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;

@@ -36,6 +36,18 @@ paths:
           format: int64
           type: integer
         style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "204":
           description: Webhook deleted
@@ -64,6 +76,18 @@ paths:
         schema:
           format: int64
           type: integer
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
         style: simple
       requestBody:
         content:
@@ -98,6 +122,19 @@ paths:
     get:
       description: Returns all webhook subscriptions for the current API client.
       operationId: listWebhooks
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -120,6 +157,19 @@ paths:
       description: Registers a new webhook for the current API client. Returns 409
         Conflict if a webhook with the same callback URL already exists.
       operationId: createWebhook
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -152,6 +202,19 @@ paths:
       description: Publishes a test event to all registered webhooks for the current
         API client.
       operationId: testWebhook
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -184,6 +247,18 @@ paths:
         name: Idempotency-Key
         required: false
         schema:
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
           type: string
         style: simple
       requestBody:
@@ -230,6 +305,18 @@ paths:
           format: uuid
           type: string
         style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -254,6 +341,19 @@ paths:
         \ by status, date range, and other criteria. Returns a paginated list of deliveries\
         \ matching the search parameters."
       operationId: searchDeliveries
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -280,6 +380,19 @@ paths:
       description: Returns a price quote and estimated arrival time for the given
         pickup/dropoff route and delivery type.
       operationId: getQuote
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -310,6 +423,19 @@ paths:
       description: Issues a JWT access token in exchange for valid API client credentials
         using the client_credentials grant type.
       operationId: token
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -357,6 +483,18 @@ paths:
           default: hello
           type: string
         style: form
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -386,6 +524,18 @@ paths:
         name: hubTrackingNumber
         required: true
         schema:
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
           type: string
         style: simple
       responses:
@@ -426,6 +576,18 @@ paths:
         schema:
           type: string
         style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -457,6 +619,18 @@ paths:
         required: true
         schema:
           format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
           type: string
         style: simple
       responses:
@@ -493,6 +667,18 @@ paths:
           format: uuid
           type: string
         style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
       responses:
         "200":
           content:
@@ -524,6 +710,18 @@ paths:
         name: hubTrackingNumber
         required: true
         schema:
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
           type: string
         style: simple
       responses:

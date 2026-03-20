@@ -9,7 +9,7 @@ All URIs are relative to *http://localhost*
 
 <a id="echoV1"></a>
 # **echoV1**
-> EchoResponse echoV1(message)
+> EchoResponse echoV1(message, acceptLanguage)
 
 Echo a message back
 
@@ -36,8 +36,9 @@ public class Example {
 
     EchoApi apiInstance = new EchoApi(defaultClient);
     String message = "hello"; // String | Message to echo back
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      EchoResponse result = apiInstance.echoV1(message);
+      EchoResponse result = apiInstance.echoV1(message, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling EchoApi#echoV1");
@@ -55,6 +56,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **message** | **String**| Message to echo back | [optional] [default to hello] |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 

@@ -17,7 +17,7 @@ All URIs are relative to *http://localhost*
 
 <a id="cancelDelivery"></a>
 # **cancelDelivery**
-> HubCancelDeliveryResponse cancelDelivery(deliveryId)
+> HubCancelDeliveryResponse cancelDelivery(deliveryId, acceptLanguage)
 
 Cancel a delivery
 
@@ -44,8 +44,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to cancel
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubCancelDeliveryResponse result = apiInstance.cancelDelivery(deliveryId);
+      HubCancelDeliveryResponse result = apiInstance.cancelDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#cancelDelivery");
@@ -63,6 +64,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deliveryId** | **UUID**| UUID of the delivery to cancel | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -87,7 +89,7 @@ public class Example {
 
 <a id="createDelivery"></a>
 # **createDelivery**
-> HubCreateDeliveryResponse createDelivery(hubCreateDeliveryRequest, idempotencyKey)
+> HubCreateDeliveryResponse createDelivery(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage)
 
 Create a delivery
 
@@ -115,8 +117,9 @@ public class Example {
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     HubCreateDeliveryRequest hubCreateDeliveryRequest = new HubCreateDeliveryRequest(); // HubCreateDeliveryRequest | 
     String idempotencyKey = "idempotencyKey_example"; // String | Unique key to ensure idempotent delivery creation
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubCreateDeliveryResponse result = apiInstance.createDelivery(hubCreateDeliveryRequest, idempotencyKey);
+      HubCreateDeliveryResponse result = apiInstance.createDelivery(hubCreateDeliveryRequest, idempotencyKey, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#createDelivery");
@@ -135,6 +138,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **hubCreateDeliveryRequest** | [**HubCreateDeliveryRequest**](HubCreateDeliveryRequest.md)|  | |
 | **idempotencyKey** | **String**| Unique key to ensure idempotent delivery creation | [optional] |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -160,7 +164,7 @@ public class Example {
 
 <a id="getDelivery"></a>
 # **getDelivery**
-> HubDeliveryStatusResponse getDelivery(deliveryId)
+> HubDeliveryStatusResponse getDelivery(deliveryId, acceptLanguage)
 
 Get delivery status
 
@@ -187,8 +191,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to retrieve
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubDeliveryStatusResponse result = apiInstance.getDelivery(deliveryId);
+      HubDeliveryStatusResponse result = apiInstance.getDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#getDelivery");
@@ -206,6 +211,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deliveryId** | **UUID**| UUID of the delivery to retrieve | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -230,7 +236,7 @@ public class Example {
 
 <a id="getDeliveryLabel"></a>
 # **getDeliveryLabel**
-> HubDeliveryLabelResponse getDeliveryLabel(hubTrackingNumber)
+> HubDeliveryLabelResponse getDeliveryLabel(hubTrackingNumber, acceptLanguage)
 
 Get delivery label metadata
 
@@ -257,8 +263,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     String hubTrackingNumber = "HUB-0000001000"; // String | Hub tracking number
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubDeliveryLabelResponse result = apiInstance.getDeliveryLabel(hubTrackingNumber);
+      HubDeliveryLabelResponse result = apiInstance.getDeliveryLabel(hubTrackingNumber, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#getDeliveryLabel");
@@ -276,6 +283,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **hubTrackingNumber** | **String**| Hub tracking number | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -298,7 +306,7 @@ public class Example {
 
 <a id="getDeliveryLabelAsset"></a>
 # **getDeliveryLabelAsset**
-> File getDeliveryLabelAsset(hubTrackingNumber, filename)
+> File getDeliveryLabelAsset(hubTrackingNumber, filename, acceptLanguage)
 
 Download a label asset
 
@@ -326,8 +334,9 @@ public class Example {
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     String hubTrackingNumber = "HUB-0000001000"; // String | Hub tracking number
     String filename = "barcode.png"; // String | Asset filename
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      File result = apiInstance.getDeliveryLabelAsset(hubTrackingNumber, filename);
+      File result = apiInstance.getDeliveryLabelAsset(hubTrackingNumber, filename, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#getDeliveryLabelAsset");
@@ -346,6 +355,7 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **hubTrackingNumber** | **String**| Hub tracking number | |
 | **filename** | **String**| Asset filename | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -369,7 +379,7 @@ public class Example {
 
 <a id="getHandshakeDelivery"></a>
 # **getHandshakeDelivery**
-> HubHandshakeDeliveryResponse getHandshakeDelivery(deliveryId)
+> HubHandshakeDeliveryResponse getHandshakeDelivery(deliveryId, acceptLanguage)
 
 Get handshake PIN info
 
@@ -396,8 +406,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubHandshakeDeliveryResponse result = apiInstance.getHandshakeDelivery(deliveryId);
+      HubHandshakeDeliveryResponse result = apiInstance.getHandshakeDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#getHandshakeDelivery");
@@ -415,6 +426,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **deliveryId** | **UUID**| UUID of the delivery | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -438,7 +450,7 @@ public class Example {
 
 <a id="getQuote"></a>
 # **getQuote**
-> HubDeliveryQuoteResponse getQuote(hubDeliveryQuoteRequest)
+> HubDeliveryQuoteResponse getQuote(hubDeliveryQuoteRequest, acceptLanguage)
 
 Get a delivery quote
 
@@ -465,8 +477,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     HubDeliveryQuoteRequest hubDeliveryQuoteRequest = new HubDeliveryQuoteRequest(); // HubDeliveryQuoteRequest | 
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubDeliveryQuoteResponse result = apiInstance.getQuote(hubDeliveryQuoteRequest);
+      HubDeliveryQuoteResponse result = apiInstance.getQuote(hubDeliveryQuoteRequest, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#getQuote");
@@ -484,6 +497,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **hubDeliveryQuoteRequest** | [**HubDeliveryQuoteRequest**](HubDeliveryQuoteRequest.md)|  | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -508,7 +522,7 @@ public class Example {
 
 <a id="searchDeliveries"></a>
 # **searchDeliveries**
-> PageResponseListHubDeliverySearchDTO searchDeliveries(searchDeliveriesRequest)
+> PageResponseListHubDeliverySearchDTO searchDeliveries(searchDeliveriesRequest, acceptLanguage)
 
 Search deliveries
 
@@ -535,8 +549,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     SearchDeliveriesRequest searchDeliveriesRequest = new SearchDeliveriesRequest(); // SearchDeliveriesRequest | 
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      PageResponseListHubDeliverySearchDTO result = apiInstance.searchDeliveries(searchDeliveriesRequest);
+      PageResponseListHubDeliverySearchDTO result = apiInstance.searchDeliveries(searchDeliveriesRequest, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#searchDeliveries");
@@ -554,6 +569,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **searchDeliveriesRequest** | [**SearchDeliveriesRequest**](SearchDeliveriesRequest.md)|  | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
@@ -576,7 +592,7 @@ public class Example {
 
 <a id="trackDelivery"></a>
 # **trackDelivery**
-> HubDeliveryStatusResponse trackDelivery(hubTrackingNumber)
+> HubDeliveryStatusResponse trackDelivery(hubTrackingNumber, acceptLanguage)
 
 Track delivery by tracking number
 
@@ -603,8 +619,9 @@ public class Example {
 
     DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
     String hubTrackingNumber = "HUB-0000001000"; // String | Hub tracking number
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubDeliveryStatusResponse result = apiInstance.trackDelivery(hubTrackingNumber);
+      HubDeliveryStatusResponse result = apiInstance.trackDelivery(hubTrackingNumber, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling DeliveriesApi#trackDelivery");
@@ -622,6 +639,7 @@ public class Example {
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
 | **hubTrackingNumber** | **String**| Hub tracking number | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
