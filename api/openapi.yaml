@@ -1267,7 +1267,7 @@ components:
       description: Response after successfully creating a delivery
       example:
         deliveryId: 550e8400-e29b-41d4-a716-446655440000
-        trackingUrl: https://hub.example.com/api/v1/deliveries/track/HUB-0000001000
+        trackingUrl: https://track.zipper-go.com/en/HUB-0000001000
         deliveryType: FOOD_IMMEDIATE
         hubTrackingNumber: HUB-0000001000
         status: CREATED
@@ -1295,7 +1295,7 @@ components:
           type: string
         trackingUrl:
           description: Public tracking URL for the delivery
-          example: https://hub.example.com/api/v1/deliveries/track/HUB-0000001000
+          example: https://track.zipper-go.com/en/HUB-0000001000
           type: string
     HubCancelDeliveryResponse:
       description: Response after cancelling a delivery
@@ -1475,7 +1475,7 @@ components:
         dropoffContactName: dropoffContactName
         hubTrackingNumber: hubTrackingNumber
         providerTrackingUrl: providerTrackingUrl
-        status: CREATED
+        status: PENDING
         dropoffContactPhone: dropoffContactPhone
       properties:
         deliveryId:
@@ -1498,7 +1498,9 @@ components:
           type: string
         status:
           enum:
-          - CREATED
+          - PENDING
+          - DISPATCHED
+          - PROVIDER_ACCEPTED
           - ASSIGNED
           - READY_FOR_PICKUP
           - PICKED_UP
@@ -1569,7 +1571,7 @@ components:
           dropoffContactName: dropoffContactName
           hubTrackingNumber: hubTrackingNumber
           providerTrackingUrl: providerTrackingUrl
-          status: CREATED
+          status: PENDING
           dropoffContactPhone: dropoffContactPhone
         - hubOrderId: hubOrderId
           pickupContactPhone: pickupContactPhone
@@ -1596,7 +1598,7 @@ components:
           dropoffContactName: dropoffContactName
           hubTrackingNumber: hubTrackingNumber
           providerTrackingUrl: providerTrackingUrl
-          status: CREATED
+          status: PENDING
           dropoffContactPhone: dropoffContactPhone
         totalPages: 6
         limit: 5
@@ -1840,7 +1842,7 @@ components:
       example:
         hubOrderId: ORD-789012
         pickupContactPhone: "+972501234567"
-        trackingUrl: trackingUrl
+        trackingUrl: https://track.zipper-go.com/en/HUB-0000001000
         deliveryType: FOOD_IMMEDIATE
         pickupReferenceNumber: INV-2026-78432
         dropoffLocation:
@@ -1903,7 +1905,9 @@ components:
         status:
           description: Current delivery status
           enum:
-          - CREATED
+          - PENDING
+          - DISPATCHED
+          - PROVIDER_ACCEPTED
           - ASSIGNED
           - READY_FOR_PICKUP
           - PICKED_UP
@@ -1946,6 +1950,7 @@ components:
           type: string
         trackingUrl:
           description: Public tracking URL for the delivery recipient
+          example: https://track.zipper-go.com/en/HUB-0000001000
           type: string
         statusHistory:
           description: Chronological list of status changes
@@ -2012,7 +2017,9 @@ components:
         status:
           description: Delivery status at this event
           enum:
-          - CREATED
+          - PENDING
+          - DISPATCHED
+          - PROVIDER_ACCEPTED
           - ASSIGNED
           - READY_FOR_PICKUP
           - PICKED_UP

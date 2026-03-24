@@ -126,7 +126,11 @@ public class HubDeliveryStatusResponse {
    */
   @JsonAdapter(StatusEnum.Adapter.class)
   public enum StatusEnum {
-    CREATED("CREATED"),
+    PENDING("PENDING"),
+    
+    DISPATCHED("DISPATCHED"),
+    
+    PROVIDER_ACCEPTED("PROVIDER_ACCEPTED"),
     
     ASSIGNED("ASSIGNED"),
     

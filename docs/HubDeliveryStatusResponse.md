@@ -49,7 +49,9 @@ Full delivery status including tracking and history
 
 | Name | Value |
 |---- | -----|
-| CREATED | &quot;CREATED&quot; |
+| PENDING | &quot;PENDING&quot; |
+| DISPATCHED | &quot;DISPATCHED&quot; |
+| PROVIDER_ACCEPTED | &quot;PROVIDER_ACCEPTED&quot; |
 | ASSIGNED | &quot;ASSIGNED&quot; |
 | READY_FOR_PICKUP | &quot;READY_FOR_PICKUP&quot; |
 | PICKED_UP | &quot;PICKED_UP&quot; |
