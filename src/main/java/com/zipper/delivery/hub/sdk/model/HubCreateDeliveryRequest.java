@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import com.zipper.delivery.hub.sdk.model.HandshakeDeliveryDTO;
 import com.zipper.delivery.hub.sdk.model.HubContactDTO;
 import com.zipper.delivery.hub.sdk.model.HubItemDTO;
+import com.zipper.delivery.hub.sdk.model.ProviderDataDTO;
 import com.zipper.delivery.hub.sdk.model.RecipientDeliveryDTO;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -167,6 +168,11 @@ public class HubCreateDeliveryRequest {
   @SerializedName(SERIALIZED_NAME_RECIPIENT)
   @javax.annotation.Nullable
   private RecipientDeliveryDTO recipient;
+
+  public static final String SERIALIZED_NAME_PROVIDER_DATA = "providerData";
+  @SerializedName(SERIALIZED_NAME_PROVIDER_DATA)
+  @javax.annotation.Nullable
+  private ProviderDataDTO providerData;
 
   public HubCreateDeliveryRequest() {
   }
@@ -388,6 +394,25 @@ public class HubCreateDeliveryRequest {
   }
 
 
+  public HubCreateDeliveryRequest providerData(@javax.annotation.Nullable ProviderDataDTO providerData) {
+    this.providerData = providerData;
+    return this;
+  }
+
+  /**
+   * Provider-specific account data. Required for STORE_NEXT_DAY delivery type.
+   * @return providerData
+   */
+  @javax.annotation.Nullable
+  public ProviderDataDTO getProviderData() {
+    return providerData;
+  }
+
+  public void setProviderData(@javax.annotation.Nullable ProviderDataDTO providerData) {
+    this.providerData = providerData;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -408,12 +433,13 @@ public class HubCreateDeliveryRequest {
         Objects.equals(this.scheduledAt, hubCreateDeliveryRequest.scheduledAt) &&
         Objects.equals(this.smsNotifications, hubCreateDeliveryRequest.smsNotifications) &&
         Objects.equals(this.handshake, hubCreateDeliveryRequest.handshake) &&
-        Objects.equals(this.recipient, hubCreateDeliveryRequest.recipient);
+        Objects.equals(this.recipient, hubCreateDeliveryRequest.recipient) &&
+        Objects.equals(this.providerData, hubCreateDeliveryRequest.providerData);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(quoteId, deliveryType, externalOrderId, pickup, dropoff, items, codAmount, scheduledAt, smsNotifications, handshake, recipient);
+    return Objects.hash(quoteId, deliveryType, externalOrderId, pickup, dropoff, items, codAmount, scheduledAt, smsNotifications, handshake, recipient, providerData);
   }
 
   @Override
@@ -431,6 +457,7 @@ public class HubCreateDeliveryRequest {
     sb.append("    smsNotifications: ").append(toIndentedString(smsNotifications)).append("\n");
     sb.append("    handshake: ").append(toIndentedString(handshake)).append("\n");
     sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
+    sb.append("    providerData: ").append(toIndentedString(providerData)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -464,6 +491,7 @@ public class HubCreateDeliveryRequest {
     openapiFields.add("smsNotifications");
     openapiFields.add("handshake");
     openapiFields.add("recipient");
+    openapiFields.add("providerData");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -537,6 +565,10 @@ public class HubCreateDeliveryRequest {
       // validate the optional field `recipient`
       if (jsonObj.get("recipient") != null && !jsonObj.get("recipient").isJsonNull()) {
         RecipientDeliveryDTO.validateJsonElement(jsonObj.get("recipient"));
+      }
+      // validate the optional field `providerData`
+      if (jsonObj.get("providerData") != null && !jsonObj.get("providerData").isJsonNull()) {
+        ProviderDataDTO.validateJsonElement(jsonObj.get("providerData"));
       }
   }
 

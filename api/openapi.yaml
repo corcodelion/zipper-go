@@ -1062,6 +1062,11 @@ components:
           isRequired: true
           sendSmsToDropoffContact: true
         smsNotifications: true
+        providerData:
+          subCustomerId: 0
+          customerCompanyName: My Store
+          customerId: 39700
+          token: 84957612
         codAmount: 49.9
         deliveryType: FOOD_IMMEDIATE
         dropoff:
@@ -1170,6 +1175,8 @@ components:
           $ref: '#/components/schemas/HandshakeDeliveryDTO'
         recipient:
           $ref: '#/components/schemas/RecipientDeliveryDTO'
+        providerData:
+          $ref: '#/components/schemas/ProviderDataDTO'
       required:
       - deliveryType
       - dropoff
@@ -1239,6 +1246,31 @@ components:
       - address
       - lat
       - lng
+    ProviderDataDTO:
+      description: Provider-specific account data. Required for STORE_NEXT_DAY delivery
+        type.
+      example:
+        subCustomerId: 0
+        customerCompanyName: My Store
+        customerId: 39700
+        token: 84957612
+      properties:
+        customerId:
+          description: Provider customer ID
+          example: 39700
+          type: string
+        subCustomerId:
+          description: Provider sub-customer ID
+          example: 0
+          type: string
+        token:
+          description: Provider authentication token
+          example: 84957612
+          type: string
+        customerCompanyName:
+          description: Provider customer company name
+          example: My Store
+          type: string
     RecipientDeliveryDTO:
       description: Details of the recipient who is going to receive the delivery
       example:

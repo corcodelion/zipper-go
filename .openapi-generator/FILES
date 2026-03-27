@@ -35,6 +35,7 @@ docs/OAuth2ErrorResponse.md
 docs/OAuth2TokenResponse.md
 docs/PageResponseListHubDeliverySearchDTO.md
 docs/Pagination.md
+docs/ProviderDataDTO.md
 docs/RecipientDeliveryDTO.md
 docs/SearchDeliveriesRequest.md
 docs/SortField.md
@@ -99,6 +100,7 @@ src/main/java/com/zipper/delivery/hub/sdk/model/OAuth2ErrorResponse.java
 src/main/java/com/zipper/delivery/hub/sdk/model/OAuth2TokenResponse.java
 src/main/java/com/zipper/delivery/hub/sdk/model/PageResponseListHubDeliverySearchDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/Pagination.java
+src/main/java/com/zipper/delivery/hub/sdk/model/ProviderDataDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/RecipientDeliveryDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/SearchDeliveriesRequest.java
 src/main/java/com/zipper/delivery/hub/sdk/model/SortField.java

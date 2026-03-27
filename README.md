@@ -166,6 +166,7 @@ Class | Method | HTTP request | Description
  - [OAuth2TokenResponse](docs/OAuth2TokenResponse.md)
  - [PageResponseListHubDeliverySearchDTO](docs/PageResponseListHubDeliverySearchDTO.md)
  - [Pagination](docs/Pagination.md)
+ - [ProviderDataDTO](docs/ProviderDataDTO.md)
  - [RecipientDeliveryDTO](docs/RecipientDeliveryDTO.md)
  - [SearchDeliveriesRequest](docs/SearchDeliveriesRequest.md)
  - [SortField](docs/SortField.md)
