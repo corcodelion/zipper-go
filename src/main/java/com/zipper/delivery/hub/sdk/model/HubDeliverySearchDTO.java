@@ -61,7 +61,7 @@ public class HubDeliverySearchDTO {
   public static final String SERIALIZED_NAME_USER_ID = "userId";
   @SerializedName(SERIALIZED_NAME_USER_ID)
   @javax.annotation.Nullable
-  private Long userId;
+  private String userId;
 
   /**
    * Gets or Sets deliveryType
@@ -350,7 +350,7 @@ public class HubDeliverySearchDTO {
   }
 
 
-  public HubDeliverySearchDTO userId(@javax.annotation.Nullable Long userId) {
+  public HubDeliverySearchDTO userId(@javax.annotation.Nullable String userId) {
     this.userId = userId;
     return this;
   }
@@ -360,11 +360,11 @@ public class HubDeliverySearchDTO {
    * @return userId
    */
   @javax.annotation.Nullable
-  public Long getUserId() {
+  public String getUserId() {
     return userId;
   }
 
-  public void setUserId(@javax.annotation.Nullable Long userId) {
+  public void setUserId(@javax.annotation.Nullable String userId) {
     this.userId = userId;
   }
 
@@ -820,6 +820,9 @@ public class HubDeliverySearchDTO {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("deliveryId") != null && !jsonObj.get("deliveryId").isJsonNull()) && !jsonObj.get("deliveryId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `deliveryId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryId").toString()));
+      }
+      if ((jsonObj.get("userId") != null && !jsonObj.get("userId").isJsonNull()) && !jsonObj.get("userId").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `userId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("userId").toString()));
       }
       if ((jsonObj.get("deliveryType") != null && !jsonObj.get("deliveryType").isJsonNull()) && !jsonObj.get("deliveryType").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `deliveryType` to be a primitive type in the JSON string but got `%s`", jsonObj.get("deliveryType").toString()));

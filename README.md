@@ -130,7 +130,6 @@ Class | Method | HTTP request | Description
 *DeliveriesApi* | [**searchDeliveries**](docs/DeliveriesApi.md#searchDeliveries) | **POST** /api/v1/deliveries/search | Search deliveries
 *DeliveriesApi* | [**trackDelivery**](docs/DeliveriesApi.md#trackDelivery) | **GET** /api/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number
 *EchoApi* | [**echoV1**](docs/EchoApi.md#echoV1) | **GET** /api/v1/echo | Echo a message back
-*OAuth2Api* | [**token**](docs/OAuth2Api.md#token) | **POST** /api/auth/oauth/token | Exchange client credentials for an access token
 *WebhooksApi* | [**createWebhook**](docs/WebhooksApi.md#createWebhook) | **POST** /api/v1/webhooks | Create a webhook
 *WebhooksApi* | [**deleteWebhookById**](docs/WebhooksApi.md#deleteWebhookById) | **DELETE** /api/v1/webhooks/{id} | Delete a specific webhook
 *WebhooksApi* | [**listWebhooks**](docs/WebhooksApi.md#listWebhooks) | **GET** /api/v1/webhooks | List all webhooks
@@ -162,8 +161,6 @@ Class | Method | HTTP request | Description
  - [HubItemDTO](docs/HubItemDTO.md)
  - [HubStatusEventDTO](docs/HubStatusEventDTO.md)
  - [LocationDTO](docs/LocationDTO.md)
- - [OAuth2ErrorResponse](docs/OAuth2ErrorResponse.md)
- - [OAuth2TokenResponse](docs/OAuth2TokenResponse.md)
  - [PageResponseListHubDeliverySearchDTO](docs/PageResponseListHubDeliverySearchDTO.md)
  - [Pagination](docs/Pagination.md)
  - [ProviderDataDTO](docs/ProviderDataDTO.md)

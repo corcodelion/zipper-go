@@ -17,7 +17,7 @@ All URIs are relative to *http://localhost*
 
 Create a webhook
 
-Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+Registers a new webhook for the current user. Returns 409 Conflict if a webhook with the same callback URL already exists.
 
 ### Example
 ```java
@@ -90,7 +90,7 @@ public class Example {
 
 Delete a specific webhook
 
-Removes a specific webhook subscription by ID for the current API client.
+Removes a specific webhook subscription by ID for the current user.
 
 ### Example
 ```java
@@ -161,7 +161,7 @@ null (empty response body)
 
 List all webhooks
 
-Returns all webhook subscriptions for the current API client.
+Returns all webhook subscriptions for the current user.
 
 ### Example
 ```java
@@ -230,7 +230,7 @@ public class Example {
 
 Send a test webhook event
 
-Publishes a test event to all registered webhooks for the current API client.
+Publishes a test event to all registered webhooks for the current user.
 
 ### Example
 ```java
@@ -292,7 +292,7 @@ null (empty response body)
 |-------------|-------------|------------------|
 | **202** | Test event accepted for delivery |  -  |
 | **403** | Forbidden — insufficient permissions |  -  |
-| **404** | No webhook registered for this client |  -  |
+| **404** | No webhook registered for this user |  -  |
 | **500** | Internal server error |  -  |
 
 <a id="updateWebhook"></a>
@@ -301,7 +301,7 @@ null (empty response body)
 
 Update a webhook
 
-Updates an existing webhook subscription by ID for the current API client.
+Updates an existing webhook subscription by ID for the current user.
 
 ### Example
 ```java

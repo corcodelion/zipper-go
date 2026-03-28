@@ -8,7 +8,7 @@
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**deliveryId** | **UUID** |  |  [optional] |
-|**userId** | **Long** |  |  [optional] |
+|**userId** | **String** |  |  [optional] |
 |**deliveryType** | [**DeliveryTypeEnum**](#DeliveryTypeEnum) |  |  [optional] |
 |**providerType** | [**ProviderTypeEnum**](#ProviderTypeEnum) |  |  [optional] |
 |**status** | [**StatusEnum**](#StatusEnum) |  |  [optional] |

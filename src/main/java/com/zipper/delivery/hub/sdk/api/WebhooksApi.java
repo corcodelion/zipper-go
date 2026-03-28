@@ -156,7 +156,7 @@ public class WebhooksApi {
 
     /**
      * Create a webhook
-     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * Registers a new webhook for the current user. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return WebhookDTO
@@ -179,7 +179,7 @@ public class WebhooksApi {
 
     /**
      * Create a webhook
-     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * Registers a new webhook for the current user. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;WebhookDTO&gt;
@@ -203,7 +203,7 @@ public class WebhooksApi {
 
     /**
      * Create a webhook (asynchronously)
-     * Registers a new webhook for the current API client. Returns 409 Conflict if a webhook with the same callback URL already exists.
+     * Registers a new webhook for the current user. Returns 409 Conflict if a webhook with the same callback URL already exists.
      * @param createWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
@@ -306,7 +306,7 @@ public class WebhooksApi {
 
     /**
      * Delete a specific webhook
-     * Removes a specific webhook subscription by ID for the current API client.
+     * Removes a specific webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -326,7 +326,7 @@ public class WebhooksApi {
 
     /**
      * Delete a specific webhook
-     * Removes a specific webhook subscription by ID for the current API client.
+     * Removes a specific webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;Void&gt;
@@ -348,7 +348,7 @@ public class WebhooksApi {
 
     /**
      * Delete a specific webhook (asynchronously)
-     * Removes a specific webhook subscription by ID for the current API client.
+     * Removes a specific webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
@@ -442,7 +442,7 @@ public class WebhooksApi {
 
     /**
      * List all webhooks
-     * Returns all webhook subscriptions for the current API client.
+     * Returns all webhook subscriptions for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return List&lt;WebhookDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -462,7 +462,7 @@ public class WebhooksApi {
 
     /**
      * List all webhooks
-     * Returns all webhook subscriptions for the current API client.
+     * Returns all webhook subscriptions for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @return ApiResponse&lt;List&lt;WebhookDTO&gt;&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -483,7 +483,7 @@ public class WebhooksApi {
 
     /**
      * List all webhooks (asynchronously)
-     * Returns all webhook subscriptions for the current API client.
+     * Returns all webhook subscriptions for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -517,7 +517,7 @@ public class WebhooksApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this user </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
@@ -578,7 +578,7 @@ public class WebhooksApi {
 
     /**
      * Send a test webhook event
-     * Publishes a test event to all registered webhooks for the current API client.
+     * Publishes a test event to all registered webhooks for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
@@ -588,7 +588,7 @@ public class WebhooksApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this user </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
@@ -598,7 +598,7 @@ public class WebhooksApi {
 
     /**
      * Send a test webhook event
-     * Publishes a test event to all registered webhooks for the current API client.
+     * Publishes a test event to all registered webhooks for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @return ApiResponse&lt;Void&gt;
@@ -609,7 +609,7 @@ public class WebhooksApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this user </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
@@ -620,7 +620,7 @@ public class WebhooksApi {
 
     /**
      * Send a test webhook event (asynchronously)
-     * Publishes a test event to all registered webhooks for the current API client.
+     * Publishes a test event to all registered webhooks for the current user.
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param testWebhookRequest  (optional)
      * @param _callback The callback to be executed when the API call finishes
@@ -632,7 +632,7 @@ public class WebhooksApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 202 </td><td> Test event accepted for delivery </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> No webhook registered for this client </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> No webhook registered for this user </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
      </table>
      */
@@ -731,7 +731,7 @@ public class WebhooksApi {
 
     /**
      * Update a webhook
-     * Updates an existing webhook subscription by ID for the current API client.
+     * Updates an existing webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
@@ -756,7 +756,7 @@ public class WebhooksApi {
 
     /**
      * Update a webhook
-     * Updates an existing webhook subscription by ID for the current API client.
+     * Updates an existing webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
@@ -782,7 +782,7 @@ public class WebhooksApi {
 
     /**
      * Update a webhook (asynchronously)
-     * Updates an existing webhook subscription by ID for the current API client.
+     * Updates an existing webhook subscription by ID for the current user.
      * @param id Webhook ID (required)
      * @param updateWebhookRequest  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)

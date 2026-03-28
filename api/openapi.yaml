@@ -13,8 +13,6 @@ security:
 tags:
 - description: "Create, quote, and track deliveries across carrier providers"
   name: Deliveries
-- description: OAuth2 client credentials token endpoint
-  name: OAuth2
 - description: Manage webhook subscriptions for real-time event notifications
   name: Webhooks
 - description: Echo / connectivity check for API v1
@@ -22,8 +20,7 @@ tags:
 paths:
   /api/v1/webhooks/{id}:
     delete:
-      description: Removes a specific webhook subscription by ID for the current API
-        client.
+      description: Removes a specific webhook subscription by ID for the current user.
       operationId: deleteWebhookById
       parameters:
       - description: Webhook ID
@@ -64,7 +61,7 @@ paths:
       - application/json
     put:
       description: Updates an existing webhook subscription by ID for the current
-        API client.
+        user.
       operationId: updateWebhook
       parameters:
       - description: Webhook ID
@@ -120,7 +117,7 @@ paths:
       - '*/*'
   /api/v1/webhooks:
     get:
-      description: Returns all webhook subscriptions for the current API client.
+      description: Returns all webhook subscriptions for the current user.
       operationId: listWebhooks
       parameters:
       - description: "Language preference for response content. Supported: en, he"
@@ -154,8 +151,8 @@ paths:
       x-accepts:
       - '*/*'
     post:
-      description: Registers a new webhook for the current API client. Returns 409
-        Conflict if a webhook with the same callback URL already exists.
+      description: Registers a new webhook for the current user. Returns 409 Conflict
+        if a webhook with the same callback URL already exists.
       operationId: createWebhook
       parameters:
       - description: "Language preference for response content. Supported: en, he"
@@ -200,7 +197,7 @@ paths:
   /api/v1/webhooks/test:
     post:
       description: Publishes a test event to all registered webhooks for the current
-        API client.
+        user.
       operationId: testWebhook
       parameters:
       - description: "Language preference for response content. Supported: en, he"
@@ -226,7 +223,7 @@ paths:
         "403":
           description: Forbidden — insufficient permissions
         "404":
-          description: No webhook registered for this client
+          description: No webhook registered for this user
         "500":
           description: Internal server error
       summary: Send a test webhook event
@@ -416,56 +413,6 @@ paths:
       tags:
       - Deliveries
       x-content-type: application/json
-      x-accepts:
-      - '*/*'
-  /api/auth/oauth/token:
-    post:
-      description: Issues a JWT access token in exchange for valid API client credentials
-        using the client_credentials grant type.
-      operationId: token
-      parameters:
-      - description: "Language preference for response content. Supported: en, he"
-        explode: false
-        in: header
-        name: Accept-Language
-        required: false
-        schema:
-          default: en
-          enum:
-          - en
-          - he
-          type: string
-        style: simple
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/token_request'
-      responses:
-        "200":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/OAuth2TokenResponse'
-          description: Access token issued successfully
-        "400":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/OAuth2ErrorResponse'
-          description: Unsupported grant type
-        "401":
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/OAuth2ErrorResponse'
-          description: Invalid client credentials or inactive account
-        "500":
-          description: Internal server error
-      summary: Exchange client credentials for an access token
-      tags:
-      - OAuth2
-      x-content-type: application/x-www-form-urlencoded
       x-accepts:
       - '*/*'
   /api/v1/echo:
@@ -1465,10 +1412,10 @@ components:
       - fieldName
     HubDeliveryLocationDTO:
       example:
-        lng: 7.061401241503109
+        lng: 2.3021358869347655
         city: city
         fullAddress: fullAddress
-        lat: 2.3021358869347655
+        lat: 5.637376656633329
       properties:
         lat:
           format: double
@@ -1487,19 +1434,19 @@ components:
         scheduledPickupTime: 2000-01-23T04:56:07.000+00:00
         deliveryType: STORE_IMMEDIATE
         dropoffLocation:
-          lng: 7.061401241503109
+          lng: 2.3021358869347655
           city: city
           fullAddress: fullAddress
-          lat: 2.3021358869347655
+          lat: 5.637376656633329
         estimatedArrival: 2000-01-23T04:56:07.000+00:00
         externalOrderId: externalOrderId
         pickupLocation:
-          lng: 7.061401241503109
+          lng: 2.3021358869347655
           city: city
           fullAddress: fullAddress
-          lat: 2.3021358869347655
+          lat: 5.637376656633329
         pickupContactName: pickupContactName
-        userId: 5
+        userId: userId
         providerType: ZIPPERG
         providerTrackingId: providerTrackingId
         deliveryId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -1514,8 +1461,7 @@ components:
           format: uuid
           type: string
         userId:
-          format: int64
-          type: integer
+          type: string
         deliveryType:
           enum:
           - STORE_IMMEDIATE
@@ -1583,19 +1529,19 @@ components:
           scheduledPickupTime: 2000-01-23T04:56:07.000+00:00
           deliveryType: STORE_IMMEDIATE
           dropoffLocation:
-            lng: 7.061401241503109
+            lng: 2.3021358869347655
             city: city
             fullAddress: fullAddress
-            lat: 2.3021358869347655
+            lat: 5.637376656633329
           estimatedArrival: 2000-01-23T04:56:07.000+00:00
           externalOrderId: externalOrderId
           pickupLocation:
-            lng: 7.061401241503109
+            lng: 2.3021358869347655
             city: city
             fullAddress: fullAddress
-            lat: 2.3021358869347655
+            lat: 5.637376656633329
           pickupContactName: pickupContactName
-          userId: 5
+          userId: userId
           providerType: ZIPPERG
           providerTrackingId: providerTrackingId
           deliveryId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -1610,19 +1556,19 @@ components:
           scheduledPickupTime: 2000-01-23T04:56:07.000+00:00
           deliveryType: STORE_IMMEDIATE
           dropoffLocation:
-            lng: 7.061401241503109
+            lng: 2.3021358869347655
             city: city
             fullAddress: fullAddress
-            lat: 2.3021358869347655
+            lat: 5.637376656633329
           estimatedArrival: 2000-01-23T04:56:07.000+00:00
           externalOrderId: externalOrderId
           pickupLocation:
-            lng: 7.061401241503109
+            lng: 2.3021358869347655
             city: city
             fullAddress: fullAddress
-            lat: 2.3021358869347655
+            lat: 5.637376656633329
           pickupContactName: pickupContactName
-          userId: 5
+          userId: userId
           providerType: ZIPPERG
           providerTrackingId: providerTrackingId
           deliveryId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
@@ -1797,40 +1743,6 @@ components:
           description: Quote expiration time — create delivery before this time
           format: date-time
           type: string
-    OAuth2TokenResponse:
-      description: OAuth2 access token response
-      example:
-        access_token: eyJhbGciOiJIUzI1NiIs...
-        token_type: Bearer
-        expires_in: 3600
-      properties:
-        access_token:
-          description: JWT access token
-          example: eyJhbGciOiJIUzI1NiIs...
-          type: string
-        token_type:
-          description: Token type
-          example: Bearer
-          type: string
-        expires_in:
-          description: Token lifetime in seconds
-          example: 3600
-          format: int64
-          type: integer
-    OAuth2ErrorResponse:
-      description: OAuth2 error response per RFC 6749
-      example:
-        error_description: Invalid client credentials
-        error: invalid_client
-      properties:
-        error:
-          description: Error code
-          example: invalid_client
-          type: string
-        error_description:
-          description: Human-readable error description
-          example: Invalid client credentials
-          type: string
     EchoResponse:
       description: Echo response containing the echoed message and API version
       example:
@@ -1878,16 +1790,16 @@ components:
         deliveryType: FOOD_IMMEDIATE
         pickupReferenceNumber: INV-2026-78432
         dropoffLocation:
-          lng: 7.061401241503109
+          lng: 2.3021358869347655
           city: city
           fullAddress: fullAddress
-          lat: 2.3021358869347655
+          lat: 5.637376656633329
         estimatedArrival: 2026-03-01T14:30:00Z
         pickupLocation:
-          lng: 7.061401241503109
+          lng: 2.3021358869347655
           city: city
           fullAddress: fullAddress
-          lat: 2.3021358869347655
+          lat: 5.637376656633329
         pickupContactName: John Doe
         dropoffEmail: dropoff@example.com
         hubBarcode: 1234567890123
@@ -2090,21 +2002,6 @@ components:
           example: 1234
           format: int32
           type: integer
-    token_request:
-      properties:
-        grant_type:
-          description: OAuth2 grant type (must be 'client_credentials')
-          type: string
-        client_id:
-          description: API client identifier
-          type: string
-        client_secret:
-          description: API client secret key
-          type: string
-      required:
-      - client_id
-      - client_secret
-      - grant_type
   securitySchemes:
     bearerAuth:
       bearerFormat: JWT
