@@ -2,7 +2,7 @@
 
 # SearchPickupLocationsRequest
 
-Advanced search request for pickup locations with filtering, sorting, and pagination capabilities. **Query Fields** (full-text search): `name`, `code`, `city`, `contactName` **Available Filter/Sort Fields:** - `status` (PickupLocationStatus, sortable) - `type` (PickupLocationType, sortable) - `city` (String, sortable) - `countryCode` (String, sortable) - `isDefault` (Boolean, sortable) - `createdDate` (Instant, sortable) 
+Advanced search request for pickup locations with filtering, sorting, and pagination capabilities. **Query Fields** (full-text search): `name`, `code`, `city`, `contactName` **Available Filter/Sort Fields:** - `code` (String, sortable) - `status` (PickupLocationStatus, sortable) - `type` (PickupLocationType, sortable) - `city` (String, sortable) - `countryCode` (String, sortable) - `isDefault` (Boolean, sortable) - `createdDate` (Instant, sortable) 
 
 ## Properties
 

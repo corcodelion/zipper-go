@@ -53,7 +53,7 @@ import java.util.Set;
 import com.zipper.delivery.hub.sdk.JSON;
 
 /**
- * Advanced search request for pickup locations with filtering, sorting, and pagination capabilities. **Query Fields** (full-text search): &#x60;name&#x60;, &#x60;code&#x60;, &#x60;city&#x60;, &#x60;contactName&#x60; **Available Filter/Sort Fields:** - &#x60;status&#x60; (PickupLocationStatus, sortable) - &#x60;type&#x60; (PickupLocationType, sortable) - &#x60;city&#x60; (String, sortable) - &#x60;countryCode&#x60; (String, sortable) - &#x60;isDefault&#x60; (Boolean, sortable) - &#x60;createdDate&#x60; (Instant, sortable) 
+ * Advanced search request for pickup locations with filtering, sorting, and pagination capabilities. **Query Fields** (full-text search): &#x60;name&#x60;, &#x60;code&#x60;, &#x60;city&#x60;, &#x60;contactName&#x60; **Available Filter/Sort Fields:** - &#x60;code&#x60; (String, sortable) - &#x60;status&#x60; (PickupLocationStatus, sortable) - &#x60;type&#x60; (PickupLocationType, sortable) - &#x60;city&#x60; (String, sortable) - &#x60;countryCode&#x60; (String, sortable) - &#x60;isDefault&#x60; (Boolean, sortable) - &#x60;createdDate&#x60; (Instant, sortable) 
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.13.0")
 public class SearchPickupLocationsRequest {
