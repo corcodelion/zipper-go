@@ -1,6 +1,6 @@
 /*
- * Service API
- * This API exposes endpoints.
+ * Delivery Api Service
+ * This API exposes endpoints.  ## Authentication  All API endpoints require a **Bearer JWT token** in the `Authorization` header.  Tokens are issued by the **Auth Service** via OAuth2 client credentials flow.  ### Obtain a token  ``` POST {auth-service-url}/oauth/token Authorization: Basic Base64(apiKey:apiSecret) Content-Type: application/x-www-form-urlencoded  grant_type=client_credentials ```  Credentials must be provided via **HTTP Basic Authentication** (Base64-encoded `apiKey:apiSecret`).  ### Use the token  ``` Authorization: Bearer {access_token} ```  > Contact your administrator to obtain API credentials (apiKey / apiSecret). 
  *
  * The version of the OpenAPI document: v1
  * 

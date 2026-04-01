@@ -20,6 +20,7 @@ Request to create a new delivery order. A quoteId from a prior quote request is 
 |**handshake** | [**HandshakeDeliveryDTO**](HandshakeDeliveryDTO.md) | Handshake details for secure delivery. Enables PIN verification on delivery. |  [optional] |
 |**recipient** | [**RecipientDeliveryDTO**](RecipientDeliveryDTO.md) | Details of the recipient who is going to receive the delivery |  [optional] |
 |**providerData** | [**ProviderDataDTO**](ProviderDataDTO.md) | Provider-specific account data. Required for STORE_NEXT_DAY delivery type. |  [optional] |
+|**pickupLocationCode** | **String** | Optional pickup location code. When set, pickup contact and address are auto-filled from the location. |  [optional] |
 
 
 

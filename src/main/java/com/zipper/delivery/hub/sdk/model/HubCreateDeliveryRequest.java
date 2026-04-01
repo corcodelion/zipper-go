@@ -1,6 +1,6 @@
 /*
- * Service API
- * This API exposes endpoints.
+ * Delivery Api Service
+ * This API exposes endpoints.  ## Authentication  All API endpoints require a **Bearer JWT token** in the `Authorization` header.  Tokens are issued by the **Auth Service** via OAuth2 client credentials flow.  ### Obtain a token  ``` POST {auth-service-url}/oauth/token Authorization: Basic Base64(apiKey:apiSecret) Content-Type: application/x-www-form-urlencoded  grant_type=client_credentials ```  Credentials must be provided via **HTTP Basic Authentication** (Base64-encoded `apiKey:apiSecret`).  ### Use the token  ``` Authorization: Bearer {access_token} ```  > Contact your administrator to obtain API credentials (apiKey / apiSecret). 
  *
  * The version of the OpenAPI document: v1
  * 
@@ -173,6 +173,11 @@ public class HubCreateDeliveryRequest {
   @SerializedName(SERIALIZED_NAME_PROVIDER_DATA)
   @javax.annotation.Nullable
   private ProviderDataDTO providerData;
+
+  public static final String SERIALIZED_NAME_PICKUP_LOCATION_CODE = "pickupLocationCode";
+  @SerializedName(SERIALIZED_NAME_PICKUP_LOCATION_CODE)
+  @javax.annotation.Nullable
+  private String pickupLocationCode;
 
   public HubCreateDeliveryRequest() {
   }
@@ -413,6 +418,25 @@ public class HubCreateDeliveryRequest {
   }
 
 
+  public HubCreateDeliveryRequest pickupLocationCode(@javax.annotation.Nullable String pickupLocationCode) {
+    this.pickupLocationCode = pickupLocationCode;
+    return this;
+  }
+
+  /**
+   * Optional pickup location code. When set, pickup contact and address are auto-filled from the location.
+   * @return pickupLocationCode
+   */
+  @javax.annotation.Nullable
+  public String getPickupLocationCode() {
+    return pickupLocationCode;
+  }
+
+  public void setPickupLocationCode(@javax.annotation.Nullable String pickupLocationCode) {
+    this.pickupLocationCode = pickupLocationCode;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -434,12 +458,13 @@ public class HubCreateDeliveryRequest {
         Objects.equals(this.smsNotifications, hubCreateDeliveryRequest.smsNotifications) &&
         Objects.equals(this.handshake, hubCreateDeliveryRequest.handshake) &&
         Objects.equals(this.recipient, hubCreateDeliveryRequest.recipient) &&
-        Objects.equals(this.providerData, hubCreateDeliveryRequest.providerData);
+        Objects.equals(this.providerData, hubCreateDeliveryRequest.providerData) &&
+        Objects.equals(this.pickupLocationCode, hubCreateDeliveryRequest.pickupLocationCode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(quoteId, deliveryType, externalOrderId, pickup, dropoff, items, codAmount, scheduledAt, smsNotifications, handshake, recipient, providerData);
+    return Objects.hash(quoteId, deliveryType, externalOrderId, pickup, dropoff, items, codAmount, scheduledAt, smsNotifications, handshake, recipient, providerData, pickupLocationCode);
   }
 
   @Override
@@ -458,6 +483,7 @@ public class HubCreateDeliveryRequest {
     sb.append("    handshake: ").append(toIndentedString(handshake)).append("\n");
     sb.append("    recipient: ").append(toIndentedString(recipient)).append("\n");
     sb.append("    providerData: ").append(toIndentedString(providerData)).append("\n");
+    sb.append("    pickupLocationCode: ").append(toIndentedString(pickupLocationCode)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -492,6 +518,7 @@ public class HubCreateDeliveryRequest {
     openapiFields.add("handshake");
     openapiFields.add("recipient");
     openapiFields.add("providerData");
+    openapiFields.add("pickupLocationCode");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -569,6 +596,9 @@ public class HubCreateDeliveryRequest {
       // validate the optional field `providerData`
       if (jsonObj.get("providerData") != null && !jsonObj.get("providerData").isJsonNull()) {
         ProviderDataDTO.validateJsonElement(jsonObj.get("providerData"));
+      }
+      if ((jsonObj.get("pickupLocationCode") != null && !jsonObj.get("pickupLocationCode").isJsonNull()) && !jsonObj.get("pickupLocationCode").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `pickupLocationCode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("pickupLocationCode").toString()));
       }
   }
 

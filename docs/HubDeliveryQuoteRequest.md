@@ -13,6 +13,7 @@ Request to get a delivery price quote
 |**dropoff** | [**HubContactDTO**](HubContactDTO.md) | Dropoff contact and location |  |
 |**items** | [**List&lt;HubItemDTO&gt;**](HubItemDTO.md) | List of items for weight/size estimation |  [optional] |
 |**scheduledAt** | **OffsetDateTime** | Scheduled pickup time (null for immediate) |  [optional] |
+|**pickupLocationCode** | **String** | Optional pickup location code. When set, pickup contact and address are auto-filled from the location. |  [optional] |
 
 
 

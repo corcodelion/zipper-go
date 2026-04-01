@@ -1,10 +1,37 @@
 openapi: 3.1.0
 info:
   contact: {}
-  description: This API exposes endpoints.
+  description: |
+    This API exposes endpoints.
+
+    ## Authentication
+
+    All API endpoints require a **Bearer JWT token** in the `Authorization` header.
+
+    Tokens are issued by the **Auth Service** via OAuth2 client credentials flow.
+
+    ### Obtain a token
+
+    ```
+    POST {auth-service-url}/oauth/token
+    Authorization: Basic Base64(apiKey:apiSecret)
+    Content-Type: application/x-www-form-urlencoded
+
+    grant_type=client_credentials
+    ```
+
+    Credentials must be provided via **HTTP Basic Authentication** (Base64-encoded `apiKey:apiSecret`).
+
+    ### Use the token
+
+    ```
+    Authorization: Bearer {access_token}
+    ```
+
+    > Contact your administrator to obtain API credentials (apiKey / apiSecret).
   license:
     name: Proprietary
-  title: Service API
+  title: Delivery Api Service
   version: v1
 servers:
 - url: /
@@ -13,6 +40,8 @@ security:
 tags:
 - description: "Create, quote, and track deliveries across carrier providers"
   name: Deliveries
+- description: Manage pre-configured pickup locations for deliveries
+  name: Pickup Locations
 - description: Manage webhook subscriptions for real-time event notifications
   name: Webhooks
 - description: Echo / connectivity check for API v1
@@ -112,6 +141,126 @@ paths:
       summary: Update a webhook
       tags:
       - Webhooks
+      x-content-type: application/json
+      x-accepts:
+      - '*/*'
+  /api/v1/pickup-locations/{id}:
+    delete:
+      operationId: deletePickupLocation
+      parameters:
+      - description: Pickup location ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: Pickup location deleted
+        "404":
+          description: Not found
+      summary: Delete a pickup location
+      tags:
+      - Pickup Locations
+      x-accepts:
+      - application/json
+    get:
+      operationId: getPickupLocation
+      parameters:
+      - description: Pickup location ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PickupLocationDTO'
+          description: Pickup location found
+        "404":
+          description: Not found
+      summary: Get a pickup location by ID
+      tags:
+      - Pickup Locations
+      x-accepts:
+      - '*/*'
+    put:
+      operationId: updatePickupLocation
+      parameters:
+      - description: Pickup location ID
+        explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePickupLocationRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PickupLocationDTO'
+          description: Pickup location updated
+        "400":
+          description: Validation error
+        "404":
+          description: Not found
+      summary: Update a pickup location
+      tags:
+      - Pickup Locations
       x-content-type: application/json
       x-accepts:
       - '*/*'
@@ -232,6 +381,80 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
+  /api/v1/pickup-locations:
+    post:
+      operationId: createPickupLocation
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePickupLocationRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PickupLocationDTO'
+          description: Pickup location created
+        "400":
+          description: Validation error
+        "409":
+          description: Code already exists
+      summary: Create a pickup location
+      tags:
+      - Pickup Locations
+      x-content-type: application/json
+      x-accepts:
+      - '*/*'
+  /api/v1/pickup-locations/search:
+    post:
+      operationId: searchPickupLocations
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPickupLocationsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageResponseListPickupLocationDTO'
+          description: Search results returned
+      summary: Search pickup locations
+      tags:
+      - Pickup Locations
+      x-content-type: application/json
+      x-accepts:
+      - '*/*'
   /api/v1/deliveries:
     post:
       description: Dispatches a new delivery order to the best available carrier provider.
@@ -799,6 +1022,319 @@ components:
           description: HMAC secret for verifying webhook signatures (only returned
             on creation)
           type: string
+    DayScheduleDTO:
+      description: Schedule for a single day
+      example:
+        intervals:
+        - close: 13:00
+          open: 08:00
+        - close: 13:00
+          open: 08:00
+        closed: false
+      properties:
+        closed:
+          description: Whether the location is closed on this day
+          example: false
+          type: boolean
+        intervals:
+          description: Time intervals when the location is open
+          items:
+            $ref: '#/components/schemas/TimeIntervalDTO'
+          type: array
+    OpeningHoursDTO:
+      description: Opening hours configuration with support for multiple intervals
+        per day
+      example:
+        schedule:
+          key:
+            intervals:
+            - close: 13:00
+              open: 08:00
+            - close: 13:00
+              open: 08:00
+            closed: false
+      properties:
+        schedule:
+          additionalProperties:
+            $ref: '#/components/schemas/DayScheduleDTO'
+          description: "Schedule per day of week. Keys: monday, tuesday, wednesday,\
+            \ thursday, friday, saturday, sunday"
+    TimeIntervalDTO:
+      description: A time interval within a day
+      example:
+        close: 13:00
+        open: 08:00
+      properties:
+        open:
+          description: Opening time in HH:mm format
+          example: 08:00
+          type: string
+        close:
+          description: Closing time in HH:mm format
+          example: 13:00
+          type: string
+    UpdatePickupLocationRequest:
+      description: Request to update an existing pickup location. All fields are optional
+        for partial update.
+      example:
+        city: city
+        contactEmail: contactEmail
+        contactName: contactName
+        timezone: timezone
+        postalCode: postalCode
+        latitude: 0.8008281904610115
+        houseNumber: houseNumber
+        deliveryTypeConfig:
+          key:
+            key: ""
+        type: STORE
+        entranceFloor: entranceFloor
+        isDefault: true
+        countryCode: countryCode
+        name: name
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+        openingHours:
+          schedule:
+            key:
+              intervals:
+              - close: 13:00
+                open: 08:00
+              - close: 13:00
+                open: 08:00
+              closed: false
+        region: region
+        contactPhone: contactPhone
+        pickupInstructions: pickupInstructions
+        status: ACTIVE
+        longitude: 6.027456183070403
+      properties:
+        name:
+          description: Display name for the location
+          maxLength: 255
+          minLength: 0
+          type: string
+        type:
+          description: Type of pickup location
+          enum:
+          - STORE
+          - WAREHOUSE
+          - HUB
+          type: string
+        status:
+          description: Status of the location
+          enum:
+          - ACTIVE
+          - INACTIVE
+          type: string
+        isDefault:
+          description: Whether this is the default pickup location
+          type: boolean
+        addressLine1:
+          description: Primary address line
+          maxLength: 500
+          minLength: 0
+          type: string
+        addressLine2:
+          description: Secondary address line
+          maxLength: 500
+          minLength: 0
+          type: string
+        houseNumber:
+          description: House number
+          maxLength: 50
+          minLength: 0
+          type: string
+        entranceFloor:
+          description: Entrance or floor
+          maxLength: 50
+          minLength: 0
+          type: string
+        city:
+          description: City name
+          maxLength: 255
+          minLength: 0
+          type: string
+        region:
+          description: Region or state
+          maxLength: 255
+          minLength: 0
+          type: string
+        postalCode:
+          description: Postal code
+          maxLength: 20
+          minLength: 0
+          type: string
+        countryCode:
+          description: ISO country code
+          maxLength: 10
+          minLength: 0
+          type: string
+        latitude:
+          description: Latitude coordinate
+          format: double
+          type: number
+        longitude:
+          description: Longitude coordinate
+          format: double
+          type: number
+        contactName:
+          description: Contact person name
+          maxLength: 255
+          minLength: 0
+          type: string
+        contactPhone:
+          description: Contact phone number
+          maxLength: 50
+          minLength: 0
+          type: string
+        contactEmail:
+          description: Contact email
+          format: email
+          maxLength: 254
+          minLength: 0
+          type: string
+        openingHours:
+          $ref: '#/components/schemas/OpeningHoursDTO'
+        deliveryTypeConfig:
+          additionalProperties:
+            additionalProperties: {}
+          description: Per-delivery-type configuration
+        pickupInstructions:
+          description: Instructions for pickup couriers
+          maxLength: 2048
+          minLength: 0
+          type: string
+        timezone:
+          description: Timezone for opening hours validation
+          maxLength: 50
+          minLength: 0
+          type: string
+    PickupLocationDTO:
+      description: Pickup location details
+      example:
+        code: code
+        city: city
+        timezone: timezone
+        postalCode: postalCode
+        latitude: 0.8008281904610115
+        houseNumber: houseNumber
+        type: STORE
+        entranceFloor: entranceFloor
+        default: true
+        countryCode: countryCode
+        addressLine1: addressLine1
+        addressLine2: addressLine2
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        longitude: 6.027456183070403
+        contactEmail: contactEmail
+        lastModifiedDate: 2000-01-23T04:56:07.000+00:00
+        contactName: contactName
+        deliveryTypeConfig:
+          key:
+            key: ""
+        createdDate: 2000-01-23T04:56:07.000+00:00
+        name: name
+        openingHours:
+          schedule:
+            key:
+              intervals:
+              - close: 13:00
+                open: 08:00
+              - close: 13:00
+                open: 08:00
+              closed: false
+        region: region
+        contactPhone: contactPhone
+        pickupInstructions: pickupInstructions
+        status: ACTIVE
+      properties:
+        id:
+          description: Location ID
+          format: uuid
+          type: string
+        name:
+          description: Display name
+          type: string
+        code:
+          description: Unique code
+          type: string
+        type:
+          description: Location type
+          enum:
+          - STORE
+          - WAREHOUSE
+          - HUB
+          type: string
+        status:
+          description: Location status
+          enum:
+          - ACTIVE
+          - INACTIVE
+          type: string
+        addressLine1:
+          description: Primary address line
+          type: string
+        addressLine2:
+          description: Secondary address line
+          type: string
+        houseNumber:
+          description: House number
+          type: string
+        entranceFloor:
+          description: Entrance or floor
+          type: string
+        city:
+          description: City
+          type: string
+        region:
+          description: Region or state
+          type: string
+        postalCode:
+          description: Postal code
+          type: string
+        countryCode:
+          description: Country code
+          type: string
+        latitude:
+          description: Latitude
+          format: double
+          type: number
+        longitude:
+          description: Longitude
+          format: double
+          type: number
+        contactName:
+          description: Contact name
+          type: string
+        contactPhone:
+          description: Contact phone
+          type: string
+        contactEmail:
+          description: Contact email
+          type: string
+        openingHours:
+          $ref: '#/components/schemas/OpeningHoursDTO'
+        deliveryTypeConfig:
+          additionalProperties:
+            additionalProperties: {}
+          description: Per-delivery-type configuration
+        pickupInstructions:
+          description: Pickup instructions
+          type: string
+        timezone:
+          description: Timezone
+          type: string
+        createdDate:
+          description: Created date
+          format: date-time
+          type: string
+        lastModifiedDate:
+          description: Last modified date
+          format: date-time
+          type: string
+        default:
+          type: boolean
     CreateWebhookRequest:
       description: Request to create or update a webhook subscription
       example:
@@ -854,6 +1390,387 @@ components:
             \ is used"
           example: ping
           type: string
+    CreatePickupLocationRequest:
+      description: Request to create a new pickup location
+      example:
+        code: MAIN-01
+        city: Tel Aviv
+        contactEmail: contactEmail
+        contactName: contactName
+        timezone: Asia/Jerusalem
+        postalCode: postalCode
+        latitude: 32.0853
+        houseNumber: houseNumber
+        deliveryTypeConfig:
+          STORE_NEXT_DAY:
+            customerId: "123"
+            token: abc
+        type: STORE
+        entranceFloor: entranceFloor
+        isDefault: false
+        countryCode: IL
+        name: Main Store
+        addressLine1: 123
+        addressLine2: addressLine2
+        openingHours:
+          schedule:
+            key:
+              intervals:
+              - close: 13:00
+                open: 08:00
+              - close: 13:00
+                open: 08:00
+              closed: false
+        region: region
+        contactPhone: contactPhone
+        pickupInstructions: pickupInstructions
+        status: ACTIVE
+        longitude: 34.7818
+      properties:
+        name:
+          description: Display name for the location
+          example: Main Store
+          maxLength: 255
+          minLength: 0
+          type: string
+        code:
+          description: Unique code for the location (per user)
+          example: MAIN-01
+          maxLength: 100
+          minLength: 0
+          type: string
+        type:
+          description: Type of pickup location
+          enum:
+          - STORE
+          - WAREHOUSE
+          - HUB
+          example: STORE
+          type: string
+        status:
+          description: Status of the location
+          enum:
+          - ACTIVE
+          - INACTIVE
+          example: ACTIVE
+          type: string
+        isDefault:
+          description: Whether this is the default pickup location
+          example: false
+          type: boolean
+        addressLine1:
+          description: Primary address line
+          example: 123
+          maxLength: 500
+          minLength: 0
+          type: string
+        addressLine2:
+          description: Secondary address line
+          maxLength: 500
+          minLength: 0
+          type: string
+        houseNumber:
+          description: House number
+          maxLength: 50
+          minLength: 0
+          type: string
+        entranceFloor:
+          description: Entrance or floor
+          maxLength: 50
+          minLength: 0
+          type: string
+        city:
+          description: City name
+          example: Tel Aviv
+          maxLength: 255
+          minLength: 0
+          type: string
+        region:
+          description: Region or state
+          maxLength: 255
+          minLength: 0
+          type: string
+        postalCode:
+          description: Postal code
+          maxLength: 20
+          minLength: 0
+          type: string
+        countryCode:
+          description: ISO country code
+          example: IL
+          maxLength: 10
+          minLength: 0
+          type: string
+        latitude:
+          description: Latitude coordinate
+          example: 32.0853
+          format: double
+          type: number
+        longitude:
+          description: Longitude coordinate
+          example: 34.7818
+          format: double
+          type: number
+        contactName:
+          description: Contact person name
+          maxLength: 255
+          minLength: 0
+          type: string
+        contactPhone:
+          description: Contact phone number
+          maxLength: 50
+          minLength: 0
+          type: string
+        contactEmail:
+          description: Contact email
+          format: email
+          maxLength: 254
+          minLength: 0
+          type: string
+        openingHours:
+          $ref: '#/components/schemas/OpeningHoursDTO'
+        deliveryTypeConfig:
+          additionalProperties:
+            additionalProperties: {}
+          description: "Per-delivery-type configuration. Keys are delivery type names\
+            \ (e.g. STORE_NEXT_DAY), values are key-value maps."
+          example:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+        pickupInstructions:
+          description: Instructions for pickup couriers
+          maxLength: 2048
+          minLength: 0
+          type: string
+        timezone:
+          description: Timezone for opening hours validation
+          example: Asia/Jerusalem
+          maxLength: 50
+          minLength: 0
+          type: string
+      required:
+      - addressLine1
+      - city
+      - code
+      - countryCode
+      - name
+      - type
+    Filter:
+      description: Individual filter criteria for a specific field
+      example:
+        name: email
+        logic: EQ
+        value: ""
+      properties:
+        name:
+          description: Field name to filter on
+          example: email
+          type: string
+        value: {}
+        logic:
+          description: Filter logic operator to apply
+          enum:
+          - IN
+          - NOT_IN
+          - EQ
+          - LTE
+          - GTE
+          - IS_NULL
+          - IS_NOT_NULL
+          - LIKE
+          example: EQ
+          type: string
+      required:
+      - logic
+      - name
+      - value
+    Pagination:
+      description: Pagination parameters for controlling result set size and page
+        selection
+      example:
+        pageNumber: 1
+        itemsPerPage: 10
+      properties:
+        itemsPerPage:
+          default: 50
+          description: Number of items per page. Defaults to 50 if not specified.
+          example: 10
+          format: int32
+          maximum: 1000
+          minimum: 1
+          type: integer
+        pageNumber:
+          default: 1
+          description: Page number (1-based indexing). Defaults to 1 if not specified.
+          example: 1
+          format: int32
+          minimum: 1
+          type: integer
+    SearchPickupLocationsRequest:
+      description: |
+        Advanced search request for pickup locations with filtering, sorting, and pagination capabilities.
+        **Query Fields** (full-text search): `name`, `code`, `city`, `contactName`
+        **Available Filter/Sort Fields:**
+        - `status` (PickupLocationStatus, sortable)
+        - `type` (PickupLocationType, sortable)
+        - `city` (String, sortable)
+        - `countryCode` (String, sortable)
+        - `isDefault` (Boolean, sortable)
+        - `createdDate` (Instant, sortable)
+      example:
+        pagination:
+          pageNumber: 1
+          itemsPerPage: 10
+        query: John
+        filters:
+          key:
+          - name: email
+            logic: EQ
+            value: ""
+          - name: email
+            logic: EQ
+            value: ""
+        sort:
+        - fieldName: createdDate
+          direction: DESC
+        - fieldName: createdDate
+          direction: DESC
+      properties:
+        query:
+          description: Full-text search query string. Matches against predefined query
+            fields using case-insensitive LIKE.
+          example: John
+          type: string
+        filters:
+          additionalProperties:
+            items:
+              $ref: '#/components/schemas/Filter'
+          description: Filter groups with AND/OR logic. Each group contains a list
+            of filter criteria that are combined using the specified operator.
+        sort:
+          description: Sort criteria applied in order. Only sortable fields are accepted.
+          items:
+            $ref: '#/components/schemas/SortField'
+          type: array
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    SortField:
+      description: Sort criteria for ordering results
+      example:
+        fieldName: createdDate
+        direction: DESC
+      properties:
+        fieldName:
+          description: Field name to sort by. Must be a sortable field.
+          example: createdDate
+          type: string
+        direction:
+          default: asc
+          description: Sort direction (case-insensitive)
+          enum:
+          - ASC
+          - asc
+          - DESC
+          - desc
+          example: DESC
+          type: string
+      required:
+      - fieldName
+    PageResponseListPickupLocationDTO:
+      example:
+        total: 1
+        data:
+        - code: code
+          city: city
+          timezone: timezone
+          postalCode: postalCode
+          latitude: 0.8008281904610115
+          houseNumber: houseNumber
+          type: STORE
+          entranceFloor: entranceFloor
+          default: true
+          countryCode: countryCode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          longitude: 6.027456183070403
+          contactEmail: contactEmail
+          lastModifiedDate: 2000-01-23T04:56:07.000+00:00
+          contactName: contactName
+          deliveryTypeConfig:
+            key:
+              key: ""
+          createdDate: 2000-01-23T04:56:07.000+00:00
+          name: name
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+        - code: code
+          city: city
+          timezone: timezone
+          postalCode: postalCode
+          latitude: 0.8008281904610115
+          houseNumber: houseNumber
+          type: STORE
+          entranceFloor: entranceFloor
+          default: true
+          countryCode: countryCode
+          addressLine1: addressLine1
+          addressLine2: addressLine2
+          id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          longitude: 6.027456183070403
+          contactEmail: contactEmail
+          lastModifiedDate: 2000-01-23T04:56:07.000+00:00
+          contactName: contactName
+          deliveryTypeConfig:
+            key:
+              key: ""
+          createdDate: 2000-01-23T04:56:07.000+00:00
+          name: name
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+        totalPages: 6
+        limit: 5
+        page: 0
+      properties:
+        page:
+          format: int32
+          type: integer
+        totalPages:
+          format: int32
+          type: integer
+        total:
+          format: int64
+          type: integer
+        limit:
+          format: int32
+          type: integer
+        data:
+          items:
+            $ref: '#/components/schemas/PickupLocationDTO'
+          type: array
     AddressDTO:
       description: Structured address information
       example:
@@ -1014,7 +1931,6 @@ components:
           customerCompanyName: My Store
           customerId: 39700
           token: 84957612
-        codAmount: 49.9
         deliveryType: FOOD_IMMEDIATE
         dropoff:
           notes: "Floor 3, door code 1234"
@@ -1038,10 +1954,6 @@ components:
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
-        recipient:
-          phoneNumber: "+972501234567"
-          name: John Doe
-          email: john@example.com
         pickup:
           notes: "Floor 3, door code 1234"
           phone: "+972501234567"
@@ -1064,7 +1976,14 @@ components:
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
+        pickupLocationCode: MAIN-01
         externalOrderId: ORD-12345
+        quoteId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        codAmount: 49.9
+        recipient:
+          phoneNumber: "+972501234567"
+          name: John Doe
+          email: john@example.com
         items:
         - quantity: 2
           name: Burger Meal
@@ -1074,7 +1993,6 @@ components:
           name: Burger Meal
           description: "No onions, extra sauce"
           sku: BURGER_MEAL_001
-        quoteId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
         scheduledAt: 2026-03-01T14:00:00Z
       properties:
         quoteId:
@@ -1124,6 +2042,11 @@ components:
           $ref: '#/components/schemas/RecipientDeliveryDTO'
         providerData:
           $ref: '#/components/schemas/ProviderDataDTO'
+        pickupLocationCode:
+          description: "Optional pickup location code. When set, pickup contact and\
+            \ address are auto-filled from the location."
+          example: MAIN-01
+          type: string
       required:
       - deliveryType
       - dropoff
@@ -1290,57 +2213,6 @@ components:
           description: New delivery status
           example: CANCELLED
           type: string
-    Filter:
-      description: Individual filter criteria for a specific field
-      example:
-        name: email
-        logic: EQ
-        value: ""
-      properties:
-        name:
-          description: Field name to filter on
-          example: email
-          type: string
-        value: {}
-        logic:
-          description: Filter logic operator to apply
-          enum:
-          - IN
-          - NOT_IN
-          - EQ
-          - LTE
-          - GTE
-          - IS_NULL
-          - IS_NOT_NULL
-          - LIKE
-          example: EQ
-          type: string
-      required:
-      - logic
-      - name
-      - value
-    Pagination:
-      description: Pagination parameters for controlling result set size and page
-        selection
-      example:
-        pageNumber: 1
-        itemsPerPage: 10
-      properties:
-        itemsPerPage:
-          default: 50
-          description: Number of items per page. Defaults to 50 if not specified.
-          example: 10
-          format: int32
-          maximum: 1000
-          minimum: 1
-          type: integer
-        pageNumber:
-          default: 1
-          description: Page number (1-based indexing). Defaults to 1 if not specified.
-          example: 1
-          format: int32
-          minimum: 1
-          type: integer
     SearchDeliveriesRequest:
       description: |
         Advanced search request for deliveries with filtering, sorting, and pagination capabilities.
@@ -1388,28 +2260,6 @@ components:
           type: array
         pagination:
           $ref: '#/components/schemas/Pagination'
-    SortField:
-      description: Sort criteria for ordering results
-      example:
-        fieldName: createdDate
-        direction: DESC
-      properties:
-        fieldName:
-          description: Field name to sort by. Must be a sortable field.
-          example: createdDate
-          type: string
-        direction:
-          default: asc
-          description: Sort direction (case-insensitive)
-          enum:
-          - ASC
-          - asc
-          - DESC
-          - desc
-          example: DESC
-          type: string
-      required:
-      - fieldName
     HubDeliveryLocationDTO:
       example:
         lng: 2.3021358869347655
@@ -1646,6 +2496,7 @@ components:
             lng: 34.7818
             lat: 32.0853
           email: john@example.com
+        pickupLocationCode: MAIN-01
         items:
         - quantity: 2
           name: Burger Meal
@@ -1678,6 +2529,11 @@ components:
           description: Scheduled pickup time (null for immediate)
           example: 2026-03-01T14:00:00Z
           format: date-time
+          type: string
+        pickupLocationCode:
+          description: "Optional pickup location code. When set, pickup contact and\
+            \ address are auto-filled from the location."
+          example: MAIN-01
           type: string
       required:
       - deliveryType
