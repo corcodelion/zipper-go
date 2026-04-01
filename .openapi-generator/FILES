@@ -8,6 +8,7 @@ build.gradle
 build.sbt
 docs/AddressDTO.md
 docs/AddressPlaceDTO.md
+docs/BulkUpsertPickupLocationRequest.md
 docs/CallbackConfigDTO.md
 docs/CreatePickupLocationRequest.md
 docs/CreateWebhookRequest.md
@@ -82,6 +83,7 @@ src/main/java/com/zipper/delivery/hub/sdk/auth/HttpBearerAuth.java
 src/main/java/com/zipper/delivery/hub/sdk/model/AbstractOpenApiSchema.java
 src/main/java/com/zipper/delivery/hub/sdk/model/AddressDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/AddressPlaceDTO.java
+src/main/java/com/zipper/delivery/hub/sdk/model/BulkUpsertPickupLocationRequest.java
 src/main/java/com/zipper/delivery/hub/sdk/model/CallbackConfigDTO.java
 src/main/java/com/zipper/delivery/hub/sdk/model/CreatePickupLocationRequest.java
 src/main/java/com/zipper/delivery/hub/sdk/model/CreateWebhookRequest.java

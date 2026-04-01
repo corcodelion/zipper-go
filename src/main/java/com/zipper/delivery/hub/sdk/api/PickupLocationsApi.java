@@ -27,6 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
+import com.zipper.delivery.hub.sdk.model.BulkUpsertPickupLocationRequest;
 import com.zipper.delivery.hub.sdk.model.CreatePickupLocationRequest;
 import com.zipper.delivery.hub.sdk.model.PageResponseListPickupLocationDTO;
 import com.zipper.delivery.hub.sdk.model.PickupLocationDTO;
@@ -77,6 +78,141 @@ public class PickupLocationsApi {
         this.localCustomBaseUrl = customBaseUrl;
     }
 
+    /**
+     * Build call for bulkUpsertPickupLocations
+     * @param bulkUpsertPickupLocationRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Batch accepted for async processing </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Validation error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call bulkUpsertPickupLocationsCall(@javax.annotation.Nonnull BulkUpsertPickupLocationRequest bulkUpsertPickupLocationRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = bulkUpsertPickupLocationRequest;
+
+        // create path and map variables
+        String localVarPath = "/api/v1/pickup-locations/bulk-upsert";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        final String[] localVarAccepts = {
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+            "application/json"
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        if (acceptLanguage != null) {
+            localVarHeaderParams.put("Accept-Language", localVarApiClient.parameterToString(acceptLanguage));
+        }
+
+
+        String[] localVarAuthNames = new String[] { "bearerAuth" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call bulkUpsertPickupLocationsValidateBeforeCall(@javax.annotation.Nonnull BulkUpsertPickupLocationRequest bulkUpsertPickupLocationRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'bulkUpsertPickupLocationRequest' is set
+        if (bulkUpsertPickupLocationRequest == null) {
+            throw new ApiException("Missing the required parameter 'bulkUpsertPickupLocationRequest' when calling bulkUpsertPickupLocations(Async)");
+        }
+
+        return bulkUpsertPickupLocationsCall(bulkUpsertPickupLocationRequest, acceptLanguage, _callback);
+
+    }
+
+    /**
+     * Bulk upsert pickup locations (async)
+     * Accepts a batch of pickup locations for create or update. Matching is by &#x60;code&#x60; — existing codes are updated, new codes are created. Processing is asynchronous via message queue. On completion, a webhook event &#x60;pickup_location_bulk_upsert_completed&#x60; is sent with results and any errors.
+     * @param bulkUpsertPickupLocationRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Batch accepted for async processing </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Validation error </td><td>  -  </td></tr>
+     </table>
+     */
+    public void bulkUpsertPickupLocations(@javax.annotation.Nonnull BulkUpsertPickupLocationRequest bulkUpsertPickupLocationRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        bulkUpsertPickupLocationsWithHttpInfo(bulkUpsertPickupLocationRequest, acceptLanguage);
+    }
+
+    /**
+     * Bulk upsert pickup locations (async)
+     * Accepts a batch of pickup locations for create or update. Matching is by &#x60;code&#x60; — existing codes are updated, new codes are created. Processing is asynchronous via message queue. On completion, a webhook event &#x60;pickup_location_bulk_upsert_completed&#x60; is sent with results and any errors.
+     * @param bulkUpsertPickupLocationRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
+     * @return ApiResponse&lt;Void&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Batch accepted for async processing </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Validation error </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<Void> bulkUpsertPickupLocationsWithHttpInfo(@javax.annotation.Nonnull BulkUpsertPickupLocationRequest bulkUpsertPickupLocationRequest, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = bulkUpsertPickupLocationsValidateBeforeCall(bulkUpsertPickupLocationRequest, acceptLanguage, null);
+        return localVarApiClient.execute(localVarCall);
+    }
+
+    /**
+     * Bulk upsert pickup locations (async) (asynchronously)
+     * Accepts a batch of pickup locations for create or update. Matching is by &#x60;code&#x60; — existing codes are updated, new codes are created. Processing is asynchronous via message queue. On completion, a webhook event &#x60;pickup_location_bulk_upsert_completed&#x60; is sent with results and any errors.
+     * @param bulkUpsertPickupLocationRequest  (required)
+     * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 202 </td><td> Batch accepted for async processing </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Validation error </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call bulkUpsertPickupLocationsAsync(@javax.annotation.Nonnull BulkUpsertPickupLocationRequest bulkUpsertPickupLocationRequest, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<Void> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = bulkUpsertPickupLocationsValidateBeforeCall(bulkUpsertPickupLocationRequest, acceptLanguage, _callback);
+        localVarApiClient.executeAsync(localVarCall, _callback);
+        return localVarCall;
+    }
     /**
      * Build call for createPickupLocation
      * @param createPickupLocationRequest  (required)

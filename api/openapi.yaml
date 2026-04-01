@@ -455,6 +455,43 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
+  /api/v1/pickup-locations/bulk-upsert:
+    post:
+      description: "Accepts a batch of pickup locations for create or update. Matching\
+        \ is by `code` — existing codes are updated, new codes are created. Processing\
+        \ is asynchronous via message queue. On completion, a webhook event `pickup_location_bulk_upsert_completed`\
+        \ is sent with results and any errors."
+      operationId: bulkUpsertPickupLocations
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkUpsertPickupLocationRequest'
+        required: true
+      responses:
+        "202":
+          description: Batch accepted for async processing
+        "400":
+          description: Validation error
+      summary: Bulk upsert pickup locations (async)
+      tags:
+      - Pickup Locations
+      x-content-type: application/json
+      x-accepts:
+      - application/json
   /api/v1/deliveries:
     post:
       description: Dispatches a new delivery order to the best available carrier provider.
@@ -1772,6 +1809,186 @@ components:
           items:
             $ref: '#/components/schemas/PickupLocationDTO'
           type: array
+    BulkUpsertPickupLocationRequest:
+      description: "Request to bulk upsert pickup locations. Each item is matched\
+        \ by `code` — existing codes are updated, new codes are created."
+      example:
+        items:
+        - code: MAIN-01
+          city: Tel Aviv
+          contactEmail: contactEmail
+          contactName: contactName
+          timezone: Asia/Jerusalem
+          postalCode: postalCode
+          latitude: 32.0853
+          houseNumber: houseNumber
+          deliveryTypeConfig:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+          type: STORE
+          entranceFloor: entranceFloor
+          isDefault: false
+          countryCode: IL
+          name: Main Store
+          addressLine1: 123
+          addressLine2: addressLine2
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+          longitude: 34.7818
+        - code: MAIN-01
+          city: Tel Aviv
+          contactEmail: contactEmail
+          contactName: contactName
+          timezone: Asia/Jerusalem
+          postalCode: postalCode
+          latitude: 32.0853
+          houseNumber: houseNumber
+          deliveryTypeConfig:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+          type: STORE
+          entranceFloor: entranceFloor
+          isDefault: false
+          countryCode: IL
+          name: Main Store
+          addressLine1: 123
+          addressLine2: addressLine2
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+          longitude: 34.7818
+        - code: MAIN-01
+          city: Tel Aviv
+          contactEmail: contactEmail
+          contactName: contactName
+          timezone: Asia/Jerusalem
+          postalCode: postalCode
+          latitude: 32.0853
+          houseNumber: houseNumber
+          deliveryTypeConfig:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+          type: STORE
+          entranceFloor: entranceFloor
+          isDefault: false
+          countryCode: IL
+          name: Main Store
+          addressLine1: 123
+          addressLine2: addressLine2
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+          longitude: 34.7818
+        - code: MAIN-01
+          city: Tel Aviv
+          contactEmail: contactEmail
+          contactName: contactName
+          timezone: Asia/Jerusalem
+          postalCode: postalCode
+          latitude: 32.0853
+          houseNumber: houseNumber
+          deliveryTypeConfig:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+          type: STORE
+          entranceFloor: entranceFloor
+          isDefault: false
+          countryCode: IL
+          name: Main Store
+          addressLine1: 123
+          addressLine2: addressLine2
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+          longitude: 34.7818
+        - code: MAIN-01
+          city: Tel Aviv
+          contactEmail: contactEmail
+          contactName: contactName
+          timezone: Asia/Jerusalem
+          postalCode: postalCode
+          latitude: 32.0853
+          houseNumber: houseNumber
+          deliveryTypeConfig:
+            STORE_NEXT_DAY:
+              customerId: "123"
+              token: abc
+          type: STORE
+          entranceFloor: entranceFloor
+          isDefault: false
+          countryCode: IL
+          name: Main Store
+          addressLine1: 123
+          addressLine2: addressLine2
+          openingHours:
+            schedule:
+              key:
+                intervals:
+                - close: 13:00
+                  open: 08:00
+                - close: 13:00
+                  open: 08:00
+                closed: false
+          region: region
+          contactPhone: contactPhone
+          pickupInstructions: pickupInstructions
+          status: ACTIVE
+          longitude: 34.7818
+      properties:
+        items:
+          description: List of pickup locations to create or update
+          items:
+            $ref: '#/components/schemas/CreatePickupLocationRequest'
+          maxItems: 500
+          minItems: 1
+          type: array
+      required:
+      - items
     AddressDTO:
       description: Structured address information
       example:

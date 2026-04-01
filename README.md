@@ -157,6 +157,7 @@ Class | Method | HTTP request | Description
 *DeliveriesApi* | [**searchDeliveries**](docs/DeliveriesApi.md#searchDeliveries) | **POST** /api/v1/deliveries/search | Search deliveries
 *DeliveriesApi* | [**trackDelivery**](docs/DeliveriesApi.md#trackDelivery) | **GET** /api/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number
 *EchoApi* | [**echoV1**](docs/EchoApi.md#echoV1) | **GET** /api/v1/echo | Echo a message back
+*PickupLocationsApi* | [**bulkUpsertPickupLocations**](docs/PickupLocationsApi.md#bulkUpsertPickupLocations) | **POST** /api/v1/pickup-locations/bulk-upsert | Bulk upsert pickup locations (async)
 *PickupLocationsApi* | [**createPickupLocation**](docs/PickupLocationsApi.md#createPickupLocation) | **POST** /api/v1/pickup-locations | Create a pickup location
 *PickupLocationsApi* | [**deletePickupLocation**](docs/PickupLocationsApi.md#deletePickupLocation) | **DELETE** /api/v1/pickup-locations/{id} | Delete a pickup location
 *PickupLocationsApi* | [**getPickupLocation**](docs/PickupLocationsApi.md#getPickupLocation) | **GET** /api/v1/pickup-locations/{id} | Get a pickup location by ID
@@ -173,6 +174,7 @@ Class | Method | HTTP request | Description
 
  - [AddressDTO](docs/AddressDTO.md)
  - [AddressPlaceDTO](docs/AddressPlaceDTO.md)
+ - [BulkUpsertPickupLocationRequest](docs/BulkUpsertPickupLocationRequest.md)
  - [CallbackConfigDTO](docs/CallbackConfigDTO.md)
  - [CreatePickupLocationRequest](docs/CreatePickupLocationRequest.md)
  - [CreateWebhookRequest](docs/CreateWebhookRequest.md)
