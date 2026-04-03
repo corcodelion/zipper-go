@@ -11,7 +11,7 @@ Request to create a new delivery order. A quoteId from a prior quote request is 
 |**quoteId** | **UUID** | Quote ID from a prior quote request |  |
 |**deliveryType** | [**DeliveryTypeEnum**](#DeliveryTypeEnum) | Type of delivery |  |
 |**externalOrderId** | **String** | Your external order reference ID |  [optional] |
-|**pickup** | [**HubContactDTO**](HubContactDTO.md) | Pickup contact and location |  |
+|**pickup** | [**HubContactDTO**](HubContactDTO.md) | Pickup contact and location. Optional when pickupLocationCode is provided. |  [optional] |
 |**dropoff** | [**HubContactDTO**](HubContactDTO.md) | Dropoff contact and location |  |
 |**items** | [**List&lt;HubItemDTO&gt;**](HubItemDTO.md) | List of items to deliver |  [optional] |
 |**codAmount** | **BigDecimal** | Cash-on-delivery amount (null if not COD) |  [optional] |

@@ -131,7 +131,7 @@ public class HubCreateDeliveryRequest {
 
   public static final String SERIALIZED_NAME_PICKUP = "pickup";
   @SerializedName(SERIALIZED_NAME_PICKUP)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private HubContactDTO pickup;
 
   public static final String SERIALIZED_NAME_DROPOFF = "dropoff";
@@ -239,21 +239,21 @@ public class HubCreateDeliveryRequest {
   }
 
 
-  public HubCreateDeliveryRequest pickup(@javax.annotation.Nonnull HubContactDTO pickup) {
+  public HubCreateDeliveryRequest pickup(@javax.annotation.Nullable HubContactDTO pickup) {
     this.pickup = pickup;
     return this;
   }
 
   /**
-   * Pickup contact and location
+   * Pickup contact and location. Optional when pickupLocationCode is provided.
    * @return pickup
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public HubContactDTO getPickup() {
     return pickup;
   }
 
-  public void setPickup(@javax.annotation.Nonnull HubContactDTO pickup) {
+  public void setPickup(@javax.annotation.Nullable HubContactDTO pickup) {
     this.pickup = pickup;
   }
 
@@ -524,7 +524,6 @@ public class HubCreateDeliveryRequest {
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("quoteId");
     openapiRequiredFields.add("deliveryType");
-    openapiRequiredFields.add("pickup");
     openapiRequiredFields.add("dropoff");
   }
 
@@ -567,8 +566,10 @@ public class HubCreateDeliveryRequest {
       if ((jsonObj.get("externalOrderId") != null && !jsonObj.get("externalOrderId").isJsonNull()) && !jsonObj.get("externalOrderId").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `externalOrderId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("externalOrderId").toString()));
       }
-      // validate the required field `pickup`
-      HubContactDTO.validateJsonElement(jsonObj.get("pickup"));
+      // validate the optional field `pickup`
+      if (jsonObj.get("pickup") != null && !jsonObj.get("pickup").isJsonNull()) {
+        HubContactDTO.validateJsonElement(jsonObj.get("pickup"));
+      }
       // validate the required field `dropoff`
       HubContactDTO.validateJsonElement(jsonObj.get("dropoff"));
       if (jsonObj.get("items") != null && !jsonObj.get("items").isJsonNull()) {

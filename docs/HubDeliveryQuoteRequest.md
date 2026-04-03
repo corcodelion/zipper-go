@@ -9,7 +9,7 @@ Request to get a delivery price quote
 | Name | Type | Description | Notes |
 |------------ | ------------- | ------------- | -------------|
 |**deliveryType** | [**DeliveryTypeEnum**](#DeliveryTypeEnum) | Type of delivery |  |
-|**pickup** | [**HubContactDTO**](HubContactDTO.md) | Pickup contact and location |  |
+|**pickup** | [**HubContactDTO**](HubContactDTO.md) | Pickup contact and location. Optional when pickupLocationCode is provided. |  [optional] |
 |**dropoff** | [**HubContactDTO**](HubContactDTO.md) | Dropoff contact and location |  |
 |**items** | [**List&lt;HubItemDTO&gt;**](HubItemDTO.md) | List of items for weight/size estimation |  [optional] |
 |**scheduledAt** | **OffsetDateTime** | Scheduled pickup time (null for immediate) |  [optional] |

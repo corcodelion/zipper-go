@@ -2268,7 +2268,6 @@ components:
       required:
       - deliveryType
       - dropoff
-      - pickup
       - quoteId
     HubItemDTO:
       description: An item included in the delivery
@@ -2756,7 +2755,6 @@ components:
       required:
       - deliveryType
       - dropoff
-      - pickup
     HubDeliveryQuoteResponse:
       description: Delivery price quote from a carrier provider
       example:

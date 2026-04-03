@@ -116,7 +116,7 @@ public class HubDeliveryQuoteRequest {
 
   public static final String SERIALIZED_NAME_PICKUP = "pickup";
   @SerializedName(SERIALIZED_NAME_PICKUP)
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   private HubContactDTO pickup;
 
   public static final String SERIALIZED_NAME_DROPOFF = "dropoff";
@@ -161,21 +161,21 @@ public class HubDeliveryQuoteRequest {
   }
 
 
-  public HubDeliveryQuoteRequest pickup(@javax.annotation.Nonnull HubContactDTO pickup) {
+  public HubDeliveryQuoteRequest pickup(@javax.annotation.Nullable HubContactDTO pickup) {
     this.pickup = pickup;
     return this;
   }
 
   /**
-   * Pickup contact and location
+   * Pickup contact and location. Optional when pickupLocationCode is provided.
    * @return pickup
    */
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   public HubContactDTO getPickup() {
     return pickup;
   }
 
-  public void setPickup(@javax.annotation.Nonnull HubContactDTO pickup) {
+  public void setPickup(@javax.annotation.Nullable HubContactDTO pickup) {
     this.pickup = pickup;
   }
 
@@ -329,7 +329,6 @@ public class HubDeliveryQuoteRequest {
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
     openapiRequiredFields.add("deliveryType");
-    openapiRequiredFields.add("pickup");
     openapiRequiredFields.add("dropoff");
   }
 
@@ -366,8 +365,10 @@ public class HubDeliveryQuoteRequest {
       }
       // validate the required field `deliveryType`
       DeliveryTypeEnum.validateJsonElement(jsonObj.get("deliveryType"));
-      // validate the required field `pickup`
-      HubContactDTO.validateJsonElement(jsonObj.get("pickup"));
+      // validate the optional field `pickup`
+      if (jsonObj.get("pickup") != null && !jsonObj.get("pickup").isJsonNull()) {
+        HubContactDTO.validateJsonElement(jsonObj.get("pickup"));
+      }
       // validate the required field `dropoff`
       HubContactDTO.validateJsonElement(jsonObj.get("dropoff"));
       if (jsonObj.get("items") != null && !jsonObj.get("items").isJsonNull()) {
