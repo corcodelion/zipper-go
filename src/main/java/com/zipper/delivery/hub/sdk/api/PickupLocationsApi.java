@@ -110,7 +110,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = bulkUpsertPickupLocationRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations/bulk-upsert";
+        String localVarPath = "/delivery/v1/pickup-locations/bulk-upsert";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -246,7 +246,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = createPickupLocationRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations";
+        String localVarPath = "/delivery/v1/pickup-locations";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -389,7 +389,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations/{id}"
+        String localVarPath = "/delivery/v1/pickup-locations/{id}"
             .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -524,7 +524,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations/{id}"
+        String localVarPath = "/delivery/v1/pickup-locations/{id}"
             .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -663,7 +663,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = searchPickupLocationsRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations/search";
+        String localVarPath = "/delivery/v1/pickup-locations/search";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -802,7 +802,7 @@ public class PickupLocationsApi {
         Object localVarPostBody = updatePickupLocationRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/pickup-locations/{id}"
+        String localVarPath = "/delivery/v1/pickup-locations/{id}"
             .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();

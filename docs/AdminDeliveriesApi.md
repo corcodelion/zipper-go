@@ -1,23 +1,23 @@
-# WebhooksApi
+# AdminDeliveriesApi
 
 All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**createWebhook**](WebhooksApi.md#createWebhook) | **POST** /delivery/v1/webhooks | Create a webhook |
-| [**deleteWebhookById**](WebhooksApi.md#deleteWebhookById) | **DELETE** /delivery/v1/webhooks/{id} | Delete a specific webhook |
-| [**listWebhooks**](WebhooksApi.md#listWebhooks) | **GET** /delivery/v1/webhooks | List all webhooks |
-| [**testWebhook**](WebhooksApi.md#testWebhook) | **POST** /delivery/v1/webhooks/test | Send a test webhook event |
-| [**updateWebhook**](WebhooksApi.md#updateWebhook) | **PUT** /delivery/v1/webhooks/{id} | Update a webhook |
+| [**adminCancelDelivery**](AdminDeliveriesApi.md#adminCancelDelivery) | **POST** /delivery/v1/admin/deliveries/{deliveryId}/cancel | Cancel a delivery (admin) |
+| [**adminGetDelivery**](AdminDeliveriesApi.md#adminGetDelivery) | **GET** /delivery/v1/admin/deliveries/{deliveryId} | Get delivery by ID |
+| [**adminGetDeliveryLabel**](AdminDeliveriesApi.md#adminGetDeliveryLabel) | **GET** /delivery/v1/admin/deliveries/{deliveryId}/label | Get delivery label metadata (admin) |
+| [**adminGetDeliveryLabelAsset**](AdminDeliveriesApi.md#adminGetDeliveryLabelAsset) | **GET** /delivery/v1/admin/deliveries/{deliveryId}/label/{filename} | Download a label asset (admin) |
+| [**adminSearchAllDeliveries**](AdminDeliveriesApi.md#adminSearchAllDeliveries) | **POST** /delivery/v1/admin/deliveries/search | Search all deliveries |
 
 
-<a id="createWebhook"></a>
-# **createWebhook**
-> WebhookDTO createWebhook(createWebhookRequest, acceptLanguage)
+<a id="adminCancelDelivery"></a>
+# **adminCancelDelivery**
+> HubCancelDeliveryResponse adminCancelDelivery(deliveryId, acceptLanguage)
 
-Create a webhook
+Cancel a delivery (admin)
 
-Registers a new webhook for the current user. Returns 409 Conflict if a webhook with the same callback URL already exists.
+Cancels a delivery that is in CREATED or ASSIGNED status. Admin only, no ownership check.
 
 ### Example
 ```java
@@ -27,7 +27,7 @@ import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.auth.*;
 import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.WebhooksApi;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -38,14 +38,14 @@ public class Example {
     HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
     bearerAuth.setBearerToken("BEARER TOKEN");
 
-    WebhooksApi apiInstance = new WebhooksApi(defaultClient);
-    CreateWebhookRequest createWebhookRequest = new CreateWebhookRequest(); // CreateWebhookRequest | 
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
+    UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to cancel
     String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      WebhookDTO result = apiInstance.createWebhook(createWebhookRequest, acceptLanguage);
+      HubCancelDeliveryResponse result = apiInstance.adminCancelDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WebhooksApi#createWebhook");
+      System.err.println("Exception when calling AdminDeliveriesApi#adminCancelDelivery");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -59,154 +59,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **createWebhookRequest** | [**CreateWebhookRequest**](CreateWebhookRequest.md)|  | |
+| **deliveryId** | **UUID**| UUID of the delivery to cancel | |
 | **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
-[**WebhookDTO**](WebhookDTO.md)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: */*
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **201** | Webhook created |  -  |
-| **400** | Invalid request parameters |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **409** | Webhook with this callback URL already exists |  -  |
-| **500** | Internal server error |  -  |
-
-<a id="deleteWebhookById"></a>
-# **deleteWebhookById**
-> deleteWebhookById(id, acceptLanguage)
-
-Delete a specific webhook
-
-Removes a specific webhook subscription by ID for the current user.
-
-### Example
-```java
-// Import classes:
-import com.zipper.delivery.hub.sdk.ApiClient;
-import com.zipper.delivery.hub.sdk.ApiException;
-import com.zipper.delivery.hub.sdk.Configuration;
-import com.zipper.delivery.hub.sdk.auth.*;
-import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.WebhooksApi;
-
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure HTTP bearer authorization: bearerAuth
-    HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
-    bearerAuth.setBearerToken("BEARER TOKEN");
-
-    WebhooksApi apiInstance = new WebhooksApi(defaultClient);
-    Long id = 1L; // Long | Webhook ID
-    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
-    try {
-      apiInstance.deleteWebhookById(id, acceptLanguage);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling WebhooksApi#deleteWebhookById");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
-    }
-  }
-}
-```
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **id** | **Long**| Webhook ID | |
-| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-[bearerAuth](../README.md#bearerAuth)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-| **204** | Webhook deleted |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **404** | Webhook not found |  -  |
-| **500** | Internal server error |  -  |
-
-<a id="listWebhooks"></a>
-# **listWebhooks**
-> List&lt;WebhookDTO&gt; listWebhooks(acceptLanguage)
-
-List all webhooks
-
-Returns all webhook subscriptions for the current user.
-
-### Example
-```java
-// Import classes:
-import com.zipper.delivery.hub.sdk.ApiClient;
-import com.zipper.delivery.hub.sdk.ApiException;
-import com.zipper.delivery.hub.sdk.Configuration;
-import com.zipper.delivery.hub.sdk.auth.*;
-import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.WebhooksApi;
-
-public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure HTTP bearer authorization: bearerAuth
-    HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
-    bearerAuth.setBearerToken("BEARER TOKEN");
-
-    WebhooksApi apiInstance = new WebhooksApi(defaultClient);
-    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
-    try {
-      List<WebhookDTO> result = apiInstance.listWebhooks(acceptLanguage);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling WebhooksApi#listWebhooks");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
-    }
-  }
-}
-```
-
-### Parameters
-
-| Name | Type | Description  | Notes |
-|------------- | ------------- | ------------- | -------------|
-| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
-
-### Return type
-
-[**List&lt;WebhookDTO&gt;**](WebhookDTO.md)
+[**HubCancelDeliveryResponse**](HubCancelDeliveryResponse.md)
 
 ### Authorization
 
@@ -220,17 +78,19 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | List of webhooks |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **500** | Internal server error |  -  |
+| **200** | Delivery cancelled successfully |  -  |
+| **404** | Delivery not found |  -  |
+| **403** | Forbidden |  -  |
+| **409** | Delivery cannot be cancelled in its current status |  -  |
+| **422** | Provider cancellation failed |  -  |
 
-<a id="testWebhook"></a>
-# **testWebhook**
-> testWebhook(acceptLanguage, testWebhookRequest)
+<a id="adminGetDelivery"></a>
+# **adminGetDelivery**
+> HubDeliveryStatusResponse adminGetDelivery(deliveryId, acceptLanguage)
 
-Send a test webhook event
+Get delivery by ID
 
-Publishes a test event to all registered webhooks for the current user.
+Get a single delivery by its ID. Admin only, no ownership check.
 
 ### Example
 ```java
@@ -240,7 +100,7 @@ import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.auth.*;
 import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.WebhooksApi;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -251,13 +111,14 @@ public class Example {
     HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
     bearerAuth.setBearerToken("BEARER TOKEN");
 
-    WebhooksApi apiInstance = new WebhooksApi(defaultClient);
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
+    UUID deliveryId = UUID.randomUUID(); // UUID | 
     String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
-    TestWebhookRequest testWebhookRequest = new TestWebhookRequest(); // TestWebhookRequest | 
     try {
-      apiInstance.testWebhook(acceptLanguage, testWebhookRequest);
+      HubDeliveryStatusResponse result = apiInstance.adminGetDelivery(deliveryId, acceptLanguage);
+      System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WebhooksApi#testWebhook");
+      System.err.println("Exception when calling AdminDeliveriesApi#adminGetDelivery");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -271,12 +132,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
+| **deliveryId** | **UUID**|  | |
 | **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
-| **testWebhookRequest** | [**TestWebhookRequest**](TestWebhookRequest.md)|  | [optional] |
 
 ### Return type
 
-null (empty response body)
+[**HubDeliveryStatusResponse**](HubDeliveryStatusResponse.md)
 
 ### Authorization
 
@@ -284,24 +145,23 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: Not defined
+ - **Content-Type**: Not defined
+ - **Accept**: */*
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **202** | Test event accepted for delivery |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **404** | No webhook registered for this user |  -  |
-| **500** | Internal server error |  -  |
+| **200** | Delivery found |  -  |
+| **404** | Delivery not found |  -  |
+| **403** | Forbidden |  -  |
 
-<a id="updateWebhook"></a>
-# **updateWebhook**
-> WebhookDTO updateWebhook(id, updateWebhookRequest, acceptLanguage)
+<a id="adminGetDeliveryLabel"></a>
+# **adminGetDeliveryLabel**
+> HubDeliveryLabelResponse adminGetDeliveryLabel(deliveryId, acceptLanguage)
 
-Update a webhook
+Get delivery label metadata (admin)
 
-Updates an existing webhook subscription by ID for the current user.
+Returns barcode value and URLs for barcode image, QR code, and label PDF. Admin only, no ownership check.
 
 ### Example
 ```java
@@ -311,7 +171,7 @@ import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.auth.*;
 import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.WebhooksApi;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -322,15 +182,14 @@ public class Example {
     HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
     bearerAuth.setBearerToken("BEARER TOKEN");
 
-    WebhooksApi apiInstance = new WebhooksApi(defaultClient);
-    Long id = 1L; // Long | Webhook ID
-    UpdateWebhookRequest updateWebhookRequest = new UpdateWebhookRequest(); // UpdateWebhookRequest | 
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
+    UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to get label for
     String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      WebhookDTO result = apiInstance.updateWebhook(id, updateWebhookRequest, acceptLanguage);
+      HubDeliveryLabelResponse result = apiInstance.adminGetDeliveryLabel(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WebhooksApi#updateWebhook");
+      System.err.println("Exception when calling AdminDeliveriesApi#adminGetDeliveryLabel");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -344,13 +203,157 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **id** | **Long**| Webhook ID | |
-| **updateWebhookRequest** | [**UpdateWebhookRequest**](UpdateWebhookRequest.md)|  | |
+| **deliveryId** | **UUID**| UUID of the delivery to get label for | |
 | **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
-[**WebhookDTO**](WebhookDTO.md)
+[**HubDeliveryLabelResponse**](HubDeliveryLabelResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Label metadata returned |  -  |
+| **404** | Delivery not found |  -  |
+| **403** | Forbidden |  -  |
+
+<a id="adminGetDeliveryLabelAsset"></a>
+# **adminGetDeliveryLabelAsset**
+> File adminGetDeliveryLabelAsset(deliveryId, filename, acceptLanguage)
+
+Download a label asset (admin)
+
+Serves a label asset (barcode.png, qrcode.png, or label.pdf) for a delivery. Admin only, no ownership check.
+
+### Example
+```java
+// Import classes:
+import com.zipper.delivery.hub.sdk.ApiClient;
+import com.zipper.delivery.hub.sdk.ApiException;
+import com.zipper.delivery.hub.sdk.Configuration;
+import com.zipper.delivery.hub.sdk.auth.*;
+import com.zipper.delivery.hub.sdk.models.*;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost");
+    
+    // Configure HTTP bearer authorization: bearerAuth
+    HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
+    bearerAuth.setBearerToken("BEARER TOKEN");
+
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
+    UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to get label asset for
+    String filename = "barcode.png"; // String | Asset filename
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
+    try {
+      File result = apiInstance.adminGetDeliveryLabelAsset(deliveryId, filename, acceptLanguage);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AdminDeliveriesApi#adminGetDeliveryLabelAsset");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **deliveryId** | **UUID**| UUID of the delivery to get label asset for | |
+| **filename** | **String**| Asset filename | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
+
+### Return type
+
+[**File**](File.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Asset returned |  -  |
+| **400** | Invalid filename |  -  |
+| **404** | Delivery not found |  -  |
+| **403** | Forbidden |  -  |
+
+<a id="adminSearchAllDeliveries"></a>
+# **adminSearchAllDeliveries**
+> PageResponseListHubDeliverySearchDTO adminSearchAllDeliveries(searchDeliveriesRequest, acceptLanguage)
+
+Search all deliveries
+
+Search and filter deliveries across all users with pagination. Admin only.
+
+### Example
+```java
+// Import classes:
+import com.zipper.delivery.hub.sdk.ApiClient;
+import com.zipper.delivery.hub.sdk.ApiException;
+import com.zipper.delivery.hub.sdk.Configuration;
+import com.zipper.delivery.hub.sdk.auth.*;
+import com.zipper.delivery.hub.sdk.models.*;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    defaultClient.setBasePath("http://localhost");
+    
+    // Configure HTTP bearer authorization: bearerAuth
+    HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
+    bearerAuth.setBearerToken("BEARER TOKEN");
+
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
+    SearchDeliveriesRequest searchDeliveriesRequest = new SearchDeliveriesRequest(); // SearchDeliveriesRequest | 
+    String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
+    try {
+      PageResponseListHubDeliverySearchDTO result = apiInstance.adminSearchAllDeliveries(searchDeliveriesRequest, acceptLanguage);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling AdminDeliveriesApi#adminSearchAllDeliveries");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Parameters
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **searchDeliveriesRequest** | [**SearchDeliveriesRequest**](SearchDeliveriesRequest.md)|  | |
+| **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
+
+### Return type
+
+[**PageResponseListHubDeliverySearchDTO**](PageResponseListHubDeliverySearchDTO.md)
 
 ### Authorization
 
@@ -364,10 +367,6 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Webhook updated |  -  |
-| **400** | Invalid request parameters |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **404** | Webhook not found |  -  |
-| **409** | Webhook with this callback URL already exists |  -  |
-| **500** | Internal server error |  -  |
+| **200** | Search results returned |  -  |
+| **403** | Forbidden |  -  |
 

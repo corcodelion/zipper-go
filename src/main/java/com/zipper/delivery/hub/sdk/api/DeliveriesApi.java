@@ -117,7 +117,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/{deliveryId}/cancel"
+        String localVarPath = "/delivery/v1/deliveries/{deliveryId}/cancel"
             .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -267,7 +267,7 @@ public class DeliveriesApi {
         Object localVarPostBody = hubCreateDeliveryRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries";
+        String localVarPath = "/delivery/v1/deliveries";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -426,7 +426,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/{deliveryId}"
+        String localVarPath = "/delivery/v1/deliveries/{deliveryId}"
             .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -572,7 +572,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label"
+        String localVarPath = "/delivery/v1/deliveries/{hubTrackingNumber}/label"
             .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -714,7 +714,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/{hubTrackingNumber}/label/{filename}"
+        String localVarPath = "/delivery/v1/deliveries/{hubTrackingNumber}/label/{filename}"
             .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()))
             .replace("{" + "filename" + "}", localVarApiClient.escapeString(filename.toString()));
 
@@ -867,7 +867,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/{deliveryId}/handshake"
+        String localVarPath = "/delivery/v1/deliveries/{deliveryId}/handshake"
             .replace("{" + "deliveryId" + "}", localVarApiClient.escapeString(deliveryId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -1012,7 +1012,7 @@ public class DeliveriesApi {
         Object localVarPostBody = hubDeliveryQuoteRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/quote";
+        String localVarPath = "/delivery/v1/deliveries/quote";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1158,7 +1158,7 @@ public class DeliveriesApi {
         Object localVarPostBody = searchDeliveriesRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/search";
+        String localVarPath = "/delivery/v1/deliveries/search";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -1298,7 +1298,7 @@ public class DeliveriesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/deliveries/track/{hubTrackingNumber}"
+        String localVarPath = "/delivery/v1/deliveries/track/{hubTrackingNumber}"
             .replace("{" + "hubTrackingNumber" + "}", localVarApiClient.escapeString(hubTrackingNumber.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();

@@ -1,19 +1,19 @@
-# EchoApi
+# InternalPickupLocationsApi
 
 All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**echoV1**](EchoApi.md#echoV1) | **GET** /delivery/v1/echo | Echo a message back |
+| [**getById**](InternalPickupLocationsApi.md#getById) | **GET** /delivery/v1/internal/pickup-locations/{id} | Get pickup location by external ID |
 
 
-<a id="echoV1"></a>
-# **echoV1**
-> EchoResponse echoV1(message, acceptLanguage)
+<a id="getById"></a>
+# **getById**
+> InternalPickupLocationDTO getById(id, acceptLanguage)
 
-Echo a message back
+Get pickup location by external ID
 
-Returns the provided message along with the API version. Useful for connectivity checks.
+Returns pickup location metadata. Used for service-to-service validation.
 
 ### Example
 ```java
@@ -23,7 +23,7 @@ import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.auth.*;
 import com.zipper.delivery.hub.sdk.models.*;
-import com.zipper.delivery.hub.sdk.api.EchoApi;
+import com.zipper.delivery.hub.sdk.api.InternalPickupLocationsApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -34,14 +34,14 @@ public class Example {
     HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
     bearerAuth.setBearerToken("BEARER TOKEN");
 
-    EchoApi apiInstance = new EchoApi(defaultClient);
-    String message = "hello"; // String | Message to echo back
+    InternalPickupLocationsApi apiInstance = new InternalPickupLocationsApi(defaultClient);
+    UUID id = UUID.randomUUID(); // UUID | 
     String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      EchoResponse result = apiInstance.echoV1(message, acceptLanguage);
+      InternalPickupLocationDTO result = apiInstance.getById(id, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling EchoApi#echoV1");
+      System.err.println("Exception when calling InternalPickupLocationsApi#getById");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -55,12 +55,12 @@ public class Example {
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **message** | **String**| Message to echo back | [optional] [default to hello] |
+| **id** | **UUID**|  | |
 | **acceptLanguage** | **String**| Language preference for response content. Supported: en, he | [optional] [default to en] [enum: en, he] |
 
 ### Return type
 
-[**EchoResponse**](EchoResponse.md)
+[**InternalPickupLocationDTO**](InternalPickupLocationDTO.md)
 
 ### Authorization
 
@@ -74,7 +74,6 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **200** | Echo response returned successfully |  -  |
-| **403** | Forbidden — insufficient permissions |  -  |
-| **500** | Internal server error |  -  |
+| **200** | Location found |  -  |
+| **404** | Location not found |  -  |
 

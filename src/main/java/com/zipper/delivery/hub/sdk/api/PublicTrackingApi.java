@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
-import com.zipper.delivery.hub.sdk.model.EchoResponse;
+import com.zipper.delivery.hub.sdk.model.PublicTrackingResponse;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,16 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EchoApi {
+public class PublicTrackingApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public EchoApi() {
+    public PublicTrackingApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public EchoApi(ApiClient apiClient) {
+    public PublicTrackingApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -73,8 +73,8 @@ public class EchoApi {
     }
 
     /**
-     * Build call for echoV1
-     * @param message Message to echo back (optional, default to hello)
+     * Build call for track
+     * @param trackingNumber Delivery tracking number (e.g. ZIPPERGUDWXJNXTTJ17) (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -83,12 +83,12 @@ public class EchoApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Tracking information returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 429 </td><td> Rate limit exceeded </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Call(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call trackCall(@javax.annotation.Nonnull String trackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -105,17 +105,14 @@ public class EchoApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/delivery/v1/echo";
+        String localVarPath = "/delivery/v1/public/track/{trackingNumber}"
+            .replace("{" + "trackingNumber" + "}", localVarApiClient.escapeString(trackingNumber.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (message != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("message", message));
-        }
 
         final String[] localVarAccepts = {
             "*/*"
@@ -142,58 +139,63 @@ public class EchoApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call echoV1ValidateBeforeCall(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
-        return echoV1Call(message, acceptLanguage, _callback);
+    private okhttp3.Call trackValidateBeforeCall(@javax.annotation.Nonnull String trackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'trackingNumber' is set
+        if (trackingNumber == null) {
+            throw new ApiException("Missing the required parameter 'trackingNumber' when calling track(Async)");
+        }
+
+        return trackCall(trackingNumber, acceptLanguage, _callback);
 
     }
 
     /**
-     * Echo a message back
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Track a delivery by tracking number
+     * Returns public tracking information for a delivery. No authentication required.
+     * @param trackingNumber Delivery tracking number (e.g. ZIPPERGUDWXJNXTTJ17) (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
-     * @return EchoResponse
+     * @return PublicTrackingResponse
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Tracking information returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 429 </td><td> Rate limit exceeded </td><td>  -  </td></tr>
      </table>
      */
-    public EchoResponse echoV1(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
-        ApiResponse<EchoResponse> localVarResp = echoV1WithHttpInfo(message, acceptLanguage);
+    public PublicTrackingResponse track(@javax.annotation.Nonnull String trackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<PublicTrackingResponse> localVarResp = trackWithHttpInfo(trackingNumber, acceptLanguage);
         return localVarResp.getData();
     }
 
     /**
-     * Echo a message back
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Track a delivery by tracking number
+     * Returns public tracking information for a delivery. No authentication required.
+     * @param trackingNumber Delivery tracking number (e.g. ZIPPERGUDWXJNXTTJ17) (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
-     * @return ApiResponse&lt;EchoResponse&gt;
+     * @return ApiResponse&lt;PublicTrackingResponse&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Tracking information returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 429 </td><td> Rate limit exceeded </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<EchoResponse> echoV1WithHttpInfo(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, null);
-        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+    public ApiResponse<PublicTrackingResponse> trackWithHttpInfo(@javax.annotation.Nonnull String trackingNumber, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = trackValidateBeforeCall(trackingNumber, acceptLanguage, null);
+        Type localVarReturnType = new TypeToken<PublicTrackingResponse>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Echo a message back (asynchronously)
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Track a delivery by tracking number (asynchronously)
+     * Returns public tracking information for a delivery. No authentication required.
+     * @param trackingNumber Delivery tracking number (e.g. ZIPPERGUDWXJNXTTJ17) (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -202,15 +204,15 @@ public class EchoApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Tracking information returned </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Delivery not found </td><td>  -  </td></tr>
+        <tr><td> 429 </td><td> Rate limit exceeded </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Async(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<EchoResponse> _callback) throws ApiException {
+    public okhttp3.Call trackAsync(@javax.annotation.Nonnull String trackingNumber, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<PublicTrackingResponse> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, _callback);
-        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+        okhttp3.Call localVarCall = trackValidateBeforeCall(trackingNumber, acceptLanguage, _callback);
+        Type localVarReturnType = new TypeToken<PublicTrackingResponse>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

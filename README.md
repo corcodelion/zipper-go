@@ -112,7 +112,7 @@ import com.zipper.delivery.hub.sdk.ApiException;
 import com.zipper.delivery.hub.sdk.Configuration;
 import com.zipper.delivery.hub.sdk.auth.*;
 import com.zipper.delivery.hub.sdk.model.*;
-import com.zipper.delivery.hub.sdk.api.DeliveriesApi;
+import com.zipper.delivery.hub.sdk.api.AdminDeliveriesApi;
 
 public class Example {
   public static void main(String[] args) {
@@ -123,14 +123,14 @@ public class Example {
     HttpBearerAuth bearerAuth = (HttpBearerAuth) defaultClient.getAuthentication("bearerAuth");
     bearerAuth.setBearerToken("BEARER TOKEN");
 
-    DeliveriesApi apiInstance = new DeliveriesApi(defaultClient);
+    AdminDeliveriesApi apiInstance = new AdminDeliveriesApi(defaultClient);
     UUID deliveryId = UUID.fromString("550e8400-e29b-41d4-a716-446655440000"); // UUID | UUID of the delivery to cancel
     String acceptLanguage = "en"; // String | Language preference for response content. Supported: en, he
     try {
-      HubCancelDeliveryResponse result = apiInstance.cancelDelivery(deliveryId, acceptLanguage);
+      HubCancelDeliveryResponse result = apiInstance.adminCancelDelivery(deliveryId, acceptLanguage);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling DeliveriesApi#cancelDelivery");
+      System.err.println("Exception when calling AdminDeliveriesApi#adminCancelDelivery");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -147,27 +147,34 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DeliveriesApi* | [**cancelDelivery**](docs/DeliveriesApi.md#cancelDelivery) | **POST** /api/v1/deliveries/{deliveryId}/cancel | Cancel a delivery
-*DeliveriesApi* | [**createDelivery**](docs/DeliveriesApi.md#createDelivery) | **POST** /api/v1/deliveries | Create a delivery
-*DeliveriesApi* | [**getDelivery**](docs/DeliveriesApi.md#getDelivery) | **GET** /api/v1/deliveries/{deliveryId} | Get delivery status
-*DeliveriesApi* | [**getDeliveryLabel**](docs/DeliveriesApi.md#getDeliveryLabel) | **GET** /api/v1/deliveries/{hubTrackingNumber}/label | Get delivery label metadata
-*DeliveriesApi* | [**getDeliveryLabelAsset**](docs/DeliveriesApi.md#getDeliveryLabelAsset) | **GET** /api/v1/deliveries/{hubTrackingNumber}/label/{filename} | Download a label asset
-*DeliveriesApi* | [**getHandshakeDelivery**](docs/DeliveriesApi.md#getHandshakeDelivery) | **GET** /api/v1/deliveries/{deliveryId}/handshake | Get handshake PIN info
-*DeliveriesApi* | [**getQuote**](docs/DeliveriesApi.md#getQuote) | **POST** /api/v1/deliveries/quote | Get a delivery quote
-*DeliveriesApi* | [**searchDeliveries**](docs/DeliveriesApi.md#searchDeliveries) | **POST** /api/v1/deliveries/search | Search deliveries
-*DeliveriesApi* | [**trackDelivery**](docs/DeliveriesApi.md#trackDelivery) | **GET** /api/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number
-*EchoApi* | [**echoV1**](docs/EchoApi.md#echoV1) | **GET** /api/v1/echo | Echo a message back
-*PickupLocationsApi* | [**bulkUpsertPickupLocations**](docs/PickupLocationsApi.md#bulkUpsertPickupLocations) | **POST** /api/v1/pickup-locations/bulk-upsert | Bulk upsert pickup locations (async)
-*PickupLocationsApi* | [**createPickupLocation**](docs/PickupLocationsApi.md#createPickupLocation) | **POST** /api/v1/pickup-locations | Create a pickup location
-*PickupLocationsApi* | [**deletePickupLocation**](docs/PickupLocationsApi.md#deletePickupLocation) | **DELETE** /api/v1/pickup-locations/{id} | Delete a pickup location
-*PickupLocationsApi* | [**getPickupLocation**](docs/PickupLocationsApi.md#getPickupLocation) | **GET** /api/v1/pickup-locations/{id} | Get a pickup location by ID
-*PickupLocationsApi* | [**searchPickupLocations**](docs/PickupLocationsApi.md#searchPickupLocations) | **POST** /api/v1/pickup-locations/search | Search pickup locations
-*PickupLocationsApi* | [**updatePickupLocation**](docs/PickupLocationsApi.md#updatePickupLocation) | **PUT** /api/v1/pickup-locations/{id} | Update a pickup location
-*WebhooksApi* | [**createWebhook**](docs/WebhooksApi.md#createWebhook) | **POST** /api/v1/webhooks | Create a webhook
-*WebhooksApi* | [**deleteWebhookById**](docs/WebhooksApi.md#deleteWebhookById) | **DELETE** /api/v1/webhooks/{id} | Delete a specific webhook
-*WebhooksApi* | [**listWebhooks**](docs/WebhooksApi.md#listWebhooks) | **GET** /api/v1/webhooks | List all webhooks
-*WebhooksApi* | [**testWebhook**](docs/WebhooksApi.md#testWebhook) | **POST** /api/v1/webhooks/test | Send a test webhook event
-*WebhooksApi* | [**updateWebhook**](docs/WebhooksApi.md#updateWebhook) | **PUT** /api/v1/webhooks/{id} | Update a webhook
+*AdminDeliveriesApi* | [**adminCancelDelivery**](docs/AdminDeliveriesApi.md#adminCancelDelivery) | **POST** /delivery/v1/admin/deliveries/{deliveryId}/cancel | Cancel a delivery (admin)
+*AdminDeliveriesApi* | [**adminGetDelivery**](docs/AdminDeliveriesApi.md#adminGetDelivery) | **GET** /delivery/v1/admin/deliveries/{deliveryId} | Get delivery by ID
+*AdminDeliveriesApi* | [**adminGetDeliveryLabel**](docs/AdminDeliveriesApi.md#adminGetDeliveryLabel) | **GET** /delivery/v1/admin/deliveries/{deliveryId}/label | Get delivery label metadata (admin)
+*AdminDeliveriesApi* | [**adminGetDeliveryLabelAsset**](docs/AdminDeliveriesApi.md#adminGetDeliveryLabelAsset) | **GET** /delivery/v1/admin/deliveries/{deliveryId}/label/{filename} | Download a label asset (admin)
+*AdminDeliveriesApi* | [**adminSearchAllDeliveries**](docs/AdminDeliveriesApi.md#adminSearchAllDeliveries) | **POST** /delivery/v1/admin/deliveries/search | Search all deliveries
+*DeliveriesApi* | [**cancelDelivery**](docs/DeliveriesApi.md#cancelDelivery) | **POST** /delivery/v1/deliveries/{deliveryId}/cancel | Cancel a delivery
+*DeliveriesApi* | [**createDelivery**](docs/DeliveriesApi.md#createDelivery) | **POST** /delivery/v1/deliveries | Create a delivery
+*DeliveriesApi* | [**getDelivery**](docs/DeliveriesApi.md#getDelivery) | **GET** /delivery/v1/deliveries/{deliveryId} | Get delivery status
+*DeliveriesApi* | [**getDeliveryLabel**](docs/DeliveriesApi.md#getDeliveryLabel) | **GET** /delivery/v1/deliveries/{hubTrackingNumber}/label | Get delivery label metadata
+*DeliveriesApi* | [**getDeliveryLabelAsset**](docs/DeliveriesApi.md#getDeliveryLabelAsset) | **GET** /delivery/v1/deliveries/{hubTrackingNumber}/label/{filename} | Download a label asset
+*DeliveriesApi* | [**getHandshakeDelivery**](docs/DeliveriesApi.md#getHandshakeDelivery) | **GET** /delivery/v1/deliveries/{deliveryId}/handshake | Get handshake PIN info
+*DeliveriesApi* | [**getQuote**](docs/DeliveriesApi.md#getQuote) | **POST** /delivery/v1/deliveries/quote | Get a delivery quote
+*DeliveriesApi* | [**searchDeliveries**](docs/DeliveriesApi.md#searchDeliveries) | **POST** /delivery/v1/deliveries/search | Search deliveries
+*DeliveriesApi* | [**trackDelivery**](docs/DeliveriesApi.md#trackDelivery) | **GET** /delivery/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number
+*EchoApi* | [**echoV1**](docs/EchoApi.md#echoV1) | **GET** /delivery/v1/echo | Echo a message back
+*InternalPickupLocationsApi* | [**getById**](docs/InternalPickupLocationsApi.md#getById) | **GET** /delivery/v1/internal/pickup-locations/{id} | Get pickup location by external ID
+*PickupLocationsApi* | [**bulkUpsertPickupLocations**](docs/PickupLocationsApi.md#bulkUpsertPickupLocations) | **POST** /delivery/v1/pickup-locations/bulk-upsert | Bulk upsert pickup locations (async)
+*PickupLocationsApi* | [**createPickupLocation**](docs/PickupLocationsApi.md#createPickupLocation) | **POST** /delivery/v1/pickup-locations | Create a pickup location
+*PickupLocationsApi* | [**deletePickupLocation**](docs/PickupLocationsApi.md#deletePickupLocation) | **DELETE** /delivery/v1/pickup-locations/{id} | Delete a pickup location
+*PickupLocationsApi* | [**getPickupLocation**](docs/PickupLocationsApi.md#getPickupLocation) | **GET** /delivery/v1/pickup-locations/{id} | Get a pickup location by ID
+*PickupLocationsApi* | [**searchPickupLocations**](docs/PickupLocationsApi.md#searchPickupLocations) | **POST** /delivery/v1/pickup-locations/search | Search pickup locations
+*PickupLocationsApi* | [**updatePickupLocation**](docs/PickupLocationsApi.md#updatePickupLocation) | **PUT** /delivery/v1/pickup-locations/{id} | Update a pickup location
+*PublicTrackingApi* | [**track**](docs/PublicTrackingApi.md#track) | **GET** /delivery/v1/public/track/{trackingNumber} | Track a delivery by tracking number
+*WebhooksApi* | [**createWebhook**](docs/WebhooksApi.md#createWebhook) | **POST** /delivery/v1/webhooks | Create a webhook
+*WebhooksApi* | [**deleteWebhookById**](docs/WebhooksApi.md#deleteWebhookById) | **DELETE** /delivery/v1/webhooks/{id} | Delete a specific webhook
+*WebhooksApi* | [**listWebhooks**](docs/WebhooksApi.md#listWebhooks) | **GET** /delivery/v1/webhooks | List all webhooks
+*WebhooksApi* | [**testWebhook**](docs/WebhooksApi.md#testWebhook) | **POST** /delivery/v1/webhooks/test | Send a test webhook event
+*WebhooksApi* | [**updateWebhook**](docs/WebhooksApi.md#updateWebhook) | **PUT** /delivery/v1/webhooks/{id} | Update a webhook
 
 
 ## Documentation for Models
@@ -196,6 +203,7 @@ Class | Method | HTTP request | Description
  - [HubHandshakeDeliveryResponse](docs/HubHandshakeDeliveryResponse.md)
  - [HubItemDTO](docs/HubItemDTO.md)
  - [HubStatusEventDTO](docs/HubStatusEventDTO.md)
+ - [InternalPickupLocationDTO](docs/InternalPickupLocationDTO.md)
  - [LocationDTO](docs/LocationDTO.md)
  - [OpeningHoursDTO](docs/OpeningHoursDTO.md)
  - [PageResponseListHubDeliverySearchDTO](docs/PageResponseListHubDeliverySearchDTO.md)
@@ -203,6 +211,15 @@ Class | Method | HTTP request | Description
  - [Pagination](docs/Pagination.md)
  - [PickupLocationDTO](docs/PickupLocationDTO.md)
  - [ProviderDataDTO](docs/ProviderDataDTO.md)
+ - [PublicCourierInfo](docs/PublicCourierInfo.md)
+ - [PublicCourierLocation](docs/PublicCourierLocation.md)
+ - [PublicDropoffInfo](docs/PublicDropoffInfo.md)
+ - [PublicItemInfo](docs/PublicItemInfo.md)
+ - [PublicPackageDetails](docs/PublicPackageDetails.md)
+ - [PublicPickupInfo](docs/PublicPickupInfo.md)
+ - [PublicStatusEvent](docs/PublicStatusEvent.md)
+ - [PublicTrackingResponse](docs/PublicTrackingResponse.md)
+ - [PublicVehicleInfo](docs/PublicVehicleInfo.md)
  - [RecipientDeliveryDTO](docs/RecipientDeliveryDTO.md)
  - [SearchDeliveriesRequest](docs/SearchDeliveriesRequest.md)
  - [SearchPickupLocationsRequest](docs/SearchPickupLocationsRequest.md)

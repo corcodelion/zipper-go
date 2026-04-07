@@ -4,15 +4,15 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**cancelDelivery**](DeliveriesApi.md#cancelDelivery) | **POST** /api/v1/deliveries/{deliveryId}/cancel | Cancel a delivery |
-| [**createDelivery**](DeliveriesApi.md#createDelivery) | **POST** /api/v1/deliveries | Create a delivery |
-| [**getDelivery**](DeliveriesApi.md#getDelivery) | **GET** /api/v1/deliveries/{deliveryId} | Get delivery status |
-| [**getDeliveryLabel**](DeliveriesApi.md#getDeliveryLabel) | **GET** /api/v1/deliveries/{hubTrackingNumber}/label | Get delivery label metadata |
-| [**getDeliveryLabelAsset**](DeliveriesApi.md#getDeliveryLabelAsset) | **GET** /api/v1/deliveries/{hubTrackingNumber}/label/{filename} | Download a label asset |
-| [**getHandshakeDelivery**](DeliveriesApi.md#getHandshakeDelivery) | **GET** /api/v1/deliveries/{deliveryId}/handshake | Get handshake PIN info |
-| [**getQuote**](DeliveriesApi.md#getQuote) | **POST** /api/v1/deliveries/quote | Get a delivery quote |
-| [**searchDeliveries**](DeliveriesApi.md#searchDeliveries) | **POST** /api/v1/deliveries/search | Search deliveries |
-| [**trackDelivery**](DeliveriesApi.md#trackDelivery) | **GET** /api/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number |
+| [**cancelDelivery**](DeliveriesApi.md#cancelDelivery) | **POST** /delivery/v1/deliveries/{deliveryId}/cancel | Cancel a delivery |
+| [**createDelivery**](DeliveriesApi.md#createDelivery) | **POST** /delivery/v1/deliveries | Create a delivery |
+| [**getDelivery**](DeliveriesApi.md#getDelivery) | **GET** /delivery/v1/deliveries/{deliveryId} | Get delivery status |
+| [**getDeliveryLabel**](DeliveriesApi.md#getDeliveryLabel) | **GET** /delivery/v1/deliveries/{hubTrackingNumber}/label | Get delivery label metadata |
+| [**getDeliveryLabelAsset**](DeliveriesApi.md#getDeliveryLabelAsset) | **GET** /delivery/v1/deliveries/{hubTrackingNumber}/label/{filename} | Download a label asset |
+| [**getHandshakeDelivery**](DeliveriesApi.md#getHandshakeDelivery) | **GET** /delivery/v1/deliveries/{deliveryId}/handshake | Get handshake PIN info |
+| [**getQuote**](DeliveriesApi.md#getQuote) | **POST** /delivery/v1/deliveries/quote | Get a delivery quote |
+| [**searchDeliveries**](DeliveriesApi.md#searchDeliveries) | **POST** /delivery/v1/deliveries/search | Search deliveries |
+| [**trackDelivery**](DeliveriesApi.md#trackDelivery) | **GET** /delivery/v1/deliveries/track/{hubTrackingNumber} | Track delivery by tracking number |
 
 
 <a id="cancelDelivery"></a>

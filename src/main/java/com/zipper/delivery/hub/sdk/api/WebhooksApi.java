@@ -110,7 +110,7 @@ public class WebhooksApi {
         Object localVarPostBody = createWebhookRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/webhooks";
+        String localVarPath = "/delivery/v1/webhooks";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -261,7 +261,7 @@ public class WebhooksApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/webhooks/{id}"
+        String localVarPath = "/delivery/v1/webhooks/{id}"
             .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
@@ -402,7 +402,7 @@ public class WebhooksApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v1/webhooks";
+        String localVarPath = "/delivery/v1/webhooks";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -538,7 +538,7 @@ public class WebhooksApi {
         Object localVarPostBody = testWebhookRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/webhooks/test";
+        String localVarPath = "/delivery/v1/webhooks/test";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -679,7 +679,7 @@ public class WebhooksApi {
         Object localVarPostBody = updateWebhookRequest;
 
         // create path and map variables
-        String localVarPath = "/api/v1/webhooks/{id}"
+        String localVarPath = "/delivery/v1/webhooks/{id}"
             .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();

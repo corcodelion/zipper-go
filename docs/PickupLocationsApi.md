@@ -4,12 +4,12 @@ All URIs are relative to *http://localhost*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
-| [**bulkUpsertPickupLocations**](PickupLocationsApi.md#bulkUpsertPickupLocations) | **POST** /api/v1/pickup-locations/bulk-upsert | Bulk upsert pickup locations (async) |
-| [**createPickupLocation**](PickupLocationsApi.md#createPickupLocation) | **POST** /api/v1/pickup-locations | Create a pickup location |
-| [**deletePickupLocation**](PickupLocationsApi.md#deletePickupLocation) | **DELETE** /api/v1/pickup-locations/{id} | Delete a pickup location |
-| [**getPickupLocation**](PickupLocationsApi.md#getPickupLocation) | **GET** /api/v1/pickup-locations/{id} | Get a pickup location by ID |
-| [**searchPickupLocations**](PickupLocationsApi.md#searchPickupLocations) | **POST** /api/v1/pickup-locations/search | Search pickup locations |
-| [**updatePickupLocation**](PickupLocationsApi.md#updatePickupLocation) | **PUT** /api/v1/pickup-locations/{id} | Update a pickup location |
+| [**bulkUpsertPickupLocations**](PickupLocationsApi.md#bulkUpsertPickupLocations) | **POST** /delivery/v1/pickup-locations/bulk-upsert | Bulk upsert pickup locations (async) |
+| [**createPickupLocation**](PickupLocationsApi.md#createPickupLocation) | **POST** /delivery/v1/pickup-locations | Create a pickup location |
+| [**deletePickupLocation**](PickupLocationsApi.md#deletePickupLocation) | **DELETE** /delivery/v1/pickup-locations/{id} | Delete a pickup location |
+| [**getPickupLocation**](PickupLocationsApi.md#getPickupLocation) | **GET** /delivery/v1/pickup-locations/{id} | Get a pickup location by ID |
+| [**searchPickupLocations**](PickupLocationsApi.md#searchPickupLocations) | **POST** /delivery/v1/pickup-locations/search | Search pickup locations |
+| [**updatePickupLocation**](PickupLocationsApi.md#updatePickupLocation) | **PUT** /delivery/v1/pickup-locations/{id} | Update a pickup location |
 
 
 <a id="bulkUpsertPickupLocations"></a>

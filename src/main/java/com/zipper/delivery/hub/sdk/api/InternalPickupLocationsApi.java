@@ -27,7 +27,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 
 
-import com.zipper.delivery.hub.sdk.model.EchoResponse;
+import com.zipper.delivery.hub.sdk.model.InternalPickupLocationDTO;
+import java.util.UUID;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -35,16 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EchoApi {
+public class InternalPickupLocationsApi {
     private ApiClient localVarApiClient;
     private int localHostIndex;
     private String localCustomBaseUrl;
 
-    public EchoApi() {
+    public InternalPickupLocationsApi() {
         this(Configuration.getDefaultApiClient());
     }
 
-    public EchoApi(ApiClient apiClient) {
+    public InternalPickupLocationsApi(ApiClient apiClient) {
         this.localVarApiClient = apiClient;
     }
 
@@ -73,8 +74,8 @@ public class EchoApi {
     }
 
     /**
-     * Build call for echoV1
-     * @param message Message to echo back (optional, default to hello)
+     * Build call for getById
+     * @param id  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback Callback for upload/download progress
      * @return Call to execute
@@ -83,12 +84,11 @@ public class EchoApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Location found </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Location not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Call(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getByIdCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -105,17 +105,14 @@ public class EchoApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/delivery/v1/echo";
+        String localVarPath = "/delivery/v1/internal/pickup-locations/{id}"
+            .replace("{" + "id" + "}", localVarApiClient.escapeString(id.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (message != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("message", message));
-        }
 
         final String[] localVarAccepts = {
             "*/*"
@@ -142,58 +139,61 @@ public class EchoApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call echoV1ValidateBeforeCall(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
-        return echoV1Call(message, acceptLanguage, _callback);
+    private okhttp3.Call getByIdValidateBeforeCall(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback _callback) throws ApiException {
+        // verify the required parameter 'id' is set
+        if (id == null) {
+            throw new ApiException("Missing the required parameter 'id' when calling getById(Async)");
+        }
+
+        return getByIdCall(id, acceptLanguage, _callback);
 
     }
 
     /**
-     * Echo a message back
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Get pickup location by external ID
+     * Returns pickup location metadata. Used for service-to-service validation.
+     * @param id  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
-     * @return EchoResponse
+     * @return InternalPickupLocationDTO
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Location found </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Location not found </td><td>  -  </td></tr>
      </table>
      */
-    public EchoResponse echoV1(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
-        ApiResponse<EchoResponse> localVarResp = echoV1WithHttpInfo(message, acceptLanguage);
+    public InternalPickupLocationDTO getById(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        ApiResponse<InternalPickupLocationDTO> localVarResp = getByIdWithHttpInfo(id, acceptLanguage);
         return localVarResp.getData();
     }
 
     /**
-     * Echo a message back
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Get pickup location by external ID
+     * Returns pickup location metadata. Used for service-to-service validation.
+     * @param id  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
-     * @return ApiResponse&lt;EchoResponse&gt;
+     * @return ApiResponse&lt;InternalPickupLocationDTO&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      * @http.response.details
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Location found </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Location not found </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<EchoResponse> echoV1WithHttpInfo(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, null);
-        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+    public ApiResponse<InternalPickupLocationDTO> getByIdWithHttpInfo(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable String acceptLanguage) throws ApiException {
+        okhttp3.Call localVarCall = getByIdValidateBeforeCall(id, acceptLanguage, null);
+        Type localVarReturnType = new TypeToken<InternalPickupLocationDTO>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
 
     /**
-     * Echo a message back (asynchronously)
-     * Returns the provided message along with the API version. Useful for connectivity checks.
-     * @param message Message to echo back (optional, default to hello)
+     * Get pickup location by external ID (asynchronously)
+     * Returns pickup location metadata. Used for service-to-service validation.
+     * @param id  (required)
      * @param acceptLanguage Language preference for response content. Supported: en, he (optional, default to en)
      * @param _callback The callback to be executed when the API call finishes
      * @return The request call
@@ -202,15 +202,14 @@ public class EchoApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Echo response returned successfully </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden — insufficient permissions </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 200 </td><td> Location found </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Location not found </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call echoV1Async(@javax.annotation.Nullable String message, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<EchoResponse> _callback) throws ApiException {
+    public okhttp3.Call getByIdAsync(@javax.annotation.Nonnull UUID id, @javax.annotation.Nullable String acceptLanguage, final ApiCallback<InternalPickupLocationDTO> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = echoV1ValidateBeforeCall(message, acceptLanguage, _callback);
-        Type localVarReturnType = new TypeToken<EchoResponse>(){}.getType();
+        okhttp3.Call localVarCall = getByIdValidateBeforeCall(id, acceptLanguage, _callback);
+        Type localVarReturnType = new TypeToken<InternalPickupLocationDTO>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
     }

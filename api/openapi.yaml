@@ -40,14 +40,20 @@ security:
 tags:
 - description: "Create, quote, and track deliveries across carrier providers"
   name: Deliveries
+- description: Admin endpoints for viewing and searching deliveries across all users
+  name: Admin Deliveries
+- description: Service-to-service pickup location operations
+  name: Internal - Pickup Locations
 - description: Manage pre-configured pickup locations for deliveries
   name: Pickup Locations
 - description: Manage webhook subscriptions for real-time event notifications
   name: Webhooks
 - description: Echo / connectivity check for API v1
   name: Echo
+- description: Public delivery tracking — no authentication required
+  name: Public Tracking
 paths:
-  /api/v1/webhooks/{id}:
+  /delivery/v1/webhooks/{id}:
     delete:
       description: Removes a specific webhook subscription by ID for the current user.
       operationId: deleteWebhookById
@@ -144,7 +150,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/pickup-locations/{id}:
+  /delivery/v1/pickup-locations/{id}:
     delete:
       operationId: deletePickupLocation
       parameters:
@@ -264,7 +270,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/webhooks:
+  /delivery/v1/webhooks:
     get:
       description: Returns all webhook subscriptions for the current user.
       operationId: listWebhooks
@@ -343,7 +349,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/webhooks/test:
+  /delivery/v1/webhooks/test:
     post:
       description: Publishes a test event to all registered webhooks for the current
         user.
@@ -381,7 +387,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
-  /api/v1/pickup-locations:
+  /delivery/v1/pickup-locations:
     post:
       operationId: createPickupLocation
       parameters:
@@ -420,7 +426,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/pickup-locations/search:
+  /delivery/v1/pickup-locations/search:
     post:
       operationId: searchPickupLocations
       parameters:
@@ -455,7 +461,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/pickup-locations/bulk-upsert:
+  /delivery/v1/pickup-locations/bulk-upsert:
     post:
       description: "Accepts a batch of pickup locations for create or update. Matching\
         \ is by `code` — existing codes are updated, new codes are created. Processing\
@@ -492,7 +498,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - application/json
-  /api/v1/deliveries:
+  /delivery/v1/deliveries:
     post:
       description: Dispatches a new delivery order to the best available carrier provider.
         An optional idempotency key prevents duplicate orders.
@@ -545,7 +551,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/{deliveryId}/cancel:
+  /delivery/v1/deliveries/{deliveryId}/cancel:
     post:
       description: "Cancels a delivery that is in CREATED or ASSIGNED status. If the\
         \ delivery has been dispatched to a provider, the cancellation is also forwarded\
@@ -592,7 +598,7 @@ paths:
       - Deliveries
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/search:
+  /delivery/v1/deliveries/search:
     post:
       description: "Search and filter deliveries with pagination. Supports filtering\
         \ by status, date range, and other criteria. Returns a paginated list of deliveries\
@@ -632,7 +638,7 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/quote:
+  /delivery/v1/deliveries/quote:
     post:
       description: Returns a price quote and estimated arrival time for the given
         pickup/dropoff route and delivery type.
@@ -675,7 +681,179 @@ paths:
       x-content-type: application/json
       x-accepts:
       - '*/*'
-  /api/v1/echo:
+  /delivery/v1/admin/deliveries/{deliveryId}/cancel:
+    post:
+      description: "Cancels a delivery that is in CREATED or ASSIGNED status. Admin\
+        \ only, no ownership check."
+      operationId: adminCancelDelivery
+      parameters:
+      - description: UUID of the delivery to cancel
+        example: 550e8400-e29b-41d4-a716-446655440000
+        explode: false
+        in: path
+        name: deliveryId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HubCancelDeliveryResponse'
+          description: Delivery cancelled successfully
+        "404":
+          description: Delivery not found
+        "403":
+          description: Forbidden
+        "409":
+          description: Delivery cannot be cancelled in its current status
+        "422":
+          description: Provider cancellation failed
+      summary: Cancel a delivery (admin)
+      tags:
+      - Admin Deliveries
+      x-accepts:
+      - '*/*'
+  /delivery/v1/admin/deliveries/search:
+    post:
+      description: Search and filter deliveries across all users with pagination.
+        Admin only.
+      operationId: adminSearchAllDeliveries
+      parameters:
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchDeliveriesRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageResponseListHubDeliverySearchDTO'
+          description: Search results returned
+        "403":
+          description: Forbidden
+      summary: Search all deliveries
+      tags:
+      - Admin Deliveries
+      x-content-type: application/json
+      x-accepts:
+      - '*/*'
+  /delivery/v1/public/track/{trackingNumber}:
+    get:
+      description: Returns public tracking information for a delivery. No authentication
+        required.
+      operationId: track
+      parameters:
+      - description: Delivery tracking number (e.g. ZIPPERGUDWXJNXTTJ17)
+        explode: false
+        in: path
+        name: trackingNumber
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PublicTrackingResponse'
+          description: Tracking information returned
+        "404":
+          description: Delivery not found
+        "429":
+          description: Rate limit exceeded
+      summary: Track a delivery by tracking number
+      tags:
+      - Public Tracking
+      x-accepts:
+      - '*/*'
+  /delivery/v1/internal/pickup-locations/{id}:
+    get:
+      description: Returns pickup location metadata. Used for service-to-service validation.
+      operationId: getById
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternalPickupLocationDTO'
+          description: Location found
+        "404":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/InternalPickupLocationDTO'
+          description: Location not found
+      summary: Get pickup location by external ID
+      tags:
+      - Internal - Pickup Locations
+      x-accepts:
+      - '*/*'
+  /delivery/v1/echo:
     get:
       description: Returns the provided message along with the API version. Useful
         for connectivity checks.
@@ -718,7 +896,7 @@ paths:
       - Echo
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/{hubTrackingNumber}/label:
+  /delivery/v1/deliveries/{hubTrackingNumber}/label:
     get:
       description: "Returns barcode value and URLs for barcode image, QR code, and\
         \ label PDF for a delivery identified by its hub tracking number."
@@ -759,7 +937,7 @@ paths:
       - Deliveries
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/{hubTrackingNumber}/label/{filename}:
+  /delivery/v1/deliveries/{hubTrackingNumber}/label/{filename}:
     get:
       description: "Serves a label asset (barcode.png, qrcode.png, or label.pdf) for\
         \ a delivery. Streams from storage or generates on-the-fly if not yet uploaded."
@@ -812,7 +990,7 @@ paths:
       - Deliveries
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/{deliveryId}:
+  /delivery/v1/deliveries/{deliveryId}:
     get:
       description: "Retrieves the current status, tracking information, and full status\
         \ history of a delivery."
@@ -858,7 +1036,7 @@ paths:
       - Deliveries
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/{deliveryId}/handshake:
+  /delivery/v1/deliveries/{deliveryId}/handshake:
     get:
       description: "Returns PIN handshake information for a delivery, including whether\
         \ a PIN is required and the PIN code if applicable."
@@ -902,7 +1080,7 @@ paths:
       - Deliveries
       x-accepts:
       - '*/*'
-  /api/v1/deliveries/track/{hubTrackingNumber}:
+  /delivery/v1/deliveries/track/{hubTrackingNumber}:
     get:
       description: "Retrieves delivery status and tracking information using the hub\
         \ tracking number. This endpoint is designed for easy tracking URL sharing\
@@ -943,6 +1121,147 @@ paths:
       summary: Track delivery by tracking number
       tags:
       - Deliveries
+      x-accepts:
+      - '*/*'
+  /delivery/v1/admin/deliveries/{deliveryId}:
+    get:
+      description: "Get a single delivery by its ID. Admin only, no ownership check."
+      operationId: adminGetDelivery
+      parameters:
+      - explode: false
+        in: path
+        name: deliveryId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HubDeliveryStatusResponse'
+          description: Delivery found
+        "404":
+          description: Delivery not found
+        "403":
+          description: Forbidden
+      summary: Get delivery by ID
+      tags:
+      - Admin Deliveries
+      x-accepts:
+      - '*/*'
+  /delivery/v1/admin/deliveries/{deliveryId}/label:
+    get:
+      description: "Returns barcode value and URLs for barcode image, QR code, and\
+        \ label PDF. Admin only, no ownership check."
+      operationId: adminGetDeliveryLabel
+      parameters:
+      - description: UUID of the delivery to get label for
+        example: 550e8400-e29b-41d4-a716-446655440000
+        explode: false
+        in: path
+        name: deliveryId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/HubDeliveryLabelResponse'
+          description: Label metadata returned
+        "404":
+          description: Delivery not found
+        "403":
+          description: Forbidden
+      summary: Get delivery label metadata (admin)
+      tags:
+      - Admin Deliveries
+      x-accepts:
+      - '*/*'
+  /delivery/v1/admin/deliveries/{deliveryId}/label/{filename}:
+    get:
+      description: "Serves a label asset (barcode.png, qrcode.png, or label.pdf) for\
+        \ a delivery. Admin only, no ownership check."
+      operationId: adminGetDeliveryLabelAsset
+      parameters:
+      - description: UUID of the delivery to get label asset for
+        example: 550e8400-e29b-41d4-a716-446655440000
+        explode: false
+        in: path
+        name: deliveryId
+        required: true
+        schema:
+          format: uuid
+          type: string
+        style: simple
+      - description: Asset filename
+        example: barcode.png
+        explode: false
+        in: path
+        name: filename
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: "Language preference for response content. Supported: en, he"
+        explode: false
+        in: header
+        name: Accept-Language
+        required: false
+        schema:
+          default: en
+          enum:
+          - en
+          - he
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                format: binary
+                type: string
+          description: Asset returned
+        "400":
+          description: Invalid filename
+        "404":
+          description: Delivery not found
+        "403":
+          description: Forbidden
+      summary: Download a label asset (admin)
+      tags:
+      - Admin Deliveries
       x-accepts:
       - '*/*'
 components:
@@ -2814,6 +3133,308 @@ components:
         expiresAt:
           description: Quote expiration time — create delivery before this time
           format: date-time
+          type: string
+    PublicCourierInfo:
+      example:
+        photoUrl: photoUrl
+        phone: phone
+        name: name
+        rating: 3.616076749251911
+        location:
+          lng: 4.145608029883936
+          bearing: 7.386281948385884
+          recordedAt: 2000-01-23T04:56:07.000+00:00
+          lat: 2.027123023002322
+        vehicle:
+          licensePlate: licensePlate
+          color: color
+          make: make
+          vehicleType: vehicleType
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        photoUrl:
+          type: string
+        rating:
+          format: double
+          type: number
+        vehicle:
+          $ref: '#/components/schemas/PublicVehicleInfo'
+        location:
+          $ref: '#/components/schemas/PublicCourierLocation'
+    PublicCourierLocation:
+      example:
+        lng: 4.145608029883936
+        bearing: 7.386281948385884
+        recordedAt: 2000-01-23T04:56:07.000+00:00
+        lat: 2.027123023002322
+      properties:
+        lat:
+          format: double
+          type: number
+        lng:
+          format: double
+          type: number
+        bearing:
+          format: double
+          type: number
+        recordedAt:
+          format: date-time
+          type: string
+    PublicDropoffInfo:
+      example:
+        streetName: streetName
+        recipientFirstName: recipientFirstName
+        city: city
+        latitude: 7.061401241503109
+        longitude: 9.301444243932576
+      properties:
+        recipientFirstName:
+          type: string
+        city:
+          type: string
+        streetName:
+          type: string
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+    PublicItemInfo:
+      example:
+        quantity: 1
+        name: name
+        description: description
+        widthCm: 6.84685269835264
+        heightCm: 7.457744773683766
+        lengthCm: 1.4894159098541704
+        weightKg: 1.0246457001441578
+      properties:
+        name:
+          type: string
+        quantity:
+          format: int32
+          type: integer
+        description:
+          type: string
+        weightKg:
+          format: double
+          type: number
+        lengthCm:
+          format: double
+          type: number
+        widthCm:
+          format: double
+          type: number
+        heightCm:
+          format: double
+          type: number
+    PublicPackageDetails:
+      example:
+        widthCm: 1.4658129805029452
+        heightCm: 5.962133916683182
+        lengthCm: 6.027456183070403
+        weightKg: 0.8008281904610115
+      properties:
+        weightKg:
+          format: double
+          type: number
+        lengthCm:
+          format: double
+          type: number
+        widthCm:
+          format: double
+          type: number
+        heightCm:
+          format: double
+          type: number
+    PublicPickupInfo:
+      example:
+        streetName: streetName
+        city: city
+        latitude: 5.637376656633329
+        name: name
+        longitude: 2.3021358869347655
+      properties:
+        name:
+          type: string
+        city:
+          type: string
+        streetName:
+          type: string
+        latitude:
+          format: double
+          type: number
+        longitude:
+          format: double
+          type: number
+    PublicStatusEvent:
+      example:
+        occurredAt: 2000-01-23T04:56:07.000+00:00
+        status: CONFIRMED
+      properties:
+        status:
+          enum:
+          - CONFIRMED
+          - LOOKING_FOR_DRIVER
+          - DRIVER_ASSIGNED
+          - PREPARING
+          - PICKED_UP
+          - ON_THE_WAY
+          - DELIVERED
+          - CANCELLED
+          - UNSUCCESSFUL
+          type: string
+        occurredAt:
+          format: date-time
+          type: string
+    PublicTrackingResponse:
+      example:
+        packageDetails:
+          widthCm: 1.4658129805029452
+          heightCm: 5.962133916683182
+          lengthCm: 6.027456183070403
+          weightKg: 0.8008281904610115
+        statusTimeline:
+        - occurredAt: 2000-01-23T04:56:07.000+00:00
+          status: CONFIRMED
+        - occurredAt: 2000-01-23T04:56:07.000+00:00
+          status: CONFIRMED
+        deliveryType: deliveryType
+        dropoff:
+          streetName: streetName
+          recipientFirstName: recipientFirstName
+          city: city
+          latitude: 7.061401241503109
+          longitude: 9.301444243932576
+        pickup:
+          streetName: streetName
+          city: city
+          latitude: 5.637376656633329
+          name: name
+          longitude: 2.3021358869347655
+        hubBarcode: hubBarcode
+        estimatedDropoffAt: 2000-01-23T04:56:07.000+00:00
+        courier:
+          photoUrl: photoUrl
+          phone: phone
+          name: name
+          rating: 3.616076749251911
+          location:
+            lng: 4.145608029883936
+            bearing: 7.386281948385884
+            recordedAt: 2000-01-23T04:56:07.000+00:00
+            lat: 2.027123023002322
+          vehicle:
+            licensePlate: licensePlate
+            color: color
+            make: make
+            vehicleType: vehicleType
+        proofOfDeliveryUrl: proofOfDeliveryUrl
+        trackingNumber: trackingNumber
+        items:
+        - quantity: 1
+          name: name
+          description: description
+          widthCm: 6.84685269835264
+          heightCm: 7.457744773683766
+          lengthCm: 1.4894159098541704
+          weightKg: 1.0246457001441578
+        - quantity: 1
+          name: name
+          description: description
+          widthCm: 6.84685269835264
+          heightCm: 7.457744773683766
+          lengthCm: 1.4894159098541704
+          weightKg: 1.0246457001441578
+        estimatedPickupAt: 2000-01-23T04:56:07.000+00:00
+        status: CONFIRMED
+      properties:
+        trackingNumber:
+          type: string
+        hubBarcode:
+          type: string
+        packageDetails:
+          $ref: '#/components/schemas/PublicPackageDetails'
+        status:
+          enum:
+          - CONFIRMED
+          - LOOKING_FOR_DRIVER
+          - DRIVER_ASSIGNED
+          - PREPARING
+          - PICKED_UP
+          - ON_THE_WAY
+          - DELIVERED
+          - CANCELLED
+          - UNSUCCESSFUL
+          type: string
+        deliveryType:
+          type: string
+        estimatedPickupAt:
+          format: date-time
+          type: string
+        estimatedDropoffAt:
+          format: date-time
+          type: string
+        pickup:
+          $ref: '#/components/schemas/PublicPickupInfo'
+        dropoff:
+          $ref: '#/components/schemas/PublicDropoffInfo'
+        courier:
+          $ref: '#/components/schemas/PublicCourierInfo'
+        statusTimeline:
+          items:
+            $ref: '#/components/schemas/PublicStatusEvent'
+          type: array
+        items:
+          items:
+            $ref: '#/components/schemas/PublicItemInfo'
+          type: array
+        proofOfDeliveryUrl:
+          type: string
+    PublicVehicleInfo:
+      example:
+        licensePlate: licensePlate
+        color: color
+        make: make
+        vehicleType: vehicleType
+      properties:
+        vehicleType:
+          type: string
+        make:
+          type: string
+        color:
+          type: string
+        licensePlate:
+          type: string
+    InternalPickupLocationDTO:
+      example:
+        name: name
+        externalId: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        type: STORE
+        userId: userId
+        status: ACTIVE
+      properties:
+        externalId:
+          format: uuid
+          type: string
+        userId:
+          type: string
+        status:
+          enum:
+          - ACTIVE
+          - INACTIVE
+          type: string
+        type:
+          enum:
+          - STORE
+          - WAREHOUSE
+          - HUB
+          type: string
+        name:
           type: string
     EchoResponse:
       description: Echo response containing the echoed message and API version
